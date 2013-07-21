@@ -1,8 +1,7 @@
 Yórùdí - A Standardized & Downloadable Comprehensive Yoruba-Multilingual Dictionary
 
 DESCRIPTION
-The Yorudi project aims to compile a complete multi-lingual lexical database with Yoruba as the pivot language. The project is modelled after the CC-CEDICT project by Paul Andrew Denisowski which was itself modeled on the 
-highly successful EDICT project by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
+The Yorudi project aims to compile a complete multi-lingual lexical database with Yoruba as the pivot language. The project is modelled after the CC-CEDICT project by Paul Andrew Denisowski which was itself modeled on the highly successful EDICT project by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
 ENCODING
 Every entry in a Yorudi dictionary must be made up of 4 major parts
