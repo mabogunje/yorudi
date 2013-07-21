@@ -22,11 +22,9 @@ case object Root extends WordProperty
 case class Elision/*[T <: Bias]*/(where:Bias) extends WordProperty { override def bias = where}
 case class Assimilation/*[T <: Bias]*/(where:Bias) extends WordProperty { override def bias = where}
 
+
 /**
- * Bias tells us on which end of 
- */
-/**
- * The prerequisites of a word are to have a root, a spelling, and O(1) checks for WordProperties
+ * The prerequisites of a word are to have a root, a spelling, and checks for WordProperties
  */
 sealed trait Pheme {
   def spelling:String
@@ -143,7 +141,7 @@ case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Entry with 
   override def toString() = this.inYoruba()
 }
 
-object GrammarTest extends GrammarParser {
+object GrammarTest {
   def main(args:Array[String]) {
     val entry = WordEntry(Word("nigbati", List(Morpheme("n’"), Morpheme("“gbˆ", Elision(Left), Root), Morpheme("t’"))))
     println(entry)

@@ -1,0 +1,8 @@
+# Eclipse Configuration
+.cache
+.classpath
+.project
+.settings
+
+# Directories
+bin/
