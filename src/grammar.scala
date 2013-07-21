@@ -26,10 +26,10 @@ case class Assimilation/*[T <: Bias]*/(where:Bias) extends WordProperty { overri
 /**
  * The prerequisites of a word are to have a root, a spelling, and checks for WordProperties
  */
-sealed trait Pheme {
+sealed trait Vocable {
   def spelling:String
   def traits:Seq[WordProperty]
-  def root: Pheme
+  def root: Vocable
   def isRoot: Boolean
   def isElided:Boolean
   def isAssimilated:Boolean
@@ -40,7 +40,7 @@ sealed trait Pheme {
 /**
  * Base class for words
  */
-abstract class Grapheme extends Pheme {
+abstract class Expression extends Vocable {
   var spelling:String = ""
   var traits:Seq[WordProperty] = List()
   
@@ -53,18 +53,18 @@ abstract class Grapheme extends Pheme {
  * Represents the smallest meaningful unit of language 
  * e.g prefixes such as the 'ˆ' in 'ˆdŽ'
  */
-case class Morpheme(word:String, properties:WordProperty*) extends Grapheme {
+case class Term(word:String, properties:WordProperty*) extends Expression {
   spelling = word
   traits = properties
   
-  def root = this
+  def root = Term.this
 }
 
 /**
  * Can be used for any type of word, but especially compound words 
  * e.g word:n’gbat’, morphology:[n’, “gb‡, t’], properties:Elision(Left) 
  */
-case class Word(word:String, morphology:List[Pheme], properties:WordProperty*) extends Grapheme {  
+case class Word(word:String, morphology:List[Vocable], properties:WordProperty*) extends Expression {  
   spelling = word
   traits = properties
   
@@ -74,9 +74,9 @@ case class Word(word:String, morphology:List[Pheme], properties:WordProperty*) e
 }
 
 /**
- * A unit of meaning carried by a Pheme
+ * A unit of meaning carried by a Vocable
  */
-sealed trait Sememe {
+sealed trait Meaning {
   def description:String
   def language:Locale
   
@@ -86,7 +86,7 @@ sealed trait Sememe {
 /**
  * Represents a word meaning/definition in a specified language
  */
-case class Semanteme(sense:String, lang:String="en") extends Sememe {
+case class Translation(sense:String, lang:String="en") extends Meaning {
   var description = sense
   var language = new Locale(lang)  
 }
@@ -95,7 +95,7 @@ case class Semanteme(sense:String, lang:String="en") extends Sememe {
 sealed trait Entry {
   //def ref:String
   def spelling:String
-  def inYoruba(composition:List[Pheme]):String
+  def inYoruba(composition:List[Vocable]):String
   //def senses(lang:String):List[Sememe]
   def attributes:Map[String, String]
   
@@ -107,7 +107,7 @@ sealed trait Entry {
  * Also provides the method inYoruba for composing a Yoruba 
  * spelling from word morphology
  */
-case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Entry with Pheme {
+case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Entry with Vocable {
   var spelling = word.spelling
   var root = word.root
   var traits = word.traits
@@ -119,7 +119,7 @@ case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Entry with 
   def isAssimilated = word.isAssimilated
 
   // Implementing Entry
-  def inYoruba(composition:List[Pheme] = word.morphology):String = composition map { 
+  def inYoruba(composition:List[Vocable] = word.morphology):String = composition map { 
     case w => { w.traits match {
       case (p:Elision) => { 
         if (p.bias == Bias.Left) { w.spelling.drop(1) }
@@ -143,7 +143,7 @@ case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Entry with 
 
 object GrammarTest {
   def main(args:Array[String]) {
-    val entry = WordEntry(Word("nigbati", List(Morpheme("n’"), Morpheme("“gbˆ", Elision(Left), Root), Morpheme("t’"))))
+    val entry = WordEntry(Word("nigbati", List(Term("n’"), Term("“gbˆ", Elision(Left), Root), Term("t’"))))
     println(entry)
   }
 }

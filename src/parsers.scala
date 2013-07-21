@@ -38,21 +38,21 @@ class GrammarParser extends RegexParsers {
    * Now we build the compound parsers which will produce our grammar objects
    */
   
-  def word:Parser[Pheme] = property.* ~ term ~ property.* ^^ {
-    case plist1~term~plist2 => Morpheme(term, (plist1 union plist2).distinct:_*)
+  def word:Parser[Expression] = property.* ~ term ~ property.* ^^ {
+    case plist1~term~plist2 => Term(term, (plist1 union plist2).distinct:_*)
   }
   
-  def composition:Parser[List[Pheme]] = "[" ~repsep(word, ".")~ "]" ^^ {
+  def composition:Parser[List[Expression]] = "[" ~repsep(word, ".")~ "]" ^^ {
     case "[" ~ list ~ "]" => {list}
   }
   
-  def glossary:Parser[List[Sememe]] = rep(sense) ^^ { _.map((Semanteme(_))) }
+  def glossary:Parser[List[Meaning]] = rep(sense) ^^ { _ map (Translation(_)) }
   
   def attribs:Parser[List[Tuple2[String,String]]] = "<"~ repsep(attribute, "|") ~">" ^^ {
     case "<" ~ list ~ ">" => { list }    
   }
 
-  def wordEntry:Parser[(WordEntry, List[Sememe])] = term ~ composition ~ glossary ~ attribs.? ^^ {
+  def wordEntry:Parser[(WordEntry, List[Meaning])] = term ~ composition ~ glossary ~ attribs.? ^^ {
     case term ~ comp ~ gloss ~ attrs => {
       var entry = WordEntry(Word(term, comp))
       for (a <- attrs) { a.map(entry.addAttributes(_)) }
