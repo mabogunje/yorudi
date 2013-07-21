@@ -3,10 +3,10 @@
 #lang: en
 #date: 12-12-13
 
-ade [à . {dè}]  /crown
-gbogbo [{gbó} . gbó]  /all  /every  /plenty  /many
-leti [(ní) . {eti}]  /near  /within ear shot
-nigbati [ní . <-{ígbà} . tí]  /when  /at the time
-soro [{so;} ro;]  /told  /said
-tiantian [{tían} . tían] /very high (for flying objects) 
+ade [à . dè*]  /crown
+gbogbo [gbó* . gbó]  /all  /every  /plenty  /many
+leti [ní-> . eti]  /near  /within ear shot
+nigbati [ní . <-ígbà* . tí]  /when  /at the time
+soro [so;* . ro;]  /told  /said
+tiantian [tían* . tían] /very high (for flying objects) 
 
