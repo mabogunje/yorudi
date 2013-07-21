@@ -22,23 +22,28 @@ This is simply the word in the standard roman alphabet.
 
 2. YORUBA DECOMPOSITION
 Here the word must be fully specified to include the following properties
-* Tone marks: These are indicated using accented vowels and/or a semi-colon where necessary to 		   represent a dotted character; e.g. è é e; è;. The middle tone (re) is never indicated.
-* Component words: Where applicable, the word should be broken up into its components, with each 			 composite word separated by a period as so: ade [a . dé]
-* Roots: Where applicable, the root word is to be indicated by curly braces e.g soro [{sò;} . ro;]
-* Elision: If any part of a component word or vowel is elided during speech it must still be recorded in the decomposition with parentheses e.g loke [(ni) • {okè}] :- Here, The 'i' is elided
+* Tone marks: These are indicated using accented vowels and/or a semi-colon where necessary to represent a dotted character 
+  e.g. è é e; è;. The middle tone (re) is never indicated.
+* Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
+  e.g ade [a . dé]
+* Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sò;* . ro;]
+* Elision: If any part of a component word or vowel is elided during speech it must still be recorded in the decomposition
+  with a `minus arrow` e.g foso [fo; . <-aso;] :- Here, The 'a' is elided
+* Assimilation: If any part of a component word or vowel is assimilated during speech it must be recorded in the decomposition
+  with a `plus arrow` e.g kuule [kú+> . <-ilé] :- Here, The 'u' is assimilated and the 'i' elided
 
 3. GLOSSARY
 The glossary is a list of synonymous words and phrases in the target language
-* Each synonym must be separated by a forward slash e.g leti [(ní) • {eti}]  /near  /within earshot
+* Each synonym must be separated by a forward slash e.g leti [ní-> . eti*]  /near  /within earshot
 * Each glossary entry may optionally feature short annotations in parentheses
-  e.g tiantian [tían • tían]  /very high (for flying objects)
+  e.g tiantian [tían . tían]  /very high (for flying objects)
 * For readability, each slash in the glossary should be two (2) spaces away from the last entry
 
 4. ATTRIBUTE LIST
 The attribute list may be used to indicate special properties such as indexes into other Yòrúdí language dictionaries. In most cases a contributor need not concern themselves with these.
 * The attribute list must be denoted by angle brackets of the form < attrib. list >
 * Each attribute consist of a key-value pair separated by a colon and must be separated by a 
-   vertical bar e.g bi [bí]  /if  < fr: 567 | ru: 234 >
+   vertical bar e.g bi [bí]  /if  <fr: 567 | ru: 234>
 * For readability, there should always be a spaces between vertical-bars and attributes as well as the
   colon and value in the key value pair (as in the previous example)
 
