@@ -23,7 +23,7 @@ class GrammarParser extends RegexParsers {
   def property:Parser[WordProperty] = root|elision|assimilation 
 
   // Base parsers for all values - applies restrictions on acceptable strings
-  def term:Parser[String] = """[\p{L}|\p{L};]+""".r ^^ {_.toLowerCase()}
+  def term:Parser[String] = """\p{L}+""".r ^^ {_.toLowerCase()}
   def value:Parser[String] = """[\w|\(\)]+""".r ^^ {_.toString()}
 
   // Base parser for word senses: Strings delimited by '/'. May be whole sentences 

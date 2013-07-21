@@ -1,4 +1,4 @@
-Yórùdí - A Standardized & Downloadable Comprehensive Yoruba-Multilingual Dictionary
+Yorudi - A Standardized & Downloadable Comprehensive Yoruba-Multilingual Dictionary
 
 DESCRIPTION
 The Yorudi project aims to compile a complete multi-lingual lexical database with Yoruba as the pivot language. The project is modelled after the CC-CEDICT project by Paul Andrew Denisowski which was itself modeled on the highly successful EDICT project by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
@@ -20,13 +20,13 @@ This is simply the word in the standard roman alphabet.
 
 2. YORUBA DECOMPOSITION
 Here the word must be fully specified to include the following properties
-* Tone marks: These are indicated using accented vowels and/or a semi-colon where necessary to represent a dotted character 
-  e.g. è é e; è;. The middle tone (re) is never indicated.
+* Tone marks: These are indicated using accented vowels and vowels with an underdot
+  e.g. è é ẹ ẹ̀ The middle tone (re) is never indicated.
 * Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
   e.g ade [a . dé]
-* Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sò;* . ro;]
+* Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sọ̀* . rọ]
 * Elision: If any part of a component word or vowel is elided during speech it must still be recorded in the decomposition
-  with a `minus arrow` e.g foso [fo; . <-aso;] :- Here, The 'a' is elided
+  with a `minus arrow` e.g foso [fọ . <-asọ] :- Here, The 'a' is elided
 * Assimilation: If any part of a component word or vowel is assimilated during speech it must be recorded in the decomposition
   with a `plus arrow` e.g kuule [kú+> . <-ilé] :- Here, The 'u' is assimilated and the 'i' elided
 
@@ -45,8 +45,8 @@ The attribute list may be used to indicate special properties such as indexes in
 * For readability, there should always be a spaces between vertical-bars and attributes as well as the
   colon and value in the key value pair (as in the previous example)
 
-CREATING A YÒRUDI TRANSLATION FILE
-A Yorudi translation file is a simple text file encoded in UTF-8 that contains a list of entries such as described above. At the top of the file must be a header specifying the target language and optional additional details such as the file author, date of creation, and so on; where each line begins with a #
+CREATING A YORUDI TRANSLATION FILE
+A Yorudi translation file is a simple text file encoded in UTF-8 that contains a list of entries such as described above. At the top of the file must be a header specifying the target language and optional additional details such as the file author, date of creation, and so on; where each line begins with a #.
 
 Example:
 #lang: en
@@ -54,4 +54,18 @@ Example:
 #author: Damola Mabogunje
 #date: 12-12-13
 
-Such files may be created with any text editor able to save a .txt file. Although to be recognized as a translation file, the extension of a Yòrúdí file must be changed to .yor
+These files may be created with any text editor able to save a .txt file. Although to be recognized as a translation file, the extension of a Yòrúdí file must be changed to .yor
+
+NOTES
+Writing some Yoruba characters requires that your keyboard is configured for writing accented and underdotted letters. The way to do this varies by operating system.
+
+Mac Configuration:
+1. Go to System Preferences -> Keyboard -> Input Sources
+2. Check the US Extended and US International Keyboards
+
+Accenting a letter is best done with the US International Keyboard. 
+* Acute accents are added by pressing ['] then the letter
+* Grave accents are added by pressing [`] then the letter
+
+Underdotting a letter is best done with the US Extended Keyboard.
+* Press [Option] + [X] at the same time, then press the letter.
