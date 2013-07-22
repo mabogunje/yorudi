@@ -10,17 +10,17 @@ class GrammarParser extends RegexParsers {
    */
   
   // Base token parsers - indicating word properties
-  def asmL:Parser[WordProperty] = """<\+""".r ^^^ {Assimilation(Left)}
-  def asmR:Parser[WordProperty] = """\+>""".r ^^^ {Assimilation(Right)}
-  def assimilation:Parser[WordProperty] = asmL | asmR
-  
-  def elsL:Parser[WordProperty] = """<\-""".r ^^^ {Elision(Left)}
-  def elsR:Parser[WordProperty] = """\->""".r ^^^ {Elision(Right)}
-  def elision:Parser[WordProperty] = elsL | elsR
-
   def root:Parser[WordProperty] = """\*""".r ^^^ {Root}
   
-  def property:Parser[WordProperty] = root|elision|assimilation 
+  def asmL:Parser[Assimilation] = """<\+""".r ^^^ {Assimilation(Left)}
+  def asmR:Parser[Assimilation] = """\+>""".r ^^^ {Assimilation(Right)}
+  def assimilation:Parser[Assimilation] = asmL | asmR
+  
+  def elsL:Parser[Elision] = """<\-""".r ^^^ {Elision(Left)}
+  def elsR:Parser[Elision] = """\->""".r ^^^ {Elision(Right)}
+  def elision:Parser[Elision] = elsL | elsR
+
+  def property:Parser[WordProperty] = root|assimilation|elision 
 
   // Base parsers for all values - applies restrictions on acceptable strings
   def term:Parser[String] = """\p{L}+""".r ^^ {_.toLowerCase()}
@@ -42,7 +42,7 @@ class GrammarParser extends RegexParsers {
     case plist1~term~plist2 => Term(term, (plist1 union plist2).distinct:_*)
   }
   
-  def composition:Parser[List[Expression]] = "[" ~repsep(word, ".")~ "]" ^^ {
+  def decomposition:Parser[List[Expression]] = "[" ~repsep(word, ".")~ "]" ^^ {
     case "[" ~ list ~ "]" => {list}
   }
   
@@ -52,9 +52,9 @@ class GrammarParser extends RegexParsers {
     case "<" ~ list ~ ">" => { list }    
   }
 
-  def wordEntry:Parser[(WordEntry, List[Meaning])] = term ~ composition ~ glossary ~ attribs.? ^^ {
-    case term ~ comp ~ gloss ~ attrs => {
-      var entry = WordEntry(Word(term, comp))
+  def wordEntry:Parser[(WordEntry, List[Meaning])] = term ~ decomposition ~ glossary ~ attribs.? ^^ {
+    case term ~ dcomp ~ gloss ~ attrs => {
+      var entry = WordEntry(Word(term, dcomp))
       for (a <- attrs) { a.map(entry.addAttributes(_)) }
       (entry -> gloss)
     }
@@ -63,8 +63,10 @@ class GrammarParser extends RegexParsers {
 
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
-    val testEntry = "nigbati [ní . ìgbà* . tí]  /when (adv) /at the time <fr:256 | qr:90>"
-    val objs = parseAll(wordEntry, testEntry)
+    val testEntry1 = "nigbati [ní . <-ìgbà* . tí]  /when (adv) /at the time <fr:256 | qr:90>"
+    val testEntry2 = "kuule [kú+>* . <-ilé]  /Good evening"
+    val testEntry3 = "ade [à . dé]  /crown"
+    val objs = parseAll(wordEntry, testEntry3)
       println(objs)
   }
 }
