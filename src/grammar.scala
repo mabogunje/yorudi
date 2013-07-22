@@ -51,7 +51,7 @@ abstract class Expression extends Vocable {
 
 /**
  * Represents the smallest meaningful unit of language 
- * e.g prefixes such as the 'à' in 'àdé'
+ * e.g prefixes such as the '√†' in 'd√©'
  */
 case class Term(word:String, properties:WordProperty*) extends Expression {
   spelling = word
@@ -62,7 +62,7 @@ case class Term(word:String, properties:WordProperty*) extends Expression {
 
 /**
  * Can be used for any type of word, but especially compound words 
- * e.g word:nígbatí, morphology:[ní, ìgbá, tí], properties:Elision(Left) 
+ * e.g word:n√≠gbat√≠, morphology:[n√≠, √¨gb√†, t√≠], properties:Elision(Left) 
  */
 case class Word(word:String, morphology:List[Vocable], properties:WordProperty*) extends Expression {  
   spelling = word
@@ -143,7 +143,7 @@ case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Entry with 
 
 object GrammarTest {
   def main(args:Array[String]) {
-    val entry = WordEntry(Word("nigbati", List(Term("ní"), Term("ìgbà", Elision(Left), Root), Term("tí"))))
+    val entry = WordEntry(Word("nigbati", List(Term("n√≠"), Term("√¨gb√†", Elision(Left), Root), Term("t√≠"))))
     println(entry)
   }
 }

@@ -63,7 +63,7 @@ class GrammarParser extends RegexParsers {
 
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
-    val testEntry = "nigbati [ní . ìgbà* . tí]  /when (adv) /at the time <fr:256 | qr:90>"
+    val testEntry = "nigbati [n√≠ . √¨gb√†* . t√≠]  /when (adv) /at the time <fr:256 | qr:90>"
     val objs = parseAll(wordEntry, testEntry)
       println(objs)
   }
