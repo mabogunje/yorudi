@@ -1,9 +1,9 @@
 import java.util.Locale
+import YorubaImplicits._
 
 /**
  * Bias tells us which part of a word a WordProperty affects
  */
-
 object Bias extends Enumeration {
   type Bias = Value
   val Left, Right, None = Value
@@ -32,6 +32,15 @@ sealed trait Yoruba {
   def isElided:Boolean
   def isAssimilated:Boolean
   def toYoruba:String
+  
+  override def equals(o:Any) = o match {
+    case that:Yoruba => that.toYoruba.equalsIgnoreCase(this.toYoruba)
+    case that:String => that.equalsIgnoreCase(this.toYoruba) ||
+    					that.equalsIgnoreCase(this.spelling)
+    case _ => super.equals(o)
+  }
+  
+  def hashcode = this.toYoruba.hashCode
   
   override def toString() = toYoruba
 }
@@ -69,7 +78,7 @@ case class Term(word:String, props:WordProperty*) extends Expression {
   spelling = word
   properties = props
   
-  def root = Term.this
+  def root = this
   def toYoruba = spelling
 }
 
@@ -87,8 +96,6 @@ case class Word(word:String, decomposition:List[Yoruba], props:WordProperty*) ex
   def toYoruba:String = decomposition map { 
     term => { processProperties(term.toYoruba, term.properties.toList) }
   } mkString ""
-  
-  
 }
 
 /**
@@ -112,32 +119,24 @@ case class Translation(sense:String, lang:String="en") extends Meaning {
 /**
  * Convenience type for pairing a word with its attributes (used in dictionary)
  */
-case class WordEntry(word:Word, attr:Tuple2[String,String]*) extends Yoruba {
-  var spelling = word.spelling
-  var root = word.root
-  var properties = word.properties
+case class WordEntry(word:Word, attr:Tuple2[String,String]*) {
   var attributes = Map[String, String]() ++ attr
-  
-  // Implementing Yoruba
-  def isElided = word.isElided
-  def isRoot = word.isRoot
-  def isAssimilated = word.isAssimilated
-  def toYoruba:String = word.toYoruba
   
   def addAttributes(attrs:Tuple2[String,String]*) = for (a @ (k,v) <- attrs) {attributes += a}   
 }
 
+object YorubaImplicits {
+  implicit def string2yoruba(str:String):Yoruba = Term(str)
+}
+
 object GrammarTest {
-  def main(args:Array[String]) {
-    val term1 = Term("ní")
-    val term2 = Term("ìgbà")
-    val term3 = Term("tí")
-    
-    val word1 = Word("nigba", List(term1, Term(term2.toYoruba, Elision(Left))))
-    
-    val entry1 = WordEntry(word1)
-    val entry2 = WordEntry(Word("nigbati", List(word1, term3)))
-    val entry3 = WordEntry(Word("kuule", List(Term("kú", Assimilation(Right)), Term("ilé", Elision(Left)))))
-    println(entry1, entry2, entry3)
+  def main(args:Array[String]) {    
+    val word1 = Word("nigba", List("ní", Term("ìgbà", Elision(Left))))
+    val word2 = Word("nigbati", List(word1, "tí"))
+    val word3 = Word("kuule", List(Term("kú", Assimilation(Right)), Term("ilé", Elision(Left))))
+        
+    println(word1)
+    println(word2)
+    println(word3)
   }
 }

@@ -1,6 +1,7 @@
 import scala.util.parsing.combinator._
 import Bias._
-
+import DictionaryImplicits._
+import YorubaImplicits._
 
 class GrammarParser extends RegexParsers {
   /** The Grammar Parser uses a series of combinatorial parsers
@@ -56,17 +57,25 @@ class GrammarParser extends RegexParsers {
     case term ~ dcomp ~ gloss ~ attrs => {
       var entry = WordEntry(Word(term, dcomp))
       for (a <- attrs) { a.map(entry.addAttributes(_)) }
-      (entry -> gloss)
+      ((entry -> gloss))
     }
   }
 }
 
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
-    val testEntry1 = "nigbati [ní . <-ìgbà* . tí]  /when (adv) /at the time <fr:256 | qr:90>"
-    val testEntry2 = "kuule [kú+>* . <-ilé]  /Good evening"
-    val testEntry3 = "ade [à . dé]  /crown"
-    val objs = parseAll(wordEntry, testEntry3)
-      println(objs)
+    var dict = new YorubaDictionary(Map[WordEntry, List[Meaning]]())
+    val testEntry1 = "igba [ìgbà*] /time"
+    val testEntry2 = "nigba [ní . <-ìgbà*]  /when"
+    val testEntry3 = "kuule [kú+>* . <-ilé]  /Good evening"
+    val testEntry4 = "ade [à . dé*]  /crown"
+    
+    dict += parseAll(wordEntry, testEntry1).get
+    dict += parseAll(wordEntry, testEntry2).get
+    dict += parseAll(wordEntry, testEntry3).get
+    dict += parseAll(wordEntry, testEntry4).get
+    
+    println(dict.lookupRelated("ìgbà"))
+    println(dict.lookup("kuule"))
   }
 }
