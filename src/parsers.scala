@@ -13,13 +13,13 @@ class GrammarParser extends RegexParsers {
   // Base token parsers - indicating word properties
   def root:Parser[WordProperty] = """\*""".r ^^^ {Root}
   
-  def asmL:Parser[Assimilation] = """<\+""".r ^^^ {Assimilation(Left)}
-  def asmR:Parser[Assimilation] = """\+>""".r ^^^ {Assimilation(Right)}
-  def assimilation:Parser[Assimilation] = asmL | asmR
+  def asmL:Parser[Assimilated] = """<\+""".r ^^^ {Assimilated(Left)}
+  def asmR:Parser[Assimilated] = """\+>""".r ^^^ {Assimilated(Right)}
+  def assimilation:Parser[Assimilated] = asmL | asmR
   
-  def elsL:Parser[Elision] = """<\-""".r ^^^ {Elision(Left)}
-  def elsR:Parser[Elision] = """\->""".r ^^^ {Elision(Right)}
-  def elision:Parser[Elision] = elsL | elsR
+  def elsL:Parser[Elided] = """<\-""".r ^^^ {Elided(Left)}
+  def elsR:Parser[Elided] = """\->""".r ^^^ {Elided(Right)}
+  def elision:Parser[Elided] = elsL | elsR
 
   def property:Parser[WordProperty] = root|assimilation|elision 
 
@@ -65,9 +65,9 @@ class GrammarParser extends RegexParsers {
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
     var dict = new YorubaDictionary(Map[WordEntry, List[Meaning]]())
-    val testEntry1 = "igba [ìgbà*] /time"
+    val testEntry1 = "igba [ìgbà*]  /time"
     val testEntry2 = "nigba [ní . <-ìgbà*]  /when"
-    val testEntry3 = "kuule [kú+>* . <-ilé]  /Good evening"
+    val testEntry3 = "kuule [kú+>* . <-ilé]  /greetings <fr:26>"
     val testEntry4 = "ade [à . dé*]  /crown"
     
     dict += parseAll(wordEntry, testEntry1).get

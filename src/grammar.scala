@@ -1,4 +1,6 @@
 import java.util.Locale
+import collection.mutable._
+
 import YorubaImplicits._
 
 /**
@@ -18,8 +20,8 @@ abstract class WordProperty {
   def bias = Bias.None
 }
 case object Root extends WordProperty
-case class Elision(where:Bias) extends WordProperty { override def bias = where}
-case class Assimilation(where:Bias) extends WordProperty { override def bias = where}
+case class Elided(where:Bias) extends WordProperty { override def bias = where}
+case class Assimilated(where:Bias) extends WordProperty { override def bias = where}
 
 /**
  * Yoruba contract. All Yoruba word objects must implement these features
@@ -32,7 +34,8 @@ sealed trait Yoruba {
   def isElided:Boolean
   def isAssimilated:Boolean
   def toYoruba:String
-  
+  def as(that:WordProperty):Yoruba
+
   override def equals(o:Any) = o match {
     case that:Yoruba => that.toYoruba.equalsIgnoreCase(this.toYoruba)
     case that:String => that.equalsIgnoreCase(this.toYoruba) ||
@@ -40,27 +43,26 @@ sealed trait Yoruba {
     case _ => super.equals(o)
   }
   
-  def hashcode = this.toYoruba.hashCode
-  
+  def hashcode = this.toYoruba.hashCode 
   override def toString() = toYoruba
 }
 
 abstract class Expression extends Yoruba {
   var spelling:String = ""
-  var properties:Seq[WordProperty] = List()
+  var properties:Seq[WordProperty] = Queue[WordProperty]()
   
   def isRoot = (properties contains Root)
-  def isElided = (properties contains Elision)
-  def isAssimilated = (properties contains Assimilation)
+  def isElided = (properties contains Elided)
+  def isAssimilated = (properties contains Assimilated)
   
   def processProperties(word:String=spelling, props:List[WordProperty]=Nil):String = {
     props match {
-      case (p:Elision) :: tail => { 
+      case (p:Elided) :: tail => { 
         if (p.bias == Bias.Left) { processProperties(word.drop(1), tail) }
         else if (p.bias == Bias.Right) { processProperties(word.dropRight(1), tail) }
         else { processProperties(word, tail) }
       }
-      case (p:Assimilation) :: tail => {
+      case (p:Assimilated) :: tail => {
         if (p.bias == Bias.Left) { processProperties(word.take(1) + word, tail) }
         else if (p.bias == Bias.Right) { processProperties(word + word.takeRight(1), tail) }
         else { processProperties(word, tail) }
@@ -68,6 +70,13 @@ abstract class Expression extends Yoruba {
       case _ => word
     }
   }
+  
+  // BROKEN :: WHY!?
+  def as(that:WordProperty):Yoruba = { 
+    this.properties.to[Queue] += that
+    this
+  }
+  
 }
 
 /**
@@ -76,7 +85,7 @@ abstract class Expression extends Yoruba {
  */
 case class Term(word:String, props:WordProperty*) extends Expression {
   spelling = word
-  properties = props
+  properties ++= props
   
   def root = this
   def toYoruba = spelling
@@ -87,7 +96,7 @@ case class Term(word:String, props:WordProperty*) extends Expression {
  */
 case class Word(word:String, decomposition:List[Yoruba], props:WordProperty*) extends Expression {  
   spelling = word
-  properties = props
+  properties ++= props
   
   def root = decomposition.find(_.isRoot == true).getOrElse(this)
   override def isElided =  decomposition.exists(_.isElided)  || super.isElided
@@ -131,12 +140,14 @@ object YorubaImplicits {
 
 object GrammarTest {
   def main(args:Array[String]) {    
-    val word1 = Word("nigba", List("ní", Term("ìgbà", Elision(Left))))
-    val word2 = Word("nigbati", List(word1, "tí"))
-    val word3 = Word("kuule", List(Term("kú", Assimilation(Right)), Term("ilé", Elision(Left))))
+    val word1 = "dé"
+    val word2 = Word("adé", List("a", Term(word1, Root)))
+    val word3 = Word("adé", List("a", word1 as Root))
+    val word4 = Word("sade", List(Term("ṣé", Elided(Right)), word3))
         
-    println(word1)
-    println(word2)
-    println(word3)
+    println(word1.root)
+    println(word2.root)
+    println(word3.root)
+    println(word4.root)
   }
 }
