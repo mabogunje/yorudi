@@ -38,11 +38,11 @@ Every entry in a Yorudi dictionary must be made up of 4 major parts
 INPUT FORMAT
 Every entry into a yorudi dictionary, must adhere to this format:
 
-    (2) yoruba decomposition                         (4) attribute list
-              v                                               v
+          yoruba decomposition (2)                   optional attribute list (4)
+                v                                             v
     gbogbo [gbó . gbó]  /all  /many  /every  <first:attribute | second:attribute | et:c>
        ^                       ^                       
-(1) simplified yoruba  (3) glossary of definitions
+simplified yoruba (1) glossary of definitions (3)
 
 
 1. SIMPLIFIED YORUBA
@@ -53,7 +53,7 @@ This is simply the word in the standard roman alphabet.
 2. YORUBA DECOMPOSITION
 Here the word must be fully specified to include the following properties
 * Tone marks: These are indicated using accented vowels and vowels with an underdot
-  e.g. è é ẹ ẹ̀ The middle tone (re) is never indicated.
+  e.g. è é ẹ ẹ̀  The middle tone (re) is never indicated.
 * Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
   e.g ade [a . dé]
 * Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sọ̀* . rọ]
