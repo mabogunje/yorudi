@@ -40,7 +40,7 @@ class GrammarParser extends RegexParsers {
    */
   
   def word:Parser[Expression] = property.* ~ term ~ property.* ^^ {
-    case plist1~term~plist2 => Term(term, (plist1 union plist2).distinct:_*)
+    case plist1~term~plist2 => Term(term, (plist1 union plist2):_*)
   }
   
   def decomposition:Parser[List[Expression]] = "[" ~repsep(word, ".")~ "]" ^^ {
@@ -49,14 +49,13 @@ class GrammarParser extends RegexParsers {
   
   def glossary:Parser[List[Meaning]] = rep(sense) ^^ { _ map (Translation(_)) }
   
-  def attribs:Parser[List[Tuple2[String,String]]] = "<"~ repsep(attribute, "|") ~">" ^^ {
+  /*def attribs:Parser[List[Tuple2[String,String]]] = "<"~ repsep(attribute, "|") ~">" ^^ {
     case "<" ~ list ~ ">" => { list }    
-  }
+  }*/
 
-  def wordEntry:Parser[(WordEntry, List[Meaning])] = term ~ decomposition ~ glossary ~ attribs.? ^^ {
-    case term ~ dcomp ~ gloss ~ attrs => {
-      var entry = WordEntry(Word(term, dcomp))
-      for (a <- attrs) { a.map(entry.addAttributes(_)) }
+  def wordEntry:Parser[(Word, List[Meaning])] = term ~ decomposition ~ glossary ^^ {
+    case term ~ dcomp ~ gloss => {
+      var entry = Word(term, dcomp)
       ((entry -> gloss))
     }
   }
@@ -64,18 +63,20 @@ class GrammarParser extends RegexParsers {
 
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
-    var dict = YorubaDictionary(Map[WordEntry, List[Meaning]]())
+    var dict = YorubaDictionary(Map[Word, List[Meaning]]())
     val testEntry1 = "igba [ìgbà*]  /time"
     val testEntry2 = "nigba [ní . <-ìgbà*]  /when"
-    val testEntry3 = "kuule [kú+>* . <-ilé]  /greetings <fr:26>"
+    val testEntry3 = "kuule [kú+>* . <-ilé]  /greetings"
     val testEntry4 = "ade [à . dé*]  /crown"
+    val testEntry5 = "a [awa->->*]  /we"
     
     dict += parseAll(wordEntry, testEntry1).get
     dict += parseAll(wordEntry, testEntry2).get
     dict += parseAll(wordEntry, testEntry3).get
     dict += parseAll(wordEntry, testEntry4).get
+    dict += parseAll(wordEntry, testEntry5).get
     
     println(dict.lookupRelated("ìgbà"))
-    println(dict.lookup("kuule"))
+    println(dict.lookup("a"))
   }
 }
