@@ -106,4 +106,4 @@ Accenting a letter is best done with the US International Keyboard.
 Underdotting a letter is best done with the US Extended Keyboard.
 - Press [Option] + [X] at the same time, then press the letter. 
                       OR
-- Press the letter, then press [Option] + [Shift] + [X] at the same time (necessary when underdotting accented letters)
+- Press the letter, then press [Option] + [Shift] + [X] at the same time
