@@ -8,7 +8,7 @@ Yoruba is the native tongue of the Yoruba people of West Africa. It is a tonal l
 
 There are 3 tones in Yoruba, namely:
 1. "Do": The low tone - represented by a grave accent e.g 'ò'
-2. "Re": The mid tone - represented by an overline (or not at all) e.g 'ó' or 'o' 
+2. "Re": The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
 3. "Mi": The high tone - represented by an acute accent e.g 'ó'
 
 In addition to tones, the language also features some underdotted vowels and consonants such as the 'ṣ', which is pronounced 'sh' in English
