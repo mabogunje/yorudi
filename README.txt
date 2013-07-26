@@ -95,7 +95,7 @@ Example:
 
 These files may be created with any text editor able to save a .txt file. Although to be recognized as a translation file, the extension of a Yòrúdí file must be changed to .yor
 
-NOTES
+ADDITIONAL NOTES
 Writing some Yoruba characters requires that your keyboard is configured for writing accented and underdotted letters. The way to do this varies by operating system.
 
 Mac Configuration:
