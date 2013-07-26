@@ -5,13 +5,14 @@ The Yorudi project aims to compile a complete multi-lingual lexical database wit
 
 ABOUT YORUBA
 Yoruba is the native tongue of the Yoruba people of West Africa. It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones and pronuonciation.
-As such, words in Yoruba are unique by tones, and of these there are 3; Namely:
-1. Do: 'à' The low tone; represented by a grave accent
-2. Re: 'ã' The mid tone; represented by an overline (or not at all) 
-3. Mi: 'á' The high tone; represented by an acute accent.
+
+There are 3 tones in Yoruba, namely:
+1. "Do": The low tone - represented by a grave accent e.g 'ò'
+2. "Re": The mid tone - represented by an overline (or not at all) e.g 'ó' or 'o' 
+3. "Mi": The high tone - represented by an acute accent e.g 'ó'
 
 In addition to these, the language also features some underdotted vowels and consonants in its alphabet.
-e.g The 'ṣ' in Yoruba is pronounced 'sh' in English
+e.g An 'ṣ' in Yoruba is pronounced 'sh' in English
 
 Finally, the language is peculiar in its use of assimilation and elision to contract words in the formation of other words and/or sentences.
 Elision:- This is the deletion of a vowel sound e.g ní + ilé = nílé (the mid-tone i is deleted)
