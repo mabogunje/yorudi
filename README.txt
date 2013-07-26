@@ -18,11 +18,11 @@ B. Underdotted Characters
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. For example, the letters 'ṣ', is pronounced 'sh' 
 
 C. Contraction
-Yoruba often uses assimilation and elision to contract words when forming other words and/or sentences. The 2 processes are outlined below:
+Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. These 2 processes are outlined below:
 1. Elision:- The deletion of a vowel e.g ní + ilé = nílé i.e "in" + "house" = "in the house"
 2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g ọbẹ́ + ilá = ọbẹ́ẹlá i.e "okra" + "soup" = "okra soup"
 
-This use of contraction leads to a certain abimguity between words and phrases, as the term "ọbẹ́ẹlá" from our assimilation example, is as much a word as it is a 2-word phrase.
+This use of contraction sometimes leads to an abimguity between words and phrases, as the term "ọbẹ́ẹlá" from our assimilation example, is as much a word, as it is a 2-word phrase.
 
 To learn more about the Yoruba people and their language, see http://yorupedia.com/
 
