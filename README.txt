@@ -19,7 +19,7 @@ The Yoruba alphabet features several underdotted letters. The underdot is used i
 
 C. Contraction
 Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. These 2 processes are outlined below:
-1. Elision:- The deletion of a vowel e.g ní + ilé = nílé i.e "in" + "house" = "in the house"
+1. Elision:- The deletion of a vowel e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
 2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g ọbẹ́ + ilá = ọbẹ́ẹlá i.e "okra" + "soup" = "okra soup"
 
 This use of contraction sometimes leads to an abimguity between words and phrases, as the term "ọbẹ́ẹlá" from our assimilation example, is as much a word, as it is a 2-word phrase.
