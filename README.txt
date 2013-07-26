@@ -22,7 +22,7 @@ Yoruba often uses assimilation and elision to contract words when forming other 
 1. Elision:- The deletion of a vowel e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
 2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
 
-This use of contraction sometimes leads to a certain ambiguity between words and phrases.
+As a result of this contraction, there is often little difference between a word and a phrase.
 
 To learn more about the Yoruba people and their language, see http://yorupedia.com/
 
