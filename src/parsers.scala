@@ -49,13 +49,14 @@ class GrammarParser extends RegexParsers {
   
   def glossary:Parser[List[Meaning]] = rep(sense) ^^ { _ map (Translation(_)) }
   
-  /*def attribs:Parser[List[Tuple2[String,String]]] = "<"~ repsep(attribute, "|") ~">" ^^ {
+  def attribs:Parser[List[Tuple2[String,String]]] = "<"~ repsep(attribute, "|") ~">" ^^ {
     case "<" ~ list ~ ">" => { list }    
-  }*/
+  }
 
-  def wordEntry:Parser[(Word, List[Meaning])] = term ~ decomposition ~ glossary ^^ {
-    case term ~ dcomp ~ gloss => {
-      var entry = Word(term, dcomp)
+  def wordEntry:Parser[(WordEntry, List[Meaning])] = term ~ decomposition ~ glossary ~ attribs.? ^^ {
+    case term ~ dcomp ~ gloss ~ attrs => {
+      var entry = WordEntry(Word(term, dcomp))
+      for (a <- attrs) { a map (entry.addAttributes(_)) }
       ((entry -> gloss))
     }
   }
@@ -63,7 +64,7 @@ class GrammarParser extends RegexParsers {
 
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
-    var dict = YorubaDictionary(Map[Word, List[Meaning]]())
+    var dict = YorubaDictionary(Map[WordEntry, List[Meaning]]())
     val testEntry1 = "igba [ìgbà*]  /time"
     val testEntry2 = "nigba [ní . <-ìgbà*]  /when"
     val testEntry3 = "kuule [kú+>* . <-ilé]  /greetings"
