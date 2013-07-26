@@ -56,7 +56,7 @@ Here the word must be fully specified to include the following properties
   e.g. è é ẹ ẹ̀   The middle tone (re) is never indicated.
 * Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
   e.g ade [a . dé]
-* Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sọ̀* . rọ]
+* Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sọ* . rọ]
 * Elision: If any part of a component word or vowel is elided during speech it must still be recorded in the decomposition
   with a `minus arrow` e.g foso [fọ . <-asọ] :- Here, The 'a' is elided
 * Assimilation: If any part of a component word or vowel is assimilated during speech it must be recorded in the decomposition
