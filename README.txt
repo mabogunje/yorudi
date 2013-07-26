@@ -11,8 +11,7 @@ There are 3 tones in Yoruba, namely:
 2. "Re": The mid tone - represented by an overline (or not at all) e.g 'ó' or 'o' 
 3. "Mi": The high tone - represented by an acute accent e.g 'ó'
 
-In addition to these, the language also features some underdotted vowels and consonants in its alphabet.
-e.g An 'ṣ' in Yoruba is pronounced 'sh' in English
+In addition to tones, the language also features some underdotted vowels and consonants such as the 'ṣ', which is pronounced 'sh' in English
 
 Finally, the language is peculiar in its use of assimilation and elision to contract words in the formation of other words and/or sentences.
 Elision:- This is the deletion of a vowel sound e.g ní + ilé = nílé (the mid-tone i is deleted)
