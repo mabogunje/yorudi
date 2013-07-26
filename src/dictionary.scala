@@ -7,7 +7,7 @@ import DictionaryImplicits._
  * 
  */
 case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]]) extends MapProxy[WordEntry, List[Meaning]] {
-  def lookup(word:Any):YorubaDictionary = self.filterKeys(_.word == word)
+  def lookup(word:Any):YorubaDictionary = self.filterKeys(k => (k.word.spelling == word) || (k.word == word)) 
   def lookupRelated(word:Any) = self filterKeys (k => (k.word.decomposition contains word) || (k.word == word))
 }
 

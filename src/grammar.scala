@@ -38,8 +38,7 @@ sealed trait Yoruba {
 
   override def equals(o:Any) = o match {
     case that:Yoruba => that.toYoruba.equalsIgnoreCase(this.toYoruba)
-    case that:String => that.equalsIgnoreCase(this.toYoruba) ||
-    					that.equalsIgnoreCase(this.spelling)
+    case that:String => that.equalsIgnoreCase(this.toYoruba)
     case _ => super.equals(o)
   }
   
@@ -71,9 +70,8 @@ abstract class Expression extends Yoruba {
     }
   }
   
-  // BROKEN :: WHY!?
   def as(that:WordProperty):Yoruba = { 
-    this.properties.to[Queue] += that
+    this.properties = this.properties.to[Queue] += that
     this
   }
   
@@ -143,7 +141,7 @@ object GrammarTest {
     val word1 = "dé"
     val word2 = Word("adé", List("a", Term(word1, Root)))
     val word3 = Word("adé", List("a", word1 as Root))
-    val word4 = Word("sade", List(Term("ṣé", Elided(Right)), word3))
+    val word4 = Word("sade", List("ṣé" as Elided(Right), word3))
         
     println(word1.root)
     println(word2.root)
