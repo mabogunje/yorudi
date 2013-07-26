@@ -46,41 +46,39 @@ simplified yoruba (1) glossary of definitions (3)
 
 1. SIMPLIFIED YORUBA
 This is simply the word in the standard roman alphabet.
-* It should be recorded as it is spoken in the Oyo dialect for consistency
-* Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
+(a) It should be recorded as it is spoken in the Oyo dialect for consistency
+(b) Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
 
 2. YORUBA DECOMPOSITION
 Here the word must be fully specified to include the following properties
-* Tone marks: These are indicated using accented vowels and vowels with an underdot
-  e.g. è é ẹ ẹ̀   The middle tone (re) is never indicated.
-* Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
-  e.g ade [a . dé]
+(a) Tone marks
+(b) Component words: Each component word must be separated by a period e.g ade [a . dé]
 
-  Note on Component Words
+  More on Component Words
   -----------------------
   Because words are often derived from other words, and each of these component words may be modified for contraction, such properties must also be recorded as follows:
-    * Elision: Elided letters may be recorded with a `minus arrow` to the left and/or right of the word 
+    - Elision: Elided letters may be recorded with a `minus arrow` to the left and/or right of the word 
         e.g foso [fọ . <-asọ] :- Here, the 'a' in aso is elided
             reja [ra-> . ẹja] :- Here, the 'a' in ra is elided
-    * Assimilation: Assimilated letters may be recorded with a `plus arrow` to the left and/or right of the word 
+    - Assimilation: Assimilated letters may be recorded with a `plus arrow` to the left and/or right of the word 
         e.g kuule [kú+> . <-ilé] :- Here, The 'u' is assimilated and the 'i' elided
             arooke [ará-> . <+òkè] :- Here, the ò is assimilated and the á elided
-    * Roots: The root of a word must always be indicated by an asterix (after all contractions, if present)  
+    - Roots: The root of a word must always be indicated by an asterix (after all contractions, if present)  
         e.g nigba [ní . <-ìgbà*] :- Here, ìgbà is the root word, but it's 'ì' is elided when forming "nígbà"
 
 3. GLOSSARY
 The glossary is a list of synonymous words and phrases in the target language
-* Each synonym must be separated by a forward slash e.g leti [ní-> . eti*]  /near  /within earshot
-* Each glossary entry may optionally feature short annotations in parentheses
+(a) Each synonym must be separated by a forward slash e.g leti [ní-> . eti*]  /near  /within earshot
+(b) Each glossary entry may optionally feature short annotations in parentheses
   e.g tiantian [tían . tían]  /very high (for flying objects)
-* For readability, each slash in the glossary should be two (2) spaces away from the last entry
+(c) For readability, each slash in the glossary should be two (2) spaces away from the last entry
 
 4. ATTRIBUTE LIST
 The attribute list may be used to indicate special properties such as indexes into other Yòrúdí language dictionaries. In most cases a contributor need not concern themselves with these.
-* The attribute list must be denoted by angle brackets of the form < attrib. list >
-* Each attribute consist of a key-value pair separated by a colon and must be separated by a 
+(a) The attribute list must be denoted by angle brackets of the form < attrib. list >
+(b) Each attribute consist of a key-value pair separated by a colon and must be separated by a 
    vertical bar e.g bi [bí]  /if  <fr: 567 | ru: 234>
-* For readability, there should always be a spaces between vertical-bars and attributes as well as the
+(c) For readability, there should always be a spaces between vertical-bars and attributes as well as the
   colon and value in the key value pair (as in the previous example)
 
 CREATING A YORUDI TRANSLATION FILE
@@ -97,15 +95,15 @@ These files may be created with any text editor able to save a .txt file. Althou
 ADDITIONAL NOTES
 Writing some Yoruba characters requires that your keyboard is configured for writing accented and underdotted letters. The way to do this varies by operating system.
 
-Mac Configuration:
+(a) Mac Configuration:
 1. Go to System Preferences -> Keyboard -> Input Sources
 2. Check the US Extended and US International Keyboards
 
 Accenting a letter is best done with the US International Keyboard. 
-* Acute accents are added by pressing ['] then the letter
-* Grave accents are added by pressing [`] then the letter
+- Acute accents are added by pressing ['] then the letter
+- Grave accents are added by pressing [`] then the letter
 
 Underdotting a letter is best done with the US Extended Keyboard.
-* Press [Option] + [X] at the same time, then press the letter. 
+- Press [Option] + [X] at the same time, then press the letter. 
                       OR
-* Press the letter, then press [Option] + [Shift] + [X] at the same time (necessary when underdotting accented letters)
+- Press the letter, then press [Option] + [Shift] + [X] at the same time (necessary when underdotting accented letters)
