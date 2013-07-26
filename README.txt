@@ -39,7 +39,7 @@ INPUT FORMAT
 
           yoruba decomposition (2)                   optional attribute list (4)
                 v                                             v
-    gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute | et: c>
+    gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute>
        ^                       ^                       
 simplified yoruba (1) glossary of definitions (3)
 
