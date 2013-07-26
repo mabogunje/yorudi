@@ -58,7 +58,7 @@ Here the word must be fully specified to include the following properties
   -----------------------
   Because words are often derived from other words, and each of these component words may be modified for contraction, such properties must also be recorded as follows:
     - Elision: Elided letters may be recorded with a `minus arrow` to the left and/or right of the word 
-        e.g foso [fọ . <-asọ] :- Here, the 'a' in aso is elided
+        e.g foso [fọ . <-aṣọ] :- Here, the 'a' in aso is elided
             reja [ra-> . ẹja] :- Here, the 'a' in ra is elided
     - Assimilation: Assimilated letters may be recorded with a `plus arrow` to the left and/or right of the word 
         e.g kuule [kú+> . <-ilé] :- Here, The 'u' is assimilated and the 'i' elided
