@@ -36,7 +36,6 @@ Every entry in a Yorudi dictionary must be made up of 4 major parts
 4. An attribute list (Optional)
 
 INPUT FORMAT
-Every entry into a yorudi dictionary, must adhere to this format:
 
           yoruba decomposition (2)                   optional attribute list (4)
                 v                                             v
