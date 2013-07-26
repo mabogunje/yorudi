@@ -6,16 +6,23 @@ The Yorudi project aims to compile a complete multi-lingual lexical database wit
 ABOUT YORUBA
 Yoruba is the native tongue of the Yoruba people of West Africa. It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones and pronuonciation. However, a few differences exist.
 
-A. There are only 3 tones in Yoruba, namely:
+A. Different Tones 
+There are only 3 tones in Yoruba, namely:
 1. "Do": The low tone - represented by a grave accent e.g 'ò'
 2. "Re": The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
 3. "Mi": The high tone - represented by an acute accent e.g 'ó'
 
-B. The language features some underdotted vowels and consonants such as the 'ṣ', which is pronounced 'sh' in English
+As with Chinese though, each word is unique by tones. So there are no homophones, while homographs abound.
 
-C. The language often uses assimilation and elision to contract words when forming other words and/or sentences. The 2 processes are defined below:
+B. Underdotted Characters 
+The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. For example, the letters 'ṣ', is pronounced 'sh' 
+
+C. Contraction
+Yoruba often uses assimilation and elision to contract words when forming other words and/or sentences. The 2 processes are outlined below:
 1. Elision:- The deletion of a vowel e.g ní + ilé = nílé i.e "in" + "house" = "in the house"
 2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g ọbẹ́ + ilá = ọbẹ́ẹlá i.e "okra" + "soup" = "okra soup"
+
+This use of contraction leads to a certain abimguity between words and phrases, as the term "ọbẹ́ẹlá" from our assimilation example, is as much a word as it is a 2-word phrase.
 
 To learn more about the Yoruba people and their language, see http://yorupedia.com/
 
