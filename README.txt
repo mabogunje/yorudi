@@ -40,7 +40,7 @@ Every entry into a yorudi dictionary, must adhere to this format:
 
           yoruba decomposition (2)                   optional attribute list (4)
                 v                                             v
-    gbogbo [gbó . gbó]  /all  /many  /every  <first:attribute | second:attribute | et:c>
+    gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute | et: c>
        ^                       ^                       
 simplified yoruba (1) glossary of definitions (3)
 
@@ -56,11 +56,18 @@ Here the word must be fully specified to include the following properties
   e.g. è é ẹ ẹ̀   The middle tone (re) is never indicated.
 * Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
   e.g ade [a . dé]
-* Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sọ* . rọ]
-* Elision: If any part of a component word or vowel is elided during speech it must still be recorded in the decomposition
-  with a `minus arrow` e.g foso [fọ . <-asọ] :- Here, The 'a' is elided
-* Assimilation: If any part of a component word or vowel is assimilated during speech it must be recorded in the decomposition
-  with a `plus arrow` e.g kuule [kú+> . <-ilé] :- Here, The 'u' is assimilated and the 'i' elided
+
+  Note on Component Words
+  -----------------------
+  Because words are often derived from other words, and each of these component words may be modified for contraction, such properties must also be recorded as follows:
+    * Elision: Elided letters may be recorded with a `minus arrow` to the left and/or right of the word 
+        e.g foso [fọ . <-asọ] :- Here, the 'a' in aso is elided
+            reja [ra-> . ẹja] :- Here, the 'a' in ra is elided
+    * Assimilation: Assimilated letters may be recorded with a `plus arrow` to the left and/or right of the word 
+        e.g kuule [kú+> . <-ilé] :- Here, The 'u' is assimilated and the 'i' elided
+            arooke [ará-> . <+òkè] :- Here, the ò is assimilated and the á elided
+    * Roots: The root of a word must always be indicated by an asterix (after all contractions, if present)  
+        e.g nigba [ní . <-ìgbà*] :- Here, ìgbà is the root word, but it's 'ì' is elided when forming "nígbà"
 
 3. GLOSSARY
 The glossary is a list of synonymous words and phrases in the target language
