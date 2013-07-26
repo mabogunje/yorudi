@@ -13,9 +13,9 @@ There are 3 tones in Yoruba, namely:
 
 In addition to tones, the language also features some underdotted vowels and consonants such as the 'ṣ', which is pronounced 'sh' in English
 
-Finally, the language is peculiar in its use of assimilation and elision to contract words in the formation of other words and/or sentences.
-Elision:- This is the deletion of a vowel sound e.g ní + ilé = nílé (the mid-tone i is deleted)
-Assimilation :- This is the inheritance by a vowel of another vowel sound. e.g ọbẹ́ + ilá = ọbẹ́ẹlá (The mid-tone i inherits the ẹ, while retaining its mid-tone)
+Finally, the language often uses assimilation and elision to contract words when forming other words and/or sentences. These 2 processes are defined below:
+1. Elision:- The deletion of a vowel sound e.g ní + ilé = nílé (the mid-tone i is deleted)
+2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g ọbẹ́ + ilá = ọbẹ́ẹlá (The mid-tone i inherits the ẹ, while retaining its mid-tone)
 
 To learn more about the Yoruba people and their language, see http://yorupedia.com/
 
