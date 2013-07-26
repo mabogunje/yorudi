@@ -1,9 +1,27 @@
-Yorudi - A Standardized & Downloadable Comprehensive Yoruba-Multilingual Dictionary
+Yorudi - A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
 DESCRIPTION
 The Yorudi project aims to compile a complete multi-lingual lexical database with Yoruba as the pivot language. The project is modelled after the CC-CEDICT project by Paul Andrew Denisowski which was itself modeled on the highly successful EDICT project by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
+ABOUT YORUBA
+Yoruba is the native tongue of the Yoruba people of West Africa. It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones and pronuonciation.
+As such, words in Yoruba are unique by tones, and of these there are 3; Namely:
+1. Do: 'à' The low tone; represented by a grave accent
+2. Re: 'ã' The mid tone; represented by an overline (or not at all) 
+3. Mi: 'á' The high tone; represented by an acute accent.
+
+In addition to these, the language also features some underdotted vowels and consonants in its alphabet.
+e.g The 'ṣ' in Yoruba is pronounced 'sh' in English
+
+Finally, the language is peculiar in its use of assimilation and elision to contract words in the formation of other words and/or sentences.
+Elision:- This is the deletion of a vowel sound e.g ní + ilé = nílé (the mid-tone i is deleted)
+Assimilation :- This is the inheritance by a vowel of another vowel sound. e.g ọbẹ́ + ilá = ọbẹ́ẹlá (The mid-tone i inherits the ẹ, while retaining its mid-tone)
+
+To learn more about the Yoruba people and their language, see http://yorupedia.com/
+
 ENCODING
+Given the unique properties of the Yoruba language (as detailed above), a specialized input format is necessary to accurately record words in our dictionary. Details of this input format are given below.
+
 Every entry in a Yorudi dictionary must be made up of 4 major parts
 1. A simplified Yoruba form of the word
 2. The complete Yoruba decomposition of the word

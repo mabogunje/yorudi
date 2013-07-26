@@ -64,7 +64,7 @@ class GrammarParser extends RegexParsers {
 
 object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
-    var dict = new YorubaDictionary(Map[WordEntry, List[Meaning]]())
+    var dict = YorubaDictionary(Map[WordEntry, List[Meaning]]())
     val testEntry1 = "igba [ìgbà*]  /time"
     val testEntry2 = "nigba [ní . <-ìgbà*]  /when"
     val testEntry3 = "kuule [kú+>* . <-ilé]  /greetings <fr:26>"

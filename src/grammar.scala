@@ -70,7 +70,7 @@ abstract class Expression extends Yoruba {
     }
   }
   
-  def as(that:WordProperty):Yoruba = { 
+  def as(that:WordProperty):Yoruba = {
     this.properties = this.properties.to[Queue] += that
     this
   }
@@ -141,7 +141,7 @@ object GrammarTest {
     val word1 = "dé"
     val word2 = Word("adé", List("a", Term(word1, Root)))
     val word3 = Word("adé", List("a", word1 as Root))
-    val word4 = Word("sade", List("ṣé" as Elided(Right), word3))
+    val word4 = Word("sade", List("ṣé" as Elided(Right), word3 as Root))
         
     println(word1.root)
     println(word2.root)
