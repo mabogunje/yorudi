@@ -33,12 +33,19 @@ Every entry in a Yorudi dictionary must be made up of 4 major parts
 1. A simplified Yoruba form of the word
 2. The complete Yoruba decomposition of the word
 3. The target language glossary of definitions
-4. (Optional) An attribute list
+4. An attribute list (Optional)
 
-ENTRY FORM
-simplified yoruba [yoruba . decomposition]  /language  /glossary < attrib. | list >
+INPUT FORMAT
+Every entry into a yorudi dictionary, must adhere to this format:
 
-1. SIMPLIFIED YORUBA FORM
+    (2) yoruba decomposition                         (4) attribute list
+              v                                               v
+    gbogbo [gbó . gbó]  /all  /many  /every  <first:attribute | second:attribute | et:c>
+       ^                       ^                       
+(1) simplified yoruba  (3) glossary of definitions
+
+
+1. SIMPLIFIED YORUBA
 This is simply the word in the standard roman alphabet.
 * It should be recorded as it is spoken in the Oyo dialect for consistency
 * Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
