@@ -53,7 +53,7 @@ This is simply the word in the standard roman alphabet.
 2. YORUBA DECOMPOSITION
 Here the word must be fully specified to include the following properties
 * Tone marks: These are indicated using accented vowels and vowels with an underdot
-  e.g. è é ẹ ẹ̀  The middle tone (re) is never indicated.
+  e.g. è é ẹ ẹ̀   The middle tone (re) is never indicated.
 * Component words: Where applicable, the word should be broken up into its components, with each composite word separated by a period 
   e.g ade [a . dé]
 * Roots: Where applicable, the root word is to be indicated by an asterix e.g soro [sọ̀* . rọ]
