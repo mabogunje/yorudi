@@ -12,7 +12,7 @@ There are only 3 tones in Yoruba, namely:
 2. "Re": The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
 3. "Mi": The high tone - represented by an acute accent e.g 'ó'
 
-As with Chinese though, each word is unique by tones. So there are no homophones, while homographs abound.
+As with Chinese though, most words are unique by tones. So there are few homophones, while homographs abound.
 
 B. Underdotted Characters 
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. For example, the letter 'ṣ', is pronounced 'sh'
