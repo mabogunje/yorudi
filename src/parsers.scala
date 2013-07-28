@@ -11,17 +11,21 @@ class GrammarParser extends RegexParsers {
    */
   
   // Base token parsers - indicating word properties
-  def root:Parser[WordProperty] = """\*""".r ^^^ {Root}
+  def root:Parser[List[WordProperty]] = """\*""".r ^^^ {List(Root)}
   
-  def asmL:Parser[Assimilated] = """<\+""".r ^^^ {Assimilated(Left)}
-  def asmR:Parser[Assimilated] = """\+>""".r ^^^ {Assimilated(Right)}
-  def assimilation:Parser[Assimilated] = asmL | asmR
+  def asmL:Parser[List[Assimilated]] = """<\+""".r ^^^ { List(Assimilated(Left)) }
+  def asmR:Parser[List[Assimilated]] = """\+>""".r ^^^ { List(Assimilated(Right)) }
+  def assimilation:Parser[List[Assimilated]] = asmL | asmR
   
-  def elsL:Parser[Elided] = """<\-""".r ^^^ {Elided(Left)}
-  def elsR:Parser[Elided] = """\->""".r ^^^ {Elided(Right)}
-  def elision:Parser[Elided] = elsL | elsR
+  def elsL:Parser[List[Elided]] = """<\-+""".r ^^ { str => 
+    for (c <- str.tail.toList) yield Elided(Left) 
+  }
+  def elsR:Parser[List[Elided]] = """\-+>""".r ^^ {str => 
+    for (c <- str.dropRight(1).toList) yield Elided(Right) 
+  }
+  def elision:Parser[List[Elided]] = elsL | elsR
 
-  def property:Parser[WordProperty] = root|assimilation|elision 
+  def property:Parser[List[WordProperty]] = root|assimilation|elision 
 
   // Base parsers for all values - applies restrictions on acceptable strings
   def term:Parser[String] = """\p{L}+""".r ^^ {_.toLowerCase()}
@@ -40,7 +44,7 @@ class GrammarParser extends RegexParsers {
    */
   
   def word:Parser[Expression] = property.* ~ term ~ property.* ^^ {
-    case plist1~term~plist2 => Term(term, (plist1 union plist2):_*)
+    case plist1~term~plist2 => Term(term, (plist1.flatten union plist2.flatten):_*)
   }
   
   def decomposition:Parser[List[Expression]] = "[" ~repsep(word, ".")~ "]" ^^ {
@@ -69,7 +73,7 @@ object ParserTest extends GrammarParser {
     val testEntry2 = "nigba [ní . <-ìgbà*]  /when"
     val testEntry3 = "kuule [kú+>* . <-ilé]  /greetings"
     val testEntry4 = "ade [à . dé*]  /crown"
-    val testEntry5 = "a [awa->->*]  /we"
+    val testEntry5 = "a [awa-->*]  /we"
     
     dict += parseAll(wordEntry, testEntry1).get
     dict += parseAll(wordEntry, testEntry2).get
@@ -77,7 +81,6 @@ object ParserTest extends GrammarParser {
     dict += parseAll(wordEntry, testEntry4).get
     dict += parseAll(wordEntry, testEntry5).get
     
-    println(dict.lookupRelated("ìgbà"))
-    println(dict.lookup("a"))
+     for (entry <- dict) println(entry._1.word, entry._2)
   }
 }
