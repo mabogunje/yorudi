@@ -4,7 +4,7 @@
 #!date: 26-06-13
 
 #A
-a [a*]  /him  /her  /it
+a [a*]  /him  /her  /it  /prefix (used with a verb to form a noun)
 a [à*]  /prefix (used with a verb to form a noun)
 a [awa->->*]  /we
 a [awọn->->->*]  /they
@@ -28,6 +28,23 @@ abala [àbà+> . <-ìlá*]  /a Yoruba pudding made with rice
 abale [à . bá . lé*]  /frequent occurences
 abamo [à . bájẹ́->-> . <-<-mímọ̀*]  /mortification  /painful reflection  /remorse
 abamo [abamọ̀*]  /a potter  /clay  /clayish
+abanidije [à . bá . ni . dá-> . ije*]  /a rival  /a competitor
+abanidu [à . bá . ni . <-òdù*]  /an emulator  /a competitor
+abanigbele [à . bá . ni . gbé* . <-íle]  /an inmate  /a lodger  /a dweller
+abanije [à . ba . ni . <-àjẹ́*]  /a slanderer  /a calumniator  /a despiser
+abanijeun [a . ba .ni . jẹun*]  /one who partakes of the same dish
+#abaniku-ore should go here
+abanise [a . ba . ni . <-<-ṣiṣe*]  /co-adjutor  /co-worker  /helper
+abanisise [a . ba . ni . ṣiṣe*]  /co-adjutor  /co-worker  /helper
+
+#B
+ba [bá*]  /to meet  /overtake  /find at a place
+ba [bá*]  /with  /against
+ba [ba*]  /to lie in ambush  /hide  /lurk  /couch  
+ba [bà*]  /to be bent
+ba [bá*]  /should  /would  /might  /ought
+ba [bà*]  /to bring into contact with  /perch  /roost  /sit  /fit  /to be exact  /to hit the mark  /to come to the point  /bespeak  /plait coarsely  /strain through a sleeve
+ba [bá*]  /never  /at all
 
 #To Be Continued
 
