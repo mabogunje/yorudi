@@ -4,8 +4,8 @@
 #!date: 26-06-13
 
 #A
-a [a*]  /him  /her  /it  /prefix (used with a verb to form a noun)
 a [à*]  /prefix (used with a verb to form a noun)
+a [a*]  /him  /her  /it  /prefix (used with a verb to form a noun)
 a [awa-->*]  /we
 a [awọn--->*]  /they
 aa [aa*]  /word of exclamation
@@ -47,10 +47,14 @@ abasile [a . bà . sílẹ̀*]  /one who forestalls  /one who bespeaks
 #B
 ba [bá*]  /to meet  /overtake  /find at a place
 ba [bá*]  /with  /against
+ba [bá*]  /should  /would  /might  /ought
+ba [bá*]  /never  /at all
 ba [ba*]  /to lie in ambush  /hide  /lurk  /couch  
 ba [bà*]  /to be bent
-ba [bá*]  /should  /would  /might  /ought
-ba [bà*]  /to bring into contact with  /perch  /roost  /sit  /fit  /to be exact  /to hit the mark  /to come to the point  /bespeak  /plait coarsely  /strain through a sleeve
-ba [bá*]  /never  /at all
+ba [bà*]  /to bring into contact with
+ba [bà*]  /perch  /roost  /sit
+ba [bà*]  /fit  /to be exact  /to hit the mark  /to come to the point
+ba [bà*]  /bespeak
+ba [bà*]  /plait coarsely  /strain through a sleeve
 
 #To Be Continued
