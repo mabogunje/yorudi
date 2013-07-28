@@ -25,6 +25,8 @@ class GrammarParser extends RegexParsers {
   }
   def elision:Parser[List[Elided]] = elsL | elsR
 
+  def prefixes:Parser[List[WordProperty]] = asmL|elsL
+  def postfixes:Parser[List[WordProperty]] = asmR|elsR|root  
   def property:Parser[List[WordProperty]] = root|assimilation|elision 
 
   // Base parsers for all values - applies restrictions on acceptable strings
@@ -43,7 +45,7 @@ class GrammarParser extends RegexParsers {
    * Now we build the compound parsers which will produce our grammar objects
    */
   
-  def word:Parser[Expression] = property.* ~ term ~ property.* ^^ {
+  def word:Parser[Expression] = prefixes.* ~ term ~ postfixes.* ^^ {
     case plist1~term~plist2 => Term(term, (plist1.flatten union plist2.flatten):_*)
   }
   
