@@ -84,13 +84,8 @@ The attribute list may be used to indicate special properties such as indexes in
 CREATING A YORUDI TRANSLATION FILE
 A Yorudi translation file is a simple text file encoded in UTF-8 that contains a list of entries such as described above. At the top of the file must be a header specifying the target language and optional additional details such as the file author, date of creation, and so on; where each line begins with a #.
 
-Example:
-#lang: en
-#summary: Colloquial Yoruba - English Translations
-#author: Damola Mabogunje
-#date: 12-12-13
-
 These files may be created with any text editor able to save a .txt file. Although to be recognized as a translation file, the extension of a Yòrúdí file must be changed to .yor
+For some examples, see the dicts/ folder
 
 ADDITIONAL NOTES
 Writing some Yoruba characters requires that your keyboard is configured for writing accented and underdotted letters. The way to do this varies by operating system.
