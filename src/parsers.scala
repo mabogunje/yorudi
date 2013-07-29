@@ -13,8 +13,8 @@ class GrammarParser extends RegexParsers {
   // Base token parsers - indicating word properties
   def root:Parser[WordProperty] = """\*""".r ^^^ {Root}
   
-  def asmL:Parser[Assimilated] = """<\+""".r ^^^ { Assimilated(Left) }
-  def asmR:Parser[Assimilated] = """\+>""".r ^^^ { Assimilated(Right) }
+  def asmL:Parser[Assimilated] = """[<\+|<\+\+]""".r ^^ { str => Assimilated(Left, str.count(_ == '+')) }
+  def asmR:Parser[Assimilated] = """[\+>|\+\+>]""".r ^^ { str => Assimilated(Right, str.count(_ == '+')) }
   def assimilation:Parser[Assimilated] = asmL | asmR
   
   def elsL:Parser[Elided] = """<\-+""".r ^^ { str => Elided(Left, str.count(_ == '-')) }
