@@ -11,23 +11,19 @@ class GrammarParser extends RegexParsers {
    */
   
   // Base token parsers - indicating word properties
-  def root:Parser[Seq[WordProperty]] = """\*""".r ^^^ {List(Root)}
+  def root:Parser[WordProperty] = """\*""".r ^^^ {Root}
   
-  def asmL:Parser[Seq[Assimilated]] = """<\+""".r ^^^ { List(Assimilated(Left)) }
-  def asmR:Parser[Seq[Assimilated]] = """\+>""".r ^^^ { List(Assimilated(Right)) }
-  def assimilation:Parser[Seq[Assimilated]] = asmL | asmR
+  def asmL:Parser[Assimilated] = """<\+""".r ^^^ { Assimilated(Left) }
+  def asmR:Parser[Assimilated] = """\+>""".r ^^^ { Assimilated(Right) }
+  def assimilation:Parser[Assimilated] = asmL | asmR
   
-  def elsL:Parser[Seq[Elided]] = """<\-+""".r ^^ { str => 
-    for (c <- str.tail.toList) yield Elided(Left) 
-  }
-  def elsR:Parser[Seq[Elided]] = """\-+>""".r ^^ {str => 
-    for (c <- str.dropRight(1).toList) yield Elided(Right) 
-  }
-  def elision:Parser[Seq[Elided]] = elsL | elsR
+  def elsL:Parser[Elided] = """<\-+""".r ^^ { str => Elided(Left, str.count(_ == '-')) }
+  def elsR:Parser[Elided] = """\-+>""".r ^^ { str => Elided(Right, str.count(_ == '-')) }
+  def elision:Parser[Elided] = elsL | elsR
 
-  def prefixes:Parser[Seq[WordProperty]] = asmL|elsL
-  def postfixes:Parser[Seq[WordProperty]] = asmR|elsR|root  
-  def property:Parser[Seq[WordProperty]] = root|assimilation|elision 
+  def prefixes:Parser[WordProperty] = asmL|elsL
+  def postfixes:Parser[WordProperty] = asmR|elsR|root  
+  def property:Parser[WordProperty] = root|assimilation|elision 
 
   // Base parsers for all values - applies restrictions on acceptable strings
   def term:Parser[String] = """\p{L}+""".r ^^ {_.toLowerCase()}
@@ -46,7 +42,7 @@ class GrammarParser extends RegexParsers {
    */
   
   def word:Parser[Yoruba] = prefixes.* ~ term ~ postfixes.* ^^ {
-    case plist1~term~plist2 => Term(term, (plist1 union plist2).flatten)
+    case plist1~term~plist2 => Term(term, (plist1 union plist2))
   }
   
   def decomposition:Parser[List[Yoruba]] = "[" ~repsep(word, ".")~ "]" ^^ {

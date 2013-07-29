@@ -6,20 +6,55 @@ import YorubaImplicits._
  */
 object Bias extends Enumeration {
   type Bias = Value
-  val Left, Right, None = Value
+  val Left, Right, Neutral = Value
 }
 import Bias._
 
+/**
+ * Tone tells us which accent a character possesses
+ */
+object Tone extends Enumeration {
+  type Tone = Value
+  val Mid, Low, High = Value //ordered by precedence
+  
+  val characterMap = Map( 'a' -> Map(Tone.Mid -> 'a', Tone.Low -> 'à', Tone.High -> 'á'),
+		  			   	  'e' -> Map(Tone.Mid -> 'e', Tone.Low -> 'è', Tone.High -> 'é'),
+		  			   	  'i' -> Map(Tone.Mid -> 'i', Tone.Low -> 'ì', Tone.High -> 'í'),
+		  			   	  'o' -> Map(Tone.Mid -> 'o', Tone.Low -> 'ò', Tone.High -> 'ó'),
+		  			   	  'u' -> Map(Tone.Mid -> 'u', Tone.Low -> 'ù', Tone.High -> 'ú')		  			   
+		  			 	)
+  val allowed = characterMap flatten (_._2) map (l => l._2) toList
+		  			 
+  def normalise(char:Char):Char = {
+    if (characterMap.get('a').exists(tone => tone.values.toList contains char)) 'a'
+    else if (characterMap.get('e').exists(tone => tone.values.toList contains char)) 'e'
+    else if (characterMap.get('i').exists(tone => tone.values.toList contains char)) 'i'
+    else if (characterMap.get('o').exists(tone => tone.values.toList contains char)) 'o'
+    else if (characterMap.get('u').exists(tone => tone.values.toList contains char)) 'u'
+    else char
+  }
+  
+  def as(tone:Tone, char:Char):Char = {
+    if (!(allowed contains char)) ""
+    characterMap.get(normalise(char)).get(tone)    
+  }
+  
+  def get(char:Char):Tone = {
+    if (!(allowed contains char)) ""    
+    characterMap.get(normalise(char)).map(e => e map (_.swap)).get(char)
+  }
+}
+import Tone._
 
 /**
  * Word properties are tokens for word features (helps parsing)
  */
 trait WordProperty { 
-  def bias = Bias.None
+  def bias = Bias.Neutral
 }
 case object Root extends WordProperty
-case class Elided(override val bias:Bias) extends WordProperty
-case class Assimilated(override val bias:Bias) extends WordProperty
+case class Elided(override val bias:Bias, count:Int=1) extends WordProperty
+case class Assimilated(override val bias:Bias, creates:Int=1) extends WordProperty
 
 /**
  * Yoruba contract. All Yoruba word objects must implement these features
@@ -30,14 +65,14 @@ sealed trait Yoruba {
   def root: Yoruba
 
   def isRoot: Boolean = (properties contains Root)
-  def isElided:Boolean = (properties contains Elided)
-  def isAssimilated:Boolean = (properties contains Assimilated)
+  def isElided(bias:Bias=Neutral):Boolean = (properties contains Elided(bias))
+  def isAssimilated(bias:Bias=Neutral):Boolean = (properties contains Assimilated(bias))
   
   def abbreviation(word:String=spelling, props:List[WordProperty]=properties.toList):String = {
     props match {
       case (p:Elided) :: tail => { 
-        if (p.bias == Bias.Left) { abbreviation(word.drop(1), tail) }
-        else if (p.bias == Bias.Right) { abbreviation(word.dropRight(1), tail) }
+        if (p.bias == Bias.Left) { abbreviation(word.drop(p.count), tail) }
+        else if (p.bias == Bias.Right) { abbreviation(word.dropRight(p.count), tail) }
         else { abbreviation(word, tail) }
       }
       case (p:Assimilated) :: tail => {
@@ -70,10 +105,26 @@ case class Term(override val spelling:String, override val properties:Seq[WordPr
  */
 case class Word(override val spelling:String, decomposition:Seq[Yoruba], override val properties:Seq[WordProperty]=List()) extends Yoruba {    
   def root = decomposition.find(_.isRoot).getOrElse(this)
-  override def isElided =  decomposition.exists(_.isElided)  || super.isElided
-  override def isAssimilated = decomposition.exists(p => p.isAssimilated) || super.isAssimilated
+  override def isElided(bias:Bias=Neutral) =  decomposition.exists(_.isElided(bias))  || super.isElided(bias)
+  override def isAssimilated(bias:Bias=Neutral) = decomposition.exists(p => p.isAssimilated(bias)) || super.isAssimilated(bias)
   
   def toYoruba:String = decomposition map { w => { w.abbreviation() }} mkString ""
+  //def test = decomposition.iterator.sliding(2).toList //map { l => assimilate(l.head.toYoruba.last, l.tail.head.toYoruba.head, Assimilated(Left)) }
+  
+  def assimilate(a:Char, b:Char, p:Assimilated) = {
+    var modChar = ' '
+    
+    p.bias match {
+      case Left => { modChar = Tone.as(Tone.get(a), b)
+        if (p.creates > 1) modChar.toString + b.toString
+        else modChar
+      }
+      case _ => { modChar = Tone.as(Tone.get(b), a) 
+        if (p.creates > 1) a.toString + modChar.toString
+        else modChar
+      }
+    }
+  }
   
   def as(that:WordProperty):Yoruba = this.copy(properties = this.properties :+ that)
 }
@@ -107,11 +158,10 @@ object YorubaImplicits {
 object GrammarTest {
   def main(args:Array[String]) {    
     val word1 = "dé"
-    val word2 = Word("adé", List("a", word1 as Root))
+    val word2 = Word("ade", List("à", word1 as Root))
     val word3 = Word("sade", List("ṣé" as Elided(Right), word2 as Root))
+    val word4 = Word("abanise", List("à", "bá", "ni" as Root, "sise" as Elided(Left, 2)))
         
-    println(word1)
-    println(word2)
-    println(word3)
+    println(word1, word2, word3)
   }
 }
