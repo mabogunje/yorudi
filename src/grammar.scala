@@ -52,6 +52,12 @@ import Tone._
 trait WordProperty { 
   def bias = Bias.Neutral
   def count = 1
+  
+  override def equals(o:Any):Boolean = { o match {
+    case o:WordProperty => (o.bias == bias)
+    case _ => false
+    }
+  }
 }
 case object Root extends WordProperty
 case class Elided(override val bias:Bias, override val count:Int=1) extends WordProperty
@@ -66,8 +72,16 @@ sealed trait Yoruba {
   def root: Yoruba
 
   def isRoot: Boolean = (properties contains Root)
-  def isElided:Boolean = (properties contains Elided)
-  def isAssimilated:Boolean = (properties contains Assimilated)
+  
+  def isElidedLeft = properties contains Elided(Left)
+  def isElidedRight = properties contains Elided(Right)
+  def isElided:Boolean = (isElidedLeft || isElidedRight)
+  
+  def isAssimilatedLeft = properties contains Assimilated(Left)
+  def isAssimilatedRight = properties contains Assimilated(Right)
+  def isAssimilated:Boolean = (isAssimilatedLeft || isAssimilatedRight)
+  
+  def getAssimilation = properties.find(p => ((p == Assimilated(Left)) || (p == Assimilated(Right)))).get
   
   def abbreviation(word:String=spelling, props:List[WordProperty]=properties.toList):String = {
     props match {
@@ -80,24 +94,25 @@ sealed trait Yoruba {
     }
   }
   
-  def assimilate(that:Yoruba, p:WordProperty):String = {
+  def assimilate(that:Yoruba, p:WordProperty=Assimilated(Right)):String = {
     var modChar = ' '
       
     p.bias match {
-      case Left => { modChar = Tone.as(Tone.get(abbreviation().last), that.abbreviation().head)
+      case Left => { modChar = Tone.as(Tone.get(this.abbreviation().last), that.abbreviation().head)
         if (p.count > 1) {
-          abbreviation().dropRight(1) + modChar + that.abbreviation().head + that.abbreviation().drop(1)
+          this.abbreviation().dropRight(1) + modChar + that.abbreviation().head + that.abbreviation().drop(1)
         }
-        else abbreviation().dropRight(1) + modChar + that.abbreviation().drop(1)
+        else this.abbreviation().dropRight(1) + modChar + that.abbreviation().drop(1)
       }
-      case _ => { modChar = Tone.as(Tone.get(that.abbreviation().head), abbreviation().last) 
+      case Right => { modChar = Tone.as(Tone.get(that.abbreviation().head), this.abbreviation().last) 
         if (p.count > 1) {
-          abbreviation() + modChar + that.abbreviation().drop(1)
+          this.abbreviation() + modChar + that.abbreviation().drop(1)
         }
-        else abbreviation().dropRight(1) + modChar + that.abbreviation().drop(1)
+        else this.abbreviation().dropRight(1) + modChar + that.abbreviation().drop(1)
       }
-    }
+    }    
   }
+  
   def toYoruba:String
   def as(that:WordProperty):Yoruba
   override def toString = toYoruba
@@ -122,9 +137,28 @@ case class Word(override val spelling:String, decomposition:Seq[Yoruba], overrid
   override def isElided =  decomposition.exists(_.isElided)  || super.isElided
   override def isAssimilated = decomposition.exists(p => p.isAssimilated) || super.isAssimilated
  
-  def toYoruba:String = ""
-    
   def as(that:WordProperty):Yoruba = this.copy(properties = this.properties :+ that)
+  def toYoruba:String = decomposition map { w => w.abbreviation() } mkString ""
+  
+  def test = {
+    val indexed = decomposition.zipWithIndex.iterator.sliding(2).toList
+    val contracted = indexed map { case left :: right => { 
+      if (left._1.isAssimilatedRight) 
+        (left._1.assimilate(right.head._1, left._1.getAssimilation), left._2)
+      else if (right.head._1.isAssimilatedLeft) 
+        (left._1.assimilate(right.head._1, right.head._1.getAssimilation), left._2)
+      else
+        left
+    }}
+    contracted map (pair => pair._1) mkString ""
+        
+      /*val arr = indexed.toArray
+    val assimilations = indexed.filter(i => i._1.isAssimilated)
+    for (asm <- assimilations) yield ( indexed.takeWhile(item => item._2 < asm._2),  
+    								   asm._1.assimilate(arr(asm._2+1)._1, asm._1.getAssimilation),
+    								   indexed.slice(asm._2, indexed.last._2+1)
+    								 )*/
+  }
 }
 
 /**
@@ -158,9 +192,11 @@ object GrammarTest {
     val word1 = "dé"
     val word2 = Word("ade", List("à", word1 as Root))
     val word3 = Word("sade", List("ṣé" as Elided(Right), word2 as Root))
-    val word4 = Word("kuule", List("kú" as Root as Assimilated(Right, 2), "ilé"))
+    val word4 = Word("kuule", List("kú" as Assimilated(Right, 2), "ilé"))
+    val word5 = Word("abanisise", List("à", "bá" as Assimilated(Right), "eni" as Root, "ṣiṣẹ"))
+    val word6 = Word("abanidije", List("a", "bá", "ni" as Root, "gbé" as Assimilated(Right), "íle"))
         
     println(word1, word2, word3)
-    println(word4.toYoruba)
+    println(word6.test)
   }
 }
