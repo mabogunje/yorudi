@@ -35,13 +35,17 @@ object Tone extends Enumeration {
   }
   
   def as(tone:Tone, char:Char):Char = {
-    if (!(allowed contains char)) ""
-    characterMap.get(normalise(char)).get(tone)    
+    if (!(allowed contains char)) 
+      char
+    else
+      characterMap.get(normalise(char)).get(tone)    
   }
   
   def get(char:Char):Tone = {
-    if (!(allowed contains char)) ""    
-    characterMap.get(normalise(char)).map(e => e map (_.swap)).get(char)
+    if (!(allowed contains char))
+      Mid
+    else
+      characterMap.get(normalise(char)).map(e => e map (_.swap)).get(char)
   }
 }
 import Tone._
@@ -53,23 +57,26 @@ trait WordProperty {
   def bias = Bias.Neutral
   def count = 1
   
-  override def equals(o:Any):Boolean = { o match {
-    case o:WordProperty => (o.bias == bias)
-    case _ => false
-    }
+  // Word Properties are considered equal by type and bias ONLY
+  override def equals(o:Any):Boolean = o match {
+    case o:Assimilated => (o.bias == bias)
+    case o:Elided => (o.bias == bias)
+    case _ => super.equals(o)
   }
+
 }
 case object Root extends WordProperty
-case class Elided(override val bias:Bias, override val count:Int=1) extends WordProperty
+case class Elided(override val bias:Bias, override val count:Int=1) extends WordProperty 
 case class Assimilated(override val bias:Bias, override val count:Int=1) extends WordProperty
 
 /**
- * Yoruba contract. All Yoruba word objects must implement these features
+ * Yoruba interface. All Yoruba word objects must implement these features
  */
 sealed trait Yoruba {
   def spelling:String
   def properties:Seq[WordProperty]
   def root: Yoruba
+  def contractions:List[String]
 
   def isRoot: Boolean = (properties contains Root)
   
@@ -86,9 +93,12 @@ sealed trait Yoruba {
   def abbreviation(word:String=spelling, props:List[WordProperty]=properties.toList):String = {
     props match {
       case (p:Elided) :: tail => { 
-        if (p.bias == Bias.Left) { abbreviation(word.drop(p.count), tail) }
-        else if (p.bias == Bias.Right) { abbreviation(word.dropRight(p.count), tail) }
-        else { abbreviation(word, tail) }
+        if (p.bias == Bias.Left) 
+          abbreviation(word.drop(p.count), tail)
+        else if (p.bias == Bias.Right) 
+          abbreviation(word.dropRight(p.count), tail)
+        else 
+          abbreviation(word, tail)
       }
       case _ => word
     }
@@ -113,7 +123,7 @@ sealed trait Yoruba {
     }    
   }
   
-  def toYoruba:String
+  def toYoruba:String = contractions mkString "" 
   def as(that:WordProperty):Yoruba
   override def toString = toYoruba
 }
@@ -124,7 +134,7 @@ sealed trait Yoruba {
  */
 case class Term(override val spelling:String, override val properties:Seq[WordProperty]=List()) extends Yoruba {  
   def root = this
-  def toYoruba = spelling
+  override def contractions:List[String] = List(spelling) 
   
   def as(that:WordProperty):Yoruba = this.copy(properties = this.properties :+ that)
 }
@@ -136,29 +146,23 @@ case class Word(override val spelling:String, decomposition:Seq[Yoruba], overrid
   def root = decomposition.find(_.isRoot).getOrElse(this)
   override def isElided =  decomposition.exists(_.isElided)  || super.isElided
   override def isAssimilated = decomposition.exists(p => p.isAssimilated) || super.isAssimilated
- 
-  def as(that:WordProperty):Yoruba = this.copy(properties = this.properties :+ that)
-  def toYoruba:String = decomposition map { w => w.abbreviation() } mkString ""
-  
-  def test = {
-    val indexed = decomposition.zipWithIndex.iterator.sliding(2).toList
-    val contracted = indexed map { case left :: right => { 
-      if (left._1.isAssimilatedRight) 
-        (left._1.assimilate(right.head._1, left._1.getAssimilation), left._2)
-      else if (right.head._1.isAssimilatedLeft) 
-        (left._1.assimilate(right.head._1, right.head._1.getAssimilation), left._2)
+   
+  def contractions:List[String] = {
+    decomposition.iterator.sliding(2).toList map { case left :: right => {
+      if (left.isAssimilatedLeft && right.head.isAssimilatedRight)
+        ""
+      else if (left.isAssimilatedLeft && !right.head.isAssimilated)
+        right.head.abbreviation()
+      else if (left.isAssimilatedRight)
+        left.assimilate(right.head, left.getAssimilation)
+      else if (right.head.isAssimilatedLeft) 
+        left.assimilate(right.head, right.head.getAssimilation)
       else
-        left
-    }}
-    contracted map (pair => pair._1) mkString ""
-        
-      /*val arr = indexed.toArray
-    val assimilations = indexed.filter(i => i._1.isAssimilated)
-    for (asm <- assimilations) yield ( indexed.takeWhile(item => item._2 < asm._2),  
-    								   asm._1.assimilate(arr(asm._2+1)._1, asm._1.getAssimilation),
-    								   indexed.slice(asm._2, indexed.last._2+1)
-    								 )*/
+        left.abbreviation()
+    }}   
   }
+  
+  def as(that:WordProperty):Yoruba = this.copy(properties = this.properties :+ that)
 }
 
 /**
@@ -192,11 +196,11 @@ object GrammarTest {
     val word1 = "dé"
     val word2 = Word("ade", List("à", word1 as Root))
     val word3 = Word("sade", List("ṣé" as Elided(Right), word2 as Root))
-    val word4 = Word("kuule", List("kú" as Assimilated(Right, 2), "ilé"))
-    val word5 = Word("abanisise", List("à", "bá" as Assimilated(Right), "eni" as Root, "ṣiṣẹ"))
-    val word6 = Word("abanidije", List("a", "bá", "ni" as Root, "gbé" as Assimilated(Right), "íle"))
+    val word4 = Word("kuule", List("kú" as Assimilated(Right, 2), "ilé" as Assimilated(Left)))
+    val word5 = Word("abanisise", List("a", "bá" as Assimilated(Right), "eni" as Assimilated(Left) as Root, "ṣiṣẹ"))
+    val word6 = Word("abanigbele", List("a", "bá", "ni" as Root, "gbé" as Assimilated(Right), "íle" as Assimilated(Left)))
         
     println(word1, word2, word3)
-    println(word6.test)
+    println(word6.toYoruba)
   }
 }
