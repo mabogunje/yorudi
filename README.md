@@ -16,11 +16,11 @@ However, a few differences exist:
  
 There are only 3 tones in Yoruba, namely:
     
-    **Do**: The low tone - represented by a grave accent e.g 'ò'
+    *Do: The low tone - represented by a grave accent e.g 'ò'
 
-    **Re**: The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
+    *Re: The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
 
-    **Mi**: The high tone - represented by an acute accent e.g 'ó'
+    *Mi: The high tone - represented by an acute accent e.g 'ó'
 
 2. Underdotted Characters 
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. 
