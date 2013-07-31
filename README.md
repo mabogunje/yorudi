@@ -12,14 +12,16 @@ Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wiki
 It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones. 
 However, a few differences exist:
 
-1. Different Tones: There are only 3 tones in Yoruba, namely:
-* **Do**: The low tone - represented by a grave accent e.g 'ò'
-* **Re**: The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
-* **Mi**: The high tone - represented by an acute accent e.g 'ó'
+1. Different Tones 
+There are only 3 tones in Yoruba, namely:
+    
+    **Do**: The low tone - represented by a grave accent e.g 'ò'
+    **Re**: The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
+    **Mi**: The high tone - represented by an acute accent e.g 'ó'
 
 As with Chinese though, most words are unique by tones. So there are few homophones, while homographs abound.
 
-* Underdotted Characters 
+2. Underdotted Characters 
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. 
 For example, the letter 'ṣ', is pronounced 'sh'
 
