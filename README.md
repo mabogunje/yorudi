@@ -1,13 +1,12 @@
 # Yòrúdí 
 #### A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
-The Yorudi project aims to compile a complete multi-lingual lexical database with Yoruba as the pivot language. 
-The project is modelled after the [CC-CEDICT project](http://cc-cedict.org/wiki/) by Paul Andrew Denisowski 
-which was itself modeled on the highly successful [EDICT project](http://www.csse.monash.edu.au/~jwb/edict.html) 
-by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
+The Yòrúdí project aims to compile a complete multi-lingual lexical database with [Yoruba](http://en.wikipedia.org/wiki/Yoruba_language) 
+as the pivot language. The project is modelled after the [CC-CEDICT project](http://cc-cedict.org/wiki/) by Paul Andrew Denisowski which 
+was itself modeled on the highly successful [EDICT project](http://www.csse.monash.edu.au/~jwb/edict.html) by Jim Breen. 
+The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
-
-### ABOUT YORUBA
+### An Introduction to Yoruba
 Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). 
 It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones. 
 However, a few differences exist:
