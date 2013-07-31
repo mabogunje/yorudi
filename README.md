@@ -7,8 +7,11 @@ was itself modeled on the highly successful [EDICT project](http://www.csse.mona
 The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
 ### An Introduction to Yoruba
-Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). 
-It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones. 
+Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). It is tonal (like Chinese), 
+with a romanized writing system for demarcating tones. That is to say, like the [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin), 
+or [Japanese Romaji](https://en.wikipedia.org/wiki/Romanization_of_Japanese), Yoruba can be represented in Latin script. 
+
+In fact, due to colonization, the romanized representation is the only known form of written Yoruba.  
 However, a few differences exist:
 
 #### 1. Different Tones
