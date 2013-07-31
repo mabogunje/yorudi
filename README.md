@@ -6,30 +6,21 @@ as the pivot language. The project is modelled after the [CC-CEDICT project](htt
 was itself modeled on the highly successful [EDICT project](http://www.csse.monash.edu.au/~jwb/edict.html) by Jim Breen. 
 The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
-### An Introduction to Yoruba
+### An Introduction to Yoruba & The Problem
 Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). It is tonal (like Chinese), 
-with a romanized writing system for demarcating tones. That is to say, like the [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin), 
-or [Japanese Romaji](https://en.wikipedia.org/wiki/Romanization_of_Japanese), Yoruba can be represented in Latin script. 
+with a romanized writing system for demarcating tone and pronounciation. That is to say, like [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin), 
+and [Japanese Romaji](https://en.wikipedia.org/wiki/Romanization_of_Japanese), Yoruba can be written entirely within the extended
+Latin alphabet. 
 
-In fact, due to colonization, the romanized representation is the only known form of written Yoruba.  
-However, a few differences exist:
+That notwithstanding, the construction of words in Yoruba is still fundamentally different from other languages, and it is my belief that
+because existing databases do not take this into account, they fail to provide an adequate level of detail in their definitions.
+In particular, the way most Yoruba words are made up of other Yoruba words is not taken advantage of.
 
-#### 1. Different Tones
-There are only **3 tones** in Yoruba, namely:
-    
-   * **Do**: The low tone - represented by a grave accent e.g 'ò'
+#### Contractions in Yoruba
+At its core, Yoruba has very few self-contained words over 4 letters (if any at all). All other words, are created through the combination
+and permutation of the vocabulary: and as such, the direct meaning of any word is little more than the sum of its parts. 
 
-   * **Re**: The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
-
-   * **Mi**: The high tone - represented by an acute accent e.g 'ó'
-
-#### 2. Underdotted Characters 
-The Yoruba alphabet features several underdotted letters. The underdot is used to indicate a modified pronounciation of the normal sound. 
-For example, the letter 'ṣ', is pronounced _'sh'_
-
-#### 3. Contraction
-Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. 
-These 2 processes are outlined below:
+Similarly, the spellings of words are always the result of a merging their components. This merging may be done in any of **2 ways**.
 
 * **Elision** :- This is the deletion of a vowel when joining words
 
