@@ -3,6 +3,7 @@ Yorudi - A Standardized & Downloadable Comprehensive Yoruba Multilingual Diction
 DESCRIPTION
 The Yorudi project aims to compile a complete multi-lingual lexical database with Yoruba as the pivot language. The project is modelled after the CC-CEDICT project by Paul Andrew Denisowski which was itself modeled on the highly successful EDICT project by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
+
 ABOUT YORUBA
 Yoruba is the native tongue of the Yoruba people of West Africa. It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones and pronounciation. However, a few differences exist.
 
@@ -26,6 +27,13 @@ As a result of this contraction, there is often little difference between a word
 
 To learn more about the Yoruba people and their language, see http://yorupedia.com/
 
+
+CREATING A YORUDI TRANSLATION FILE
+> See `dicts/sample.yor`
+
+These files may be created with any text editor able to save a .txt file. To be recognized as a translation file, the extension must then be changed to .yor
+
+
 ENCODING
 Given the unique properties of the Yoruba language (as detailed above), a specialized input format is necessary to accurately record words. Details of this input format are given below.
 
@@ -34,6 +42,7 @@ Every entry in a Yorudi dictionary must be made up of 4 major parts
 2. The complete Yoruba decomposition of the word
 3. The target language glossary of definitions
 4. An attribute list (Optional)
+
 
 INPUT FORMAT
 
@@ -67,10 +76,6 @@ The attribute list may be used to indicate special properties such as indexes in
 (b) Each attribute consist of a key-value pair separated by a colon and must be separated by a vertical bar 
 (c) For readability, there should always be a spaces between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
 
-CREATING A YORUDI TRANSLATION FILE
-> See `dicts/sample.yor`
-
-These files may be created with any text editor able to save a .txt file. To be recognized as a translation file, the extension must then be changed to .yor
 
 ADDITIONAL NOTES
 Writing some Yoruba characters requires that your keyboard is configured for writing accented and underdotted letters. The way to do this varies by operating system.
