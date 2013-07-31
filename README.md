@@ -37,14 +37,14 @@ Similarly, the spellings of words are always the result of merging their compone
 > _To learn more about the Yoruba people and their language, see http://yorupedia.com/_
 
 
-### Creating a Yòrúdí File
+## Creating a Yòrúdí File
 Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
 examples. 
 
 Such files may be easily created with any text editor able to save to _.txt_. 
 Once created, you can change the extension to _.yor_ so it will be recognized as a translation file.
 
-#### Understanding Yòrúdí Entries
+### Understanding Yòrúdí Entries
 Given the unique properties of the Yoruba language (as detailed above), a specialized input format is used to accurately record words. 
 Details of this format are given below:
 
@@ -55,27 +55,29 @@ Details of this format are given below:
         simplified yoruba (1)       glossary of definitions (3)
 
 
-1. This is simply the word in the standard roman alphabet.
+#### 1. Simplified Yoruba 
+This is simply the word in the standard roman alphabet.
 + It should be recorded as it is spoken in the Oyo dialect for consistency
 + Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
 
-##### 2. YORUBA DECOMPOSITION
+#### 2. Yoruba Decomposition
 Here the word must be fully specified to include the following properties
 + Tone marks
 + Component words (making sure to identify the root)
 + Linguistic properties i.e  Assimilation and Elision
 
-##### 3. GLOSSARY
+#### 3. Glossary
 The glossary is a list of synonymous words and phrases in the target language
 + Each synonym must be separated by a forward slash 
 + Each glossary entry may optionally feature short annotations in parentheses
 + For readability, each slash in the glossary should be two (2) spaces away from the last entry
 
-##### 4. ATTRIBUTE LIST
-The attribute list may be used to indicate special properties such as indexes into other Yòrúdí language dictionaries. In most cases a contributor need not concern themselves with these.
+#### 4. Attribute List
+The attribute list may be used to indicate special properties such as indexes into other Yòrúdí language dictionaries. 
+In most cases a contributor need not concern themselves with these.
 + The attribute list must be denoted by angle brackets of the form < attrib. list >
 + Each attribute consist of a key-value pair separated by a colon and must be separated by a vertical bar 
-+ For readability, there should always be a spaces between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
++ For readability, there should always be a space between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
 
 
 ## ADDITIONAL NOTES
