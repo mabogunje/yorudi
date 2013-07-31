@@ -38,7 +38,7 @@ Similarly, the spellings of words are always the result of merging their compone
 
 
 ## Creating a Yòrúdí File
-Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
+> Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
 examples. 
 
 Such files may be easily created with any text editor able to save to _.txt_. 
