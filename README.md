@@ -7,10 +7,12 @@ which was itself modeled on the highly successful [EDICT project](http://www.css
 by Jim Breen. The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
 
-## ABOUT YORUBA
-Yoruba is the native tongue of the Yoruba people of West Africa. It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones and pronounciation. However, a few differences exist.
+### ABOUT YORUBA
+Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). 
+It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones. 
+However, a few differences exist.
 
-### Different Tones 
+#### A. Different Tones 
 There are only 3 tones in Yoruba, namely:
 1. "Do": The low tone - represented by a grave accent e.g 'ò'
 2. "Re": The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
@@ -18,10 +20,10 @@ There are only 3 tones in Yoruba, namely:
 
 As with Chinese though, most words are unique by tones. So there are few homophones, while homographs abound.
 
-### Underdotted Characters 
+#### B. Underdotted Characters 
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. For example, the letter 'ṣ', is pronounced 'sh'
 
-### Contraction
+#### C. Contraction
 Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. These 2 processes are outlined below:
 1. Elision:- The deletion of a vowel e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
 2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
