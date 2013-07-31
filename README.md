@@ -13,8 +13,7 @@ It is a tonal language (like Chinese) with a writing system very similar to Chin
 However, a few differences exist:
 
 #### 1. Different Tones
- 
-There are only 3 tones in Yoruba, namely:
+There are only **3 tones** in Yoruba, namely:
     
    * **Do**: The low tone - represented by a grave accent e.g 'ò'
 
@@ -24,12 +23,19 @@ There are only 3 tones in Yoruba, namely:
 
 #### 2. Underdotted Characters 
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. 
-For example, the letter 'ṣ', is pronounced *'sh'*
+For example, the letter 'ṣ', is pronounced _'sh'_
 
 #### 3. Contraction
-Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. These 2 processes are outlined below:
-1. Elision:- The deletion of a vowel e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
-2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
+Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. 
+These 2 processes are outlined below:
+
+* **Elision** :- This is the deletion of a vowel when joining words
+
+    e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
+
+* **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
+
+    e.g kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
 
 As a result of this contraction, there is often little difference between a word and a phrase.
 
