@@ -8,8 +8,10 @@ object Tone extends Enumeration {
   
   val characterMap = Map( 'a' -> Map(Tone.Mid -> 'a', Tone.Low -> 'à', Tone.High -> 'á'),
 		  			   	  'e' -> Map(Tone.Mid -> 'e', Tone.Low -> 'è', Tone.High -> 'é'),
+		  			   	  'ẹ' -> Map(Tone.Mid -> 'ẹ', Tone.Low -> 'ẹ̀', Tone.High -> 'ẹ́'),
 		  			   	  'i' -> Map(Tone.Mid -> 'i', Tone.Low -> 'ì', Tone.High -> 'í'),
 		  			   	  'o' -> Map(Tone.Mid -> 'o', Tone.Low -> 'ò', Tone.High -> 'ó'),
+		  			   	  'ọ' -> Map(Tone.Mid -> 'ọ', Tone.Low -> 'ọ̀', Tone.High -> 'ọ́'),
 		  			   	  'u' -> Map(Tone.Mid -> 'u', Tone.Low -> 'ù', Tone.High -> 'ú')		  			   
 		  			 	)
   val allowed = characterMap flatten (_._2) map (toneChar => toneChar._2) toList
@@ -17,8 +19,10 @@ object Tone extends Enumeration {
   def normalise(char:Char):Char = {
     if (characterMap.get('a').exists(tone => tone.values.toList contains char)) 'a'
     else if (characterMap.get('e').exists(tone => tone.values.toList contains char)) 'e'
+    else if (characterMap.get('ẹ').exists(tone => tone.values.toList contains char)) 'ẹ'
     else if (characterMap.get('i').exists(tone => tone.values.toList contains char)) 'i'
     else if (characterMap.get('o').exists(tone => tone.values.toList contains char)) 'o'
+    else if (characterMap.get('ọ').exists(tone => tone.values.toList contains char)) 'ọ'
     else if (characterMap.get('u').exists(tone => tone.values.toList contains char)) 'u'
     else char
   }
