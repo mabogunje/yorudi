@@ -1,11 +1,37 @@
 #!author: Damola Mabogunje
-#!summary: Colloquial Yoruba - English Translations
+#!summary: How To Enter Words Into a Yorudi Dictionary
 #!lang: en
 #!date: 12-12-13
 
-ade [á . dè*]  /crown
-gbogbo [gbó* . gbó]  /all  /every  /plenty  /many
-leti [ní->* . eti]  /near  /within ear shot
-nigbati [ní . <-ígbà* . tí]  /when  /at the time
+# Writing Simple Words (Always indicate tone marks within the square brackets if any)
+aa [aa*] /word of exclamation
+
+# Writing Simple Words With Multiple Translations
+ba [bá*]  /to meet  /overtake  /find at a place
+
+# Writing Simple Words With Multiple Senses (Just enter the same word with a different set of translations)
+ba [bá*]  /to meet  /overtake  /find at a place
+ba [bá*]  /with  /against
+ba [bá*]  /should  /would  /might /ought
+
+# Writing Compound Words  (Don't forget to indicate the root word with an asterix)
+ade [à . dé*]  /crown
 soro [sọ* . rọ]  /told  /said
-tiantian [tían* . tían] /very high (for flying objects)
+
+# Writing Compound Words With Elision (Arrow length must match number of elided letters; On roots, put asterix after arrow)
+aba [à . <-àbà*]  /a staple
+abaje [àbà* . <--onjẹ]  /a kind of yam
+abara [à . <-ibá* . rán->]  /a slap with the palm of the hand
+aba [à . <-ibá* . <---rán] /a slap with the palm of the hand
+
+# Writing Compound Words With Assimilation (Arrow length must match number of letters produced; On roots, put asterix after arrow)
+lowo [ní+>* . <+ọ́wọ̀]  /have a broom
+gbodo [gbé+>* . <+odó] /lift a mortar
+kawe [ka+>* . <+ìwé]  /read a book
+kuule [kú++>* . <+ilé]  /greetings
+kaale [kú+>* . <++alẹ́]  /good evening
+kaabo [kú+>* . <++àbọ̀]  /welcome
+
+#########################
+# THIS IS JUST A SAMPLE #
+#########################
