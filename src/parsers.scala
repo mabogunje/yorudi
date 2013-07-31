@@ -13,12 +13,12 @@ class GrammarParser extends RegexParsers {
   // Base token parsers - indicating word properties
   def root:Parser[SpeechProperty] = """\*""".r ^^^ {Root}
   
-  def asmL:Parser[Assimilated] = """<(\+){1,2}""".r ^^ { str => Assimilated(Left, str.count(_ == '+')) }
-  def asmR:Parser[Assimilated] = """(\+){1,2}>""".r ^^ { str => Assimilated(Right, str.count(_ == '+')) }
+  def asmL:Parser[Assimilated] = """<(\+)+""".r ^^ { str => Assimilated(Left, str.count(_ == '+')) }
+  def asmR:Parser[Assimilated] = """(\+)+>""".r ^^ { str => Assimilated(Right, str.count(_ == '+')) }
   def assimilation:Parser[Assimilated] = asmL | asmR
   
-  def elsL:Parser[Elided] = """<\-+""".r ^^ { str => Elided(Left, str.count(_ == '-')) }
-  def elsR:Parser[Elided] = """\-+>""".r ^^ { str => Elided(Right, str.count(_ == '-')) }
+  def elsL:Parser[Elided] = """<(\-)+""".r ^^ { str => Elided(Left, str.count(_ == '-')) }
+  def elsR:Parser[Elided] = """(\-)+>""".r ^^ { str => Elided(Right, str.count(_ == '-')) }
   def elision:Parser[Elided] = elsL | elsR
 
   def prefixes:Parser[SpeechProperty] = asmL|elsL
