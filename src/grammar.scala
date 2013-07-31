@@ -91,8 +91,14 @@ case class Word(override val spelling:String, decomposition:Seq[Yoruba], overrid
         ""
       else if (left.isAssimilatedLeft && !right.head.isAssimilated)
         right.head.abbreviation
-      else if (left.isAssimilatedRight)
-        left.assimilate(right.head, left.getAssimilation)
+      else if (left.isAssimilatedRight) {
+        if (right.head.isAssimilated) {
+          if (right.head.getAssimilation.count > left.getAssimilation.count)
+            left.assimilate(right.head, right.head.getAssimilation)
+          else
+            left.assimilate(right.head, left.getAssimilation)
+        }
+      }
       else if (right.head.isAssimilatedLeft) 
         left.assimilate(right.head, right.head.getAssimilation)
       else
@@ -134,11 +140,12 @@ object GrammarTest {
     val word1 = Word("de", List("dé" as Root))
     val word2 = Word("ade", List("à", word1 as Root))
     val word3 = Word("sade", List("ṣé" as Elided(Right), word2 as Root))
-    val word4 = Word("kuule", List("kú" as Assimilated(Right, 2), "ilé" as Assimilated(Left)))
-    val word5 = Word("abanisise", List("a", "bá" as Assimilated(Right), "eni" as Assimilated(Left) as Root, "ṣiṣẹ"))
-    val word6 = Word("abanigbele", List("a", "bá", "ni" as Root, "gbé" as Assimilated(Right), "íle" as Assimilated(Left)))
+    val word4 = Word("kaabo", List("kú" as Assimilated(Right), "àbò" as Assimilated(Left, 2)))
+    val word5 = Word("kuule", List("kú" as Assimilated(Right, 2), "ilé" as Assimilated(Left)))    
+    val word6 = Word("abanisise", List("a", "bá" as Assimilated(Right), "eni" as Assimilated(Left) as Root, "ṣiṣẹ"))
+    val word7 = Word("abanigbele", List("a", "bá", "ni" as Root, "gbé" as Assimilated(Right), "íle" as Assimilated(Left)))
     
-    val test = List(word1, word2, word3, word4, word5, word6)
+    val test = List(word1, word2, word3, word4, word5, word6, word7)
     
     for (word <- test) println(word.toYoruba)
   }
