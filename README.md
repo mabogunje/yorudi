@@ -37,19 +37,17 @@ These 2 processes are outlined below:
 
         kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
 
-As a result of this contraction, there is often little difference between a word and a phrase.
-
-To learn more about the Yoruba people and their language, see http://yorupedia.com/
+> _To learn more about the Yoruba people and their language, see http://yorupedia.com/_
 
 
-## CREATING A YÒRÚDÍ TRANSLATION FILE
->>> See: [sample][sample] for an example 
+### CREATING A YÒRÚDÍ TRANSLATION FILE
+Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
+examples. 
 
-These files may be created with any text editor able to save a .txt file. To be recognized as a translation file, the extension must then be changed to .yor
+Such files may be easily created with any text editor able to save to _.txt_. 
+Once created, you can change the extension to _.yor_ so it will be recognized as a translation file.
 
-[sample]: https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor <<<
-
-## ENCODING
+### ENCODING
 Given the unique properties of the Yoruba language (as detailed above), a specialized input format is necessary to accurately record words. Details of this input format are given below.
 
 Every entry in a Yorudi dictionary must be made up of 4 major parts
