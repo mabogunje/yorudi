@@ -8,10 +8,10 @@ object Tone extends Enumeration {
   
   val characterMap = Map( 'a' -> Map(Tone.Mid -> 'a', Tone.Low -> 'à', Tone.High -> 'á'),
 		  			   	  'e' -> Map(Tone.Mid -> 'e', Tone.Low -> 'è', Tone.High -> 'é'),
-		  			   	  'ẹ' -> Map(Tone.Mid -> 'ẹ', Tone.Low -> 'ẹ̀', Tone.High -> 'ẹ́'),
+		  			   	  'ẹ' -> Map(Tone.Mid -> 'ẹ', Tone.Low -> "ẹ̀ ".head, Tone.High -> "ẹ́ ".head),
 		  			   	  'i' -> Map(Tone.Mid -> 'i', Tone.Low -> 'ì', Tone.High -> 'í'),
 		  			   	  'o' -> Map(Tone.Mid -> 'o', Tone.Low -> 'ò', Tone.High -> 'ó'),
-		  			   	  'ọ' -> Map(Tone.Mid -> 'ọ', Tone.Low -> 'ọ̀', Tone.High -> 'ọ́'),
+		  			   	  'ọ' -> Map(Tone.Mid -> 'ọ', Tone.Low -> "ọ̀ ".head, Tone.High -> "ọ́ ".head),
 		  			   	  'u' -> Map(Tone.Mid -> 'u', Tone.Low -> 'ù', Tone.High -> 'ú')		  			   
 		  			 	)
   val allowed = characterMap flatten (_._2) map (toneChar => toneChar._2) toList
