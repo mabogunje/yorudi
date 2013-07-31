@@ -20,13 +20,17 @@ In particular, the way most Yoruba words are made up of other Yoruba words is no
 At its core, Yoruba has very few self-contained words over 4 letters (if any at all). All other words, are created through the combination
 and permutation of the vocabulary: and as such, the direct meaning of any word is little more than the sum of its parts. 
 
-Similarly, the spellings of words are always the result of a merging their components. This merging may be done in any of **2 ways**.
+Similarly, the spellings of words are always the result of merging their components. This merging may be done in any of **3 ways**.
 
-* **Elision** :- This is the deletion of a vowel when joining words
+1. **Addition** :- This is a simple joining of words
 
-        ní + ilé = n'ílé i.e "in" + "house" = "in the house"
+        bi + bọ = bibọ i.e "ask" + "to worship" = "that which is to be worshipped" 
 
-* **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
+1. **Elision** :- This is the deletion of a vowel when joining words
+
+        ní + ilé = n'ílé i.e "in" + "house" = "in the house" 
+
+2. **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
 
         kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
 
