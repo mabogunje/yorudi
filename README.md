@@ -10,12 +10,15 @@ by Jim Breen. The former being a Chinese-English Electronic Dictionary and the l
 ### ABOUT YORUBA
 Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). 
 It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones. 
-However, a few differences exist.
+However, a few differences exist:
 
 #### A. Different Tones 
 There are only 3 tones in Yoruba, namely:
-1. "Do": The low tone - represented by a grave accent e.g 'ò'
+
+1. "Do": The low tone - represented by a grave accent e.g *'ò'*
+
 2. "Re": The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
+
 3. "Mi": The high tone - represented by an acute accent e.g 'ó'
 
 As with Chinese though, most words are unique by tones. So there are few homophones, while homographs abound.
