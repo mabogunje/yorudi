@@ -15,7 +15,7 @@ However, a few differences exist:
 #### A. Different Tones 
 There are only 3 tones in Yoruba, namely:
 
-1. "Do": The low tone - represented by a grave accent e.g *'ò'*
+1. "Do": The low tone - represented by a grave accent e.g **'ò'**
 
 2. "Re": The mid tone - represented by an overline (or not at all) e.g 'õ' or 'o' 
 
