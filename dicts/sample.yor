@@ -3,6 +3,9 @@
 #!lang: en
 #!date: 12-12-13
 
+# This is a Comment. The ones with a ! above are required, but you can have as many without the ! as you like
+
+
 # Writing Simple Words (Always indicate tone marks within the square brackets if any)
 aa [aa*] /word of exclamation
 
