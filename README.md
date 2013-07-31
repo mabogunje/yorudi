@@ -32,20 +32,21 @@ Similarly, the spellings of words are always the result of merging their compone
 
 2. **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
 
-        kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
+        kú + ilé = kúulé i.e "greet" + "house" = "greetings!"
 
 > _To learn more about the Yoruba people and their language, see http://yorupedia.com/_
 
 
-### CREATING A YÒRÚDÍ TRANSLATION FILE
+### Creating a Yòrúdí Dictionary File
 Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
 examples. 
 
 Such files may be easily created with any text editor able to save to _.txt_. 
 Once created, you can change the extension to _.yor_ so it will be recognized as a translation file.
 
-### ENCODING
-Given the unique properties of the Yoruba language (as detailed above), a specialized input format is necessary to accurately record words. Details of this input format are given below.
+#### Understanding Yòrúdí Entries
+Given the unique properties of the Yoruba language (as detailed above), a specialized input format is used to accurately record words. 
+Details of this format are given below:
 
 Every entry in a Yorudi dictionary must be made up of 4 major parts
 1. A simplified Yoruba form of the word
@@ -58,8 +59,8 @@ Every entry in a Yorudi dictionary must be made up of 4 major parts
 
           yoruba decomposition (2)                   optional attribute list (4)
                 v                                             v
-    gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute>
-       ^                              ^                       
+        gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute>
+          ^                              ^                       
 simplified yoruba (1)       glossary of definitions (3)
 
 
