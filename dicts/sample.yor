@@ -27,13 +27,18 @@ abaje [àbà* . <--onjẹ]  /a kind of yam
 abara [à . <-ibá* . rán->]  /a slap with the palm of the hand
 aba [à . <-ibá* . <---rán] /a slap with the palm of the hand
 
-# Writing Compound Words With Assimilation (Arrow length must match number of letters produced; On roots, put asterix after arrow)
-lowo [ní+>* . <+ọ́wọ̀]  /have a broom
-gbodo [gbé+>* . <+odó] /lift a mortar
-kawe [ka+>* . <+ìwé]  /read a book
-kuule [kú++>* . <+ilé]  /greetings
-kaale [kú+>* . <++alẹ́]  /good evening
-kaabo [kú+>* . <++àbọ̀]  /welcome
+#    Writing Compound Words With Assimilation (Just a bit more complicated)     #
+#################################################################################
+# - The primary letter of assimilation must have more pluses than the secondary #
+# - Use more than 2 pluses if primary letter is also repeated                   #
+# - The program can figure out the appropriate assimilation result              #
+#################################################################################
+
+kawe [ka+>* . <++ìwé]  /read a book
+gbodo [gbé+>* . <++odó] /lift a mortar
+kuule [kú+++>* . <+ilé]  /greetings
+kaale [kú+>* . <+++alẹ́]  /good evening
+kaabo [kú+>* . <+++àbọ̀]  /welcome
 
 #########################
 # THIS IS JUST A SAMPLE #
