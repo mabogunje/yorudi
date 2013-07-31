@@ -12,7 +12,7 @@ Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wiki
 It is a tonal language (like Chinese) with a writing system very similar to Chinese Pinyin for demarcating tones. 
 However, a few differences exist:
 
-1. Different Tones
+#### 1. Different Tones
  
 There are only 3 tones in Yoruba, namely:
     
@@ -22,11 +22,11 @@ There are only 3 tones in Yoruba, namely:
 
    * **Mi**: The high tone - represented by an acute accent e.g 'ó'
 
-2. Underdotted Characters 
+#### 2. Underdotted Characters 
 The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. 
-For example, the letter 'ṣ', is pronounced 'sh'
+For example, the letter 'ṣ', is pronounced *'sh'*
 
-* Contraction
+#### 3. Contraction
 Yoruba often uses assimilation and elision to contract words when forming other words, phrases, and sentences. These 2 processes are outlined below:
 1. Elision:- The deletion of a vowel e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
 2. Assimilation :- The inheritance by a vowel of another vowel sound. e.g kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
