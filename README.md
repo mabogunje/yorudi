@@ -22,7 +22,7 @@ There are only **3 tones** in Yoruba, namely:
    * **Mi**: The high tone - represented by an acute accent e.g 'ó'
 
 #### 2. Underdotted Characters 
-The Yoruba alphabet features several underdotted letters. The underdot is used indicate a modified pronounciation of the normal sound. 
+The Yoruba alphabet features several underdotted letters. The underdot is used to indicate a modified pronounciation of the normal sound. 
 For example, the letter 'ṣ', is pronounced _'sh'_
 
 #### 3. Contraction
@@ -31,11 +31,11 @@ These 2 processes are outlined below:
 
 * **Elision** :- This is the deletion of a vowel when joining words
 
-    e.g ní + ilé = n'ílé i.e "in" + "house" = "in the house"
+        ní + ilé = n'ílé i.e "in" + "house" = "in the house"
 
 * **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
 
-    e.g kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
+        kú + ilé = kúulé i.e "greet" + "house" = "greetings" (used when visiting people in their homes)
 
 As a result of this contraction, there is often little difference between a word and a phrase.
 
