@@ -26,11 +26,11 @@ Similarly, the spellings of words are always the result of merging their compone
 
         bi + bọ = bibọ i.e "ask" + "to worship" = "that which is to be worshipped" 
 
-1. **Elision** :- This is the deletion of a vowel when joining words
+2. **Elision** :- This is the deletion of a vowel when joining words
 
         ní + ilé = n'ílé i.e "in" + "house" = "in the house" 
 
-2. **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
+3. **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
 
         kú + ilé = kúulé i.e "greet" + "house" = "greetings!"
 
@@ -48,44 +48,35 @@ Once created, you can change the extension to _.yor_ so it will be recognized as
 Given the unique properties of the Yoruba language (as detailed above), a specialized input format is used to accurately record words. 
 Details of this format are given below:
 
-Every entry in a Yorudi dictionary must be made up of 4 major parts
-1. A simplified Yoruba form of the word
-2. The complete Yoruba decomposition of the word
-3. The target language glossary of definitions
-4. An attribute list (Optional)
+                yoruba decomposition (2)                   optional attribute list (4)
+                        v                                             v
+            gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute>
+               ^                              ^                       
+        simplified yoruba (1)       glossary of definitions (3)
 
 
-### INPUT FORMAT
-
-          yoruba decomposition (2)                   optional attribute list (4)
-                v                                             v
-        gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute>
-          ^                              ^                       
-simplified yoruba (1)       glossary of definitions (3)
-
-
-#### 1. SIMPLIFIED YORUBA
+##### 1. SIMPLIFIED YORUBA
 This is simply the word in the standard roman alphabet.
-(a) It should be recorded as it is spoken in the Oyo dialect for consistency
-(b) Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
++ It should be recorded as it is spoken in the Oyo dialect for consistency
++ Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
 
-#### 2. YORUBA DECOMPOSITION
+##### 2. YORUBA DECOMPOSITION
 Here the word must be fully specified to include the following properties
-(a) Tone marks
-(b) Component words (making sure to identify the root)
-(c) Linguistic properties i.e  Assimilation and Elision
++ Tone marks
++ Component words (making sure to identify the root)
++ Linguistic properties i.e  Assimilation and Elision
 
-#### 3. GLOSSARY
+##### 3. GLOSSARY
 The glossary is a list of synonymous words and phrases in the target language
-(a) Each synonym must be separated by a forward slash 
-(b) Each glossary entry may optionally feature short annotations in parentheses
-(c) For readability, each slash in the glossary should be two (2) spaces away from the last entry
++ Each synonym must be separated by a forward slash 
++ Each glossary entry may optionally feature short annotations in parentheses
++ For readability, each slash in the glossary should be two (2) spaces away from the last entry
 
-#### 4. ATTRIBUTE LIST
+##### 4. ATTRIBUTE LIST
 The attribute list may be used to indicate special properties such as indexes into other Yòrúdí language dictionaries. In most cases a contributor need not concern themselves with these.
-(a) The attribute list must be denoted by angle brackets of the form < attrib. list >
-(b) Each attribute consist of a key-value pair separated by a colon and must be separated by a vertical bar 
-(c) For readability, there should always be a spaces between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
++ The attribute list must be denoted by angle brackets of the form < attrib. list >
++ Each attribute consist of a key-value pair separated by a colon and must be separated by a vertical bar 
++ For readability, there should always be a spaces between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
 
 
 ## ADDITIONAL NOTES
