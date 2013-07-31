@@ -29,7 +29,7 @@ To learn more about the Yoruba people and their language, see http://yorupedia.c
 
 
 CREATING A YORUDI TRANSLATION FILE
-> See `dicts/sample.yor`
+>>> SEE FILE: `dicts/sample.yor` <<<
 
 These files may be created with any text editor able to save a .txt file. To be recognized as a translation file, the extension must then be changed to .yor
 
