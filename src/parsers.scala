@@ -11,19 +11,19 @@ class GrammarParser extends RegexParsers {
    */
   
   // Base token parsers - indicating word properties
-  def root:Parser[WordProperty] = """\*""".r ^^^ {Root}
+  def root:Parser[SpeechProperty] = """\*""".r ^^^ {Root}
   
-  def asmL:Parser[Assimilated] = """[<\+|<\+\+]""".r ^^ { str => Assimilated(Left, str.count(_ == '+')) }
-  def asmR:Parser[Assimilated] = """[\+>|\+\+>]""".r ^^ { str => Assimilated(Right, str.count(_ == '+')) }
+  def asmL:Parser[Assimilated] = """<(\+){1,2}""".r ^^ { str => Assimilated(Left, str.count(_ == '+')) }
+  def asmR:Parser[Assimilated] = """(\+){1,2}>""".r ^^ { str => Assimilated(Right, str.count(_ == '+')) }
   def assimilation:Parser[Assimilated] = asmL | asmR
   
   def elsL:Parser[Elided] = """<\-+""".r ^^ { str => Elided(Left, str.count(_ == '-')) }
   def elsR:Parser[Elided] = """\-+>""".r ^^ { str => Elided(Right, str.count(_ == '-')) }
   def elision:Parser[Elided] = elsL | elsR
 
-  def prefixes:Parser[WordProperty] = asmL|elsL
-  def postfixes:Parser[WordProperty] = asmR|elsR|root  
-  def property:Parser[WordProperty] = root|assimilation|elision 
+  def prefixes:Parser[SpeechProperty] = asmL|elsL
+  def postfixes:Parser[SpeechProperty] = asmR|elsR|root  
+  def property:Parser[SpeechProperty] = root|assimilation|elision 
 
   // Base parsers for all values - applies restrictions on acceptable strings
   def term:Parser[String] = """\p{L}+""".r ^^ {_.toLowerCase()}
@@ -67,12 +67,12 @@ object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
     val test = List("igba [ìgbà*]  /time",
     				"nigba [ní . <-ìgbà*]  /when",
-    				"kuule [kú+> . <-ilé]  /greetings",
+    				"kuule [kú++> . <+ilé]  /greetings",
     				"ade [à . dé*]  /crown",
     				"a [awa-->*]  /we"
     			   )
     val inputs = for (entry <- test) yield parse(wordEntry, entry).get
     val dict = YorubaDictionary(inputs.toMap)
-    for (entry <- dict) println(entry)
+    for (entry <- dict) println(entry._1 + " -> " + entry._2)
   }
 }
