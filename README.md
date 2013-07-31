@@ -55,8 +55,7 @@ Details of this format are given below:
         simplified yoruba (1)       glossary of definitions (3)
 
 
-##### 1. SIMPLIFIED YORUBA
-This is simply the word in the standard roman alphabet.
+1. This is simply the word in the standard roman alphabet.
 + It should be recorded as it is spoken in the Oyo dialect for consistency
 + Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
 
