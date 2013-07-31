@@ -37,7 +37,7 @@ Similarly, the spellings of words are always the result of merging their compone
 > _To learn more about the Yoruba people and their language, see http://yorupedia.com/_
 
 
-### Creating a Yòrúdí Dictionary File
+### Creating a Yòrúdí File
 Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
 examples. 
 
