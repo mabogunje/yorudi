@@ -67,7 +67,7 @@ object ParserTest extends GrammarParser {
   def main(args:Array[String]) {
     val test = List("igba [ìgbà*]  /time",
     				"nigba [ní . <-ìgbà*]  /when",
-    				"kuule [kú++> . <+ilé]  /greetings",
+    				"kuule [kú+++> . <++ilé]  /greetings",
     				"ade [à . dé*]  /crown",
     				"a [awa-->*]  /we"
     			   )
