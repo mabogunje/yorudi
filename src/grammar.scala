@@ -47,8 +47,8 @@ sealed trait Yoruba {
     Term(this.toYoruba + that.toYoruba)
   }
   def as(that:SpeechProperty):Yoruba
+  
   def abbreviated:Yoruba
- 
   def toYoruba:String
   override def toString = toYoruba
 }
