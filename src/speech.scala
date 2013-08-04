@@ -48,7 +48,7 @@ import Tone._
  */
 object Bias extends Enumeration {
   type Bias = Value
-  val Left, Right, Neutral = Value
+  val Left, Right, Neutral = Value  
 }
 import Bias._
 
@@ -58,9 +58,11 @@ import Bias._
 trait SpeechProperty { 
   def bias = Bias.Neutral
   def count = 1
+
+  def opposite:SpeechProperty
 }
 
-case object Root extends SpeechProperty
+case object Root extends SpeechProperty { override val opposite = this }
 
 case class Elided(override val bias:Bias, override val count:Int=1) extends SpeechProperty {
   override def equals(o:Any):Boolean = o match {
@@ -68,11 +70,24 @@ case class Elided(override val bias:Bias, override val count:Int=1) extends Spee
     case _ => false
   }
   
+  def opposite:SpeechProperty = this.bias match {
+    case Left => this.copy(Right)
+    case Right => this.copy(Left)
+    case _ => this.copy(Neutral)
+  }
+
+  
 }
 
 case class Assimilated(override val bias:Bias, override val count:Int=1) extends SpeechProperty {
   override def equals(o:Any):Boolean = o match {
     case o:Assimilated => (o.bias == bias)
     case _ => false
+  }
+  
+  def opposite:SpeechProperty = this.bias match {
+    case Left => this.copy(Right)
+    case Right => this.copy(Left)
+    case _ => this.copy(Neutral)
   }  
 }

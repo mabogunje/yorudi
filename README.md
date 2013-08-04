@@ -22,7 +22,7 @@ and permutation of the vocabulary: and as such, the direct meaning of any word i
 
 Similarly, the spellings of words are always the result of merging their components. This merging may be done in any of **3 ways**.
 
-1. **Addition** :- This is a simple joining of words
+1. **Linking** :- This is a simple joining of words
 
         bi + bọ = bibọ i.e "ask" + "to worship" = "that which is to be worshipped" 
 
