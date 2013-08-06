@@ -9,7 +9,7 @@ import java.nio.charset.CodingErrorAction
 /**
  *
  */
-object yorudi extends GrammarParser {
+object Yorudi extends GrammarParser {
     val usage = """
       Usage: yorudi [-f] pathToFileorFolder
 """
