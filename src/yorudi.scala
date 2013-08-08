@@ -44,8 +44,12 @@ object Yorudi extends GrammarParser {
       while (lines.hasNext) {
         var ln = lines.next
         if (!ln.isEmpty)
-          if (!isComment(ln)) 
-            println(parse(wordEntry, ln)) 
+          if (!isComment(ln)) { 
+            var test = parse(wordEntry, ln)
+            
+            if (test.successful)
+              println(test.get._1.word.toYoruba, test.get._1.word.decomposition.toList, test.get._2.toList)
+          }
       }
       
 

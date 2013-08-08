@@ -26,8 +26,8 @@ class GrammarParser extends RegexParsers {
   def property:Parser[SpeechProperty] = root|assimilation|elision 
 
   // Base parsers for all values - applies restrictions on acceptable strings
-  def term:Parser[String] = """[\p{L}(\p{Mn})?]+""".r ^^ {_.toLowerCase()}
-  def value:Parser[String] = """[\w|\(\)]+""".r ^^ {_.toString()}
+  def term:Parser[String] = """[\p{L}(\p{Mn})?|\-]+""".r ^^ {_.toLowerCase()}
+  def value:Parser[String] = """[\w|\(\)|\-]+""".r ^^ {_.toString()}
 
   // Base parser for word senses: Strings delimited by '/'. May be whole sentences 
   def sense:Parser[String] = "/" ~ rep(value) ^^ { case "/" ~ list => list mkString " " }
