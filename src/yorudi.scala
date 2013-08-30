@@ -9,7 +9,7 @@ import java.nio.charset.CodingErrorAction
 /**
  *
  */
-object Yorudi extends GrammarParser {
+object Yorudi extends FileParser {
     val usage = """
       Usage: yorudi [-f] pathToFileorFolder
 """
@@ -33,24 +33,10 @@ object Yorudi extends GrammarParser {
         }
       }
       
-      def isComment(line:String) = (line.head == '#')
       val options = parseOptions(Map(), arguments)
-      val codec = Codec.UTF8
+      val dict = parse(options.get('path).get.toString)
       
-      val file = Source.fromFile(options.get('path).get.toString)(codec)
-      val lines = file.getLines
-      val dict = Map[WordEntry, List[Meaning]]()
-      
-      while (lines.hasNext) {
-        var ln = lines.next
-        if (!ln.isEmpty)
-          if (!isComment(ln)) { 
-            var test = parse(wordEntry, ln)
-            
-            if (test.successful)
-              println(test.get._1.word.toYoruba, test.get._1.word.decomposition.toList, test.get._2.toList)
-          }
-      }
+      println(dict.lookup("abi"))
       
 
   }
