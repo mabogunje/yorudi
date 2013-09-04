@@ -173,15 +173,15 @@ object GrammarTest {
     val word1 = Word("de", List("dé" as Root))
     val word2 = Word("ade", List("à", word1 as Root))
     val word3 = Word("sade", List("ṣé" as Elided(Right), word2 as Root))
-    val word4 = Word("kaabo", List("kú" as Assimilated(Right), "àbò" as Assimilated(Left, 3)))
-    val word5 = Word("kuule", List("kú" as Assimilated(Right, 3), "ilé" as Assimilated(Left)))    
-    val word6 = Word("gbodo", List("gbé" as Assimilated(Right), "òdò" as Assimilated(Left, 2)))
+    val word4 = Word("kaabo", List("kú" as Assimilated(Right) as Root, "àbò" as Assimilated(Left, 3)))
+    val word5 = Word("kuule", List("kú" as Assimilated(Right, 3) as Root, "ilé" as Assimilated(Left)))    
+    val word6 = Word("gbodo", List("gbé" as Assimilated(Right) as Root, "òdò" as Assimilated(Left, 2)))
     val word7 = Word("abanisise", List("a", "bá" as Assimilated(Right), "eni" as Assimilated(Left) as Root, "ṣiṣẹ"))
-    val word8 = Word("abanigbele", List("a", "bá", "ni" as Root, "gbé", "íle" as Elided(Left)))
-    val word9 = Word("abara", List("a", "bá" as Assimilated(Right, 2), "ará" as Assimilated(Left)))
+    val word8 = Word("abanigbele", List("a", "bá", "eni" as Elided(Left) as Root, "gbé", "íle" as Elided(Left)))
+    val word9 = Word("abara", List("a", "bá" as Assimilated(Right, 2), "ará" as Assimilated(Left) as Root))
       
     val test = List(word1, word2, word3, word4, word5, word6, word7, word8, word9)
     
-    for (word <- test) println(word)
+    for (word <- test) println(word, word.root)
   }
 }
