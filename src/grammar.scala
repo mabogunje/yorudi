@@ -95,6 +95,7 @@ case class Word(override val spelling:String, decomposition:Seq[Yoruba], overrid
   def isAssimilated = decomposition exists {word => (word.assimilations(Left).isDefined || 
     								   				 word.assimilations(Right).isDefined)
     						 }
+  def equals(that:Word) = this.decomposition.equals(that.decomposition)
   def contraction = {
     if (!isAssimilated)
       decomposition map { word => word.abbreviated }
@@ -163,6 +164,9 @@ case class Translation(override val description:String, lang:String="en") extend
  * Convenience type for pairing a word with its attributes (used in dictionary)
  */
 case class WordEntry(word:Word, attributes:Map[String,String])
+{
+  override def toString = word.toString + " (" + (word.decomposition mkString " + ") + ")"
+}
 
 object YorubaImplicits {
   implicit def string2yoruba(str:String):Yoruba = Term(str)

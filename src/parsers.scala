@@ -78,7 +78,8 @@ class FileParser extends GrammarParser {
       parse(wordEntry, _)
       } filter {_.successful} map {_.get}
     
-    return YorubaDictionary(entries.toMap)
+    val mergedEntries = for ((k,v) <- entries.toList.groupBy(_._1)) yield (k, v.flatMap(_._2))
+    return YorubaDictionary(mergedEntries.toMap)
   }
 }
 
@@ -88,7 +89,8 @@ object ParserTest extends GrammarParser {
     				"nigba [ní . <-ìgbà*]  /when",
     				"kuule [kú+++> . <++ilé]  /greetings",
     				"ade [à . dé*]  /crown",
-    				"a [awa-->*]  /we"
+    				"a [awa-->*]  /we",
+    				"abanigbele [à . bá . <-ẹni* . gbé . <-íle]  /an inmate  /a lodger  /a dweller"
     			   )
     val inputs = for (entry <- test) yield parse(wordEntry, entry).get
     val dict = YorubaDictionary(inputs.toMap)
