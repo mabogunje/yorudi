@@ -11,8 +11,8 @@ import java.nio.charset.CodingErrorAction
  *
  */
 object Yorudi extends FileParser {
-  val name = "Yòrúdí Multilingual Yoruba Dictionary"
-  val version = 0.1
+  val name = "Yòrúdí Multilingual Yoruba Dictionary";
+  val version = 0.1;
   val usage = "usage: yorudi [--version] [--help] <command> [<args>]";
   val about = s""" $name
   $usage
@@ -22,8 +22,20 @@ object Yorudi extends FileParser {
   
   See yorudi <command> -h for more information on a specific command
     """;
-  val src = "dicts/"
-      
+  val src = "dicts/";
+  val ext = ".yor";
+
+  def parseDicts(src:String=this.src) = {
+    val srcDir = new java.io.File(src)
+    var dict = YorubaDictionary(Map[WordEntry, List[Meaning]]())
+        
+    for(file <- srcDir.listFiles if file.getName endsWith this.ext) {
+      dict ++ parse(src + file.getName) // TO DO
+     }
+        
+    dict
+  }
+  
   def main(args: Array[String]) {
       if (args.isEmpty) println (about)
       val arguments = args.toList
@@ -65,6 +77,7 @@ object Yorudi extends FileParser {
       val options = parseOptions(Map(), arguments)
       
       //println (options)
-      //val dict = parse(options.get('path).get.toString)      
+      //val dict = parse(options.get('path).get.toString)
+      println(parseDicts())
   }
 }

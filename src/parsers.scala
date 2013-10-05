@@ -78,7 +78,7 @@ class FileParser extends GrammarParser {
       parse(wordEntry, _)
       } filter {_.successful} map {_.get}
     
-    val mergedEntries = for ((k,v) <- entries.toList.groupBy(_._1)) yield (k, v.flatMap(_._2))
+    val mergedEntries = for ((k,v) <- entries.toList.groupBy(_._1)) yield (k, v.distinct.flatMap(_._2))
     return YorubaDictionary(mergedEntries.toMap)
   }
 }

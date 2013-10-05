@@ -12,11 +12,11 @@ case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEnt
   
   override def +[T >: List[Meaning]] (kv:(WordEntry, T)) = {
     if (this contains kv._1) {
-      self.updated(kv._1, this(kv._1) ::: kv._2.asInstanceOf[List[Meaning]])
+      super.+((kv._1, (this(kv._1) ::: kv._2.asInstanceOf[List[Meaning]])))
     }
     else
-      self.updated(kv._1, kv._2)
-  }
+      super.+(kv)
+  }  
 }
 
 /**
