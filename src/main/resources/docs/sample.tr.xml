@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+
+Sample Yorudi Yoruba Translations
+
+-->
+<yorudi>
+    <translation>
+        <word spelling="ade">
+            <morphology>
+                <root>dé</root>
+                <morpheme>à</morpheme>
+            </morphology>
+        </word>
+        <gloss xml:lang="en">crown</gloss>
+    </translation>
+    <translation>
+        <word spelling="gbogbo">
+            <morphology>
+                <root>gbó</root>
+                <morpheme>gbó</morpheme>
+            </morphology>
+        </word>
+        <gloss xml:lang="en">all</gloss>
+        <gloss xml:lang="en">every</gloss>
+        <gloss xml:lang="en">plenty</gloss>
+        <gloss xml:lang="en">many</gloss>
+    </translation>
+    <translation>
+        <word spelling="leti">
+            <morphology>
+                <root>eti</root>
+                <morpheme ellided="1">ní</morpheme>
+            </morphology>
+        </word>
+        <gloss xml:lang="en">near</gloss>
+        <gloss xml:lang="en">within ear shot</gloss>
+    </translation>
+    <translation>
+        <word spelling="nigbati">
+            <morphology>
+                <root>ígbà</root>
+                <morpheme ellided="1">ní</morpheme>
+                <morpheme>tí</morpheme>
+            </morphology>
+        </word>
+        <gloss xml:lang="en">when</gloss>
+        <gloss xml:lang="en">at the time</gloss>
+    </translation>
+    <translation>
+        <word spelling="soro">
+            <morphology>
+                <root>so;</root>
+                <morpheme>ro;</morpheme>
+            </morphology>
+        </word>
+        <gloss xml:lang="en">told</gloss>
+        <gloss xml:lang="en">said</gloss>
+    </translation>
+    <translation>
+        <word spelling="tiantian">
+            <morphology>
+                <root>tían</root>
+                <morpheme>tían</morpheme>
+            </morphology>
+        </word>
+        <gloss xml:lang="en">very high (for flying objects)</gloss>
+    </translation>
+</yorudi>
