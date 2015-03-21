@@ -36,8 +36,8 @@ object Yorudi extends FileParser {
       val options = parseOptions(Map(), arguments)
       val dict = parse(options.get('path).get.toString)
       
-      //var results = dict.lookupRelated("ba");
-      var results = dict.lookup("abanisise");
+      var results = dict.lookupRelated("ba");
+      //var results = dict.lookup("abanisise");
       
       for (entry <- results) println(entry._1 + " -> " + entry._2);
   }

@@ -81,17 +81,3 @@ class FileParser extends GrammarParser {
     return YorubaDictionary(entries.toMap)
   }
 }
-
-object ParserTest extends GrammarParser {
-  def main(args:Array[String]) {
-    val test = List("igba [ìgbà*]  /time",
-    				"nigba [ní . <-ìgbà*]  /when",
-    				"kuule [kú+++> . <++ilé]  /greetings",
-    				"ade [à . dé*]  /crown",
-    				"a [awa-->*]  /we"
-    			   )
-    val inputs = for (entry <- test) yield parse(wordEntry, entry).get
-    val dict = YorubaDictionary(inputs.toMap)
-    for (entry <- dict) println(entry._1 + " -> " + entry._2)
-  }
-}

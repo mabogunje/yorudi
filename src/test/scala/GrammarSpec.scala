@@ -1,7 +1,7 @@
 import YorubaImplicits._
 import Bias._
 import Tone._
-import org.scalatest._
+import org.scalatest.FlatSpec
 
 class GrammarSpec extends FlatSpec {
   val rootWord = "dé";
@@ -21,12 +21,12 @@ class GrammarSpec extends FlatSpec {
   }
   
   it can "be complex" in {
-    assert(elidedWord.root.toString() == linkedWord.toString())
+    assert(elidedWord.root.toString == linkedWord.toString())
   }
   
   "Words" can "be formed by linking" in {
     assert(linkedWord.toYoruba == "àdé")
-    assert(linkedWord.root.toString() == rootWord)
+    assert(linkedWord.root.toString == rootWord)
   }
   
   it can "be formed by elision" in {
@@ -35,16 +35,16 @@ class GrammarSpec extends FlatSpec {
   
   it can "be formed by assimilation" in {
     assert(assimilatedWordA.toYoruba == "káàbò")
-    assert(assimilatedWordA.root.toString() == "kú")
+    assert(assimilatedWordA.root.toString == "kú")
     assert(assimilatedWordB.toYoruba == "kúulé")
-    assert(assimilatedWordB.root.toString() == "kú")
+    assert(assimilatedWordB.root.toString == "kú")
   }
   
   it can "be complexly constructed" in {
     assert(complexWordA.toYoruba == "abaniṣiṣẹ")
-    assert(complexWordA.root.toString() == "eni")
+    assert(complexWordA.root.toString == "eni")
     assert(complexWordB.toYoruba == "abánigbéle")
-    assert(complexWordB.root.toString() == "eni")
+    assert(complexWordB.root.toString == "eni")
   }
   
 }
