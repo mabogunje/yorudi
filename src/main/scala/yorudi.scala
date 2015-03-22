@@ -52,7 +52,7 @@ object Yorudi extends FileParser {
         
       	println(results.size + " entries found for: " + word )
       	for (entry <- results) {
-      	  println(entry._1.word.toYoruba)
+      	  println(entry._1.word.toYoruba + " [ " + (entry._1.word.decomposition mkString " . ") + " ]")
       	  
       	  for(meaning <- entry._2) {
       	    println("- " + meaning.description + " (" + meaning.language + ")");
