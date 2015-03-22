@@ -11,8 +11,11 @@ import java.nio.charset.CodingErrorAction
  */
 object Yorudi extends FileParser {
     val usage = """
-      Usage: yorudi [-f] pathToFileorFolder
+      Usage: yorudi [-d] dictionary [word]
 """
+   val dictionaries = Map(
+       ("cms", "src/main/resources/dicts/cms.en.yor"),
+       ("sample", "src/main/resources/dicts/sample.yor"))
       
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
@@ -25,20 +28,38 @@ object Yorudi extends FileParser {
         list match {
           case string :: opt :: tail if (isSwitch(string)) => {
             string match {
-              case "-f" => parseOptions(map ++ Map('path -> opt), tail)
+              case "-h" => println(usage); exit(1)
+              case "-d" => parseOptions(map ++ Map('dict -> opt), tail)
+              case _ => println("Invalid option: " + string); exit(1)
             }
           }
-          case option :: tail => println("Unknown option " + option); exit(1)
+          case option :: tail => parseOptions(map ++ Map('word -> option), tail)
           case Nil => map
         }
       }
       
       val options = parseOptions(Map(), arguments)
-      val dict = parse(options.get('path).get.toString)
+      val dictKey = options.get('dict).get.toString
       
-      var results = dict.lookupRelated("ba");
-      //var results = dict.lookup("abanisise");
-      
-      for (entry <- results) println(entry._1 + " -> " + entry._2);
+      if(!dictionaries.contains(dictKey)) {
+        println("Unknown dictionary: " + dictKey)
+        exit(1)
+      }
+      else {
+        val dict = parse(dictionaries(dictKey))
+        val word = options.get('word).getOrElse("")
+      	var results = dict.lookup(word)
+        
+      	println(results.size + " entries found for: " + word )
+      	for (entry <- results) {
+      	  println(entry._1.word.toYoruba)
+      	  
+      	  for(meaning <- entry._2) {
+      	    println("- " + meaning.description + " (" + meaning.language + ")");
+      	  }
+      	  
+      	  println("\n")
+      	}
+      }
   }
 }
