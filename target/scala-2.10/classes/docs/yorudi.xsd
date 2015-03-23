@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2009/01/xml.xsd"/>
+    <xs:annotation>
+        <xs:appinfo>Yòrúdí Multilingual Dictionary Terms</xs:appinfo>
+          <xs:documentation xml:lang="en">
+                This schema defines the Yoruba words supported by the Yòrúdí application 
+          </xs:documentation>
+    </xs:annotation>
+
+    <!-- Attributes -->
+    <xs:attribute name="xref" type="xs:ID"/>
+    <xs:attribute name="sense" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="root" type="xs:boolean"/>
+    <xs:attribute name="ellided" type="xs:boolean"/>
+
+    <xs:attribute name="spelling">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="\p{IsBasicLatin}+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:attribute>
+
+    <!-- Simple Types -->
+    <xs:simpleType name="term">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\w+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="text">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="preserve"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Complex Types -->
+    <xs:complexType name="morphemeType">
+        <xs:simpleContent>
+            <xs:extension base="term">
+                <xs:attribute ref="root" default="0"/>
+                <xs:attribute ref="ellided" default="0"/>
+                <xs:attribute ref="xref"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="rootType">
+        <xs:simpleContent>
+            <xs:restriction base="morphemeType">
+                <xs:attribute ref="root" fixed="1"/>
+                <xs:attribute ref="ellided"/>
+                <xs:attribute ref="xref"/>
+            </xs:restriction>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="morphemeListType">
+        <xs:sequence>
+            <xs:element name="root" type="rootType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="morpheme" type="morphemeType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="wordType">
+        <xs:complexContent>
+            <xs:extension base="morphemeListType">
+                <xs:attribute ref="spelling" use="required"/>
+                <xs:attribute ref="sense"/>
+                <xs:attribute ref="xref"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="senseType">
+        <xs:simpleContent>
+            <xs:extension base="text">
+                <xs:attribute ref="xml:lang" default="yor"/>
+                <xs:attribute ref="xref"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- Complex Elements -->
+    <xs:element name="attrib">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="key" type="xs:string"/>
+                <xs:element name="val" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="word" type="wordType"/>
+
+    <xs:element name="definition">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="word"/>
+                <xs:element name="sense" type="senseType" maxOccurs="unbounded"/>
+                <xs:element ref="attrib" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="translation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="word"/>
+                <xs:element name="gloss" type="senseType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="yorudi">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="definition" maxOccurs="unbounded"/>
+                <xs:element ref="translation" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

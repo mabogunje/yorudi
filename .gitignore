@@ -6,3 +6,8 @@
 
 # Directories
 bin/
+target/streams
+target/resolution-cache
+target/test-reports
+target/scala-2.10/classes
+target/scala-2.10/test-classes

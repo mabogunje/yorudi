@@ -50,7 +50,7 @@ object Yorudi extends FileParser {
         val word = options.get('word).getOrElse("")
       	var results = dict.lookup(word)
         
-      	println(results.size + " entries found for: " + word )
+      	println(results.size + " definition(s) found for: " + word )
       	for (entry <- results) {
       	  println(entry._1.word.toYoruba + " [ " + (entry._1.word.decomposition mkString " . ") + " ]")
       	  
