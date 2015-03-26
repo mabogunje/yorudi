@@ -7,10 +7,18 @@ was itself modeled on the highly successful [EDICT project](http://www.csse.mona
 The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
 #### Usage Examples
-1. Search for word "aba" in the cms dictionary
+1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
     `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms aba`
 
+2. Find all words matching "aba" in the cms dictionary (tone-sensitive)
+
+    `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms -s aba`
+
+3. Display a glossary of all words related to "aba" in the cms dictionary
+
+    `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms -g aba`
+ 
 ### An Introduction to Yoruba & The Problem
 Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). It is tonal (like Chinese), 
 with a romanized writing system for demarcating tone and pronounciation. That is to say, like [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin), 
