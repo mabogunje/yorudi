@@ -7,13 +7,17 @@ import YorubaImplicits._
  * Yoruba interface. All Yoruba word objects must implement these features
  */
 sealed trait Yoruba {
+  val complexLetters = List("ẹ́", "ẹ̀", "ọ́", "ọ̀")
+  
   def spelling:String
   def properties:Seq[SpeechProperty]
   def root: Yoruba
   
   def isRoot: Boolean = properties contains Root  
   def isElided:Boolean
-  def isAssimilated:Boolean 
+  def isAssimilated:Boolean
+  def isComplexLetter(letter:Char) = complexLetters.contains(letter)
+
 
   def elisions(bias:Bias) = properties.find(_==Elided(bias))
   def assimilations(bias:Bias) = properties.find(_==Assimilated(bias))  
@@ -67,8 +71,8 @@ case class Term(override val spelling:String, override val properties:Seq[Speech
     val newSpelling = properties.foldLeft(spelling)((str, property) =>
       property match {
         case (p:Elided) => p.bias match {
-          case Left => str.drop(p.count)
-          case Right => str.dropRight(p.count)
+          case Left => if (isComplexLetter(str.head)) str.drop(p.count + 1) else str.drop(p.count)
+          case Right => if(isComplexLetter(str.last)) str.dropRight(p.count + 1) else str.dropRight(p.count)
           case _ => str
         }
         case _ => str

@@ -11,7 +11,7 @@ import java.nio.charset.CodingErrorAction
  */
 object Yorudi extends FileParser {
     val usage = """
-      Usage: yorudi [-d] dictionary [word]
+      Usage: yorudi [--dict=dictionary] [-s | -g] [word]
 """
    val dictionaries = Map(
        ("cms", "src/main/resources/dicts/cms.en.yor"),
@@ -42,10 +42,9 @@ object Yorudi extends FileParser {
           case "--dict" :: value :: tail => parseOptions(map ++ Map('dict -> value), tail)
           case string :: opt :: tail if (isSwitch(string)) => {
             string match {
-              case "-h" => println(usage); exit(1)
               case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
               case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
-              case _ => println("Invalid option: " + string); exit(1)
+              case _ => println("Invalid option: " + string); println(usage); exit(1)
             }
           }
           case option :: tail => parseOptions(map ++ Map('word -> option), tail)
@@ -53,6 +52,11 @@ object Yorudi extends FileParser {
       }
       
       val options = parseOptions(Map(), arguments)
+      
+      if(options.isEmpty) {
+        exit(1)
+      }
+      val showHelp = options.get('help).getOrElse(false)
       val dictKey = options.get('dict).get.toString
       
       if(!dictionaries.contains(dictKey)) {

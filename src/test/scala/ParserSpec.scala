@@ -7,12 +7,18 @@ class ParserSpec extends FlatSpec {
 	val elidedWord = "a [awa-->*]  /we"
 	val elidedWord2 = "nigba [ní . <-ìgbà*]  /when"
 	val assimilatedWord = "kuule [kú+++>* . <++ilé]  /greetings"
+	val dottedWord = "ba [bẹ->* . awa-->]  /with"
 	
 	"Parser" can "parse simple word definitions" in {
 	  var simple = parser.parse(parser.wordEntry, rootWord).get
 	  assert(simple._1.word.toString == "ìgbà")
 	  assert(simple._1.word.root.toString == "ìgbà")
 	  assert(simple._2.head.toString == "time")	  
+	}
+	
+	it can "parse underdotted word definitions" in {
+	  var underdotted = parser.parse(parser.wordEntry, dottedWord).get
+	  assert(underdotted._1.word.toString == "ba")
 	}
 	
 	it can "parse linked word definitions" in {
