@@ -6,6 +6,11 @@ as the pivot language. The project is modelled after the [CC-CEDICT project](htt
 was itself modeled on the highly successful [EDICT project](http://www.csse.monash.edu.au/~jwb/edict.html) by Jim Breen. 
 The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
 
+#### Usage Examples
+1. Search for word "aba" in the cms dictionary
+
+    `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms aba`
+
 ### An Introduction to Yoruba & The Problem
 Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). It is tonal (like Chinese), 
 with a romanized writing system for demarcating tone and pronounciation. That is to say, like [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin), 
