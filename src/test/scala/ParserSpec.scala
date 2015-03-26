@@ -12,7 +12,7 @@ class ParserSpec extends FlatSpec {
 	  var simple = parser.parse(parser.wordEntry, rootWord).get
 	  assert(simple._1.word.toString == "ìgbà")
 	  assert(simple._1.word.root.toString == "ìgbà")
-	  assert(simple._2.head.toString == "time")
+	  assert(simple._2.head.toString == "time")	  
 	}
 	
 	it can "parse linked word definitions" in {
@@ -26,7 +26,7 @@ class ParserSpec extends FlatSpec {
 	  var elided = parser.parse(parser.wordEntry, elidedWord).get
 	  assert(elided._1.word.toString == "a")
 	  assert(elided._1.word.root.toString == "awa")
-	  assert(elided._2.head.toString == "we")
+	  assert(elided._2.head.toString == "we")	  
 	}
 	
 	it can "parse elided word combinations" in {
