@@ -71,13 +71,19 @@ class FileParser extends GrammarParser {
   val DIRECTIVE = "!";
   var LANGUAGE = "";
   var DICT = YorubaDictionary()
+  var problems = List
   
   def parse(filename:String):YorubaDictionary = {
     val file = Source.fromFile(filename)(CODEC)
+    var failures = List()
     val entries = file.getLines.filterNot(_.startsWith(COMMENT)) map {
-      parse(wordEntry, _)
-      } filter {_.successful} map {_.get} toList
-      
-    DICT ++ entries
+      parse(wordEntry, _) match {
+        case Success(matched, _) => DICT = (DICT + matched)
+        case Failure(msg, _) => println("Failure: " + msg)
+        case Error(msg, _) => println("Error: " + msg)
+      }
+    }
+    
+    return DICT
   }
 }
