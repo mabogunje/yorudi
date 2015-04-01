@@ -9,7 +9,7 @@ class ParserSpec extends FlatSpec {
 	val assimilatedWord = "kuule [kú+++>* . <++ilé]  /greetings"
 	val assimilatedWord2 = "abamo [a . <-ìbá+> . <+ọ̀mọ̀*]  /a potter"
 	val dottedWord = "ba [bẹ->* . awa-->]  /with"
-	val hyphenatedWord = "abaniku~ore [a . ba . <-eni* . kù . ~ . ọrẹ*]  /a faithful friend"
+	val hyphenatedWord = "abaniku~ore [a . ba . <-eni . kù . ~ . ọrẹ*]  /a faithful friend"
 	
 	it can "parse simple word definitions" in {
 	  var simple = parser.parse(parser.wordEntry, rootWord).get
@@ -24,8 +24,10 @@ class ParserSpec extends FlatSpec {
 	}
 	
 	it can "parse hyphenated word definitions" in {
-	  var hyphenated = parser.parse(parser.wordEntry, hyphenatedWord)
-	  assert(hyphenated.get._1.word.toString == "abanikù~ọrẹ")
+	  var hyphenated = parser.parse(parser.wordEntry, hyphenatedWord).get
+	  assert(hyphenated._1.word.toString == "abanikù~ọrẹ")
+	  assert(hyphenated._1.word.root.toString == "ọrẹ")
+	  assert(hyphenated._2.head.toString == "a faithful friend")
 	}
 	
 	it can "parse linked word definitions" in {
