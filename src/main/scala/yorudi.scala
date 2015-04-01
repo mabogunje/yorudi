@@ -11,7 +11,7 @@ import java.nio.charset.CodingErrorAction
  */
 object Yorudi extends FileParser {
     val usage = """
-      Usage: yorudi [--dict=dictionary] [-s | -g] [word]
+      Usage: yorudi [--dict=dictionary] [-s (strict) | -g (glossary)] [word]
 """
    val dictionaries = Map(
        ("cms", "src/main/resources/dicts/cms.en.yor"),

@@ -9,9 +9,9 @@ class ParserSpec extends FlatSpec {
 	val assimilatedWord = "kuule [kú+++>* . <++ilé]  /greetings"
 	val assimilatedWord2 = "abamo [a . <-ìbá+> . <+ọ̀mọ̀*]  /a potter"
 	val dottedWord = "ba [bẹ->* . awa-->]  /with"
-	val hyphenatedWord = "abaniku-ore [a . ba . <-eni* . kù . ọrẹ*]  /a faithful friend"
+	val hyphenatedWord = "abaniku~ore [a . ba . <-eni* . kù . ~ . ọrẹ*]  /a faithful friend"
 	
-	"Parser" can "parse simple word definitions" in {
+	it can "parse simple word definitions" in {
 	  var simple = parser.parse(parser.wordEntry, rootWord).get
 	  assert(simple._1.word.toString == "ìgbà")
 	  assert(simple._1.word.root.toString == "ìgbà")
@@ -25,7 +25,7 @@ class ParserSpec extends FlatSpec {
 	
 	it can "parse hyphenated word definitions" in {
 	  var hyphenated = parser.parse(parser.wordEntry, hyphenatedWord)
-	  assert(hyphenated.get._1.word.toString == "ba")
+	  assert(hyphenated.get._1.word.toString == "abanikù~ọrẹ")
 	}
 	
 	it can "parse linked word definitions" in {
@@ -55,9 +55,9 @@ class ParserSpec extends FlatSpec {
 	  assert(assimilated._1.word.root.toString == "kú")
 	  assert(assimilated._2.head.toString == "greetings")
 	}
-	
+	/*
 	it can "parse assimilated opposing tone combinations" in {
 	  var assimilated = parser.parse(parser.wordEntry, assimilatedWord2).get
 	  assert(assimilated._1.word.toString == "abamo")
-	}
+	}*/
 }

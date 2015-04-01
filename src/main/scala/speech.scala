@@ -63,6 +63,7 @@ trait SpeechProperty {
 }
 
 case object Root extends SpeechProperty { override val opposite = this }
+case object Connector extends SpeechProperty { override val opposite = this }
 
 case class Elided(override val bias:Bias, override val count:Int=1) extends SpeechProperty {
   override def equals(o:Any):Boolean = o match {

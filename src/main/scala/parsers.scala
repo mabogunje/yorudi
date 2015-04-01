@@ -14,6 +14,7 @@ class GrammarParser extends RegexParsers {
   
   // Base token parsers - indicating word properties
   def root:Parser[SpeechProperty] = """\*""".r ^^^ {Root}
+  def connector:Parser[SpeechProperty] = """~""".r ^^^ {Connector}
   
   def asmL:Parser[Assimilated] = """<(\+)+""".r ^^ { str => Assimilated(Left, str.count(_ == '+')) }
   def asmR:Parser[Assimilated] = """(\+)+>""".r ^^ { str => Assimilated(Right, str.count(_ == '+')) }
@@ -24,11 +25,11 @@ class GrammarParser extends RegexParsers {
   def elision:Parser[Elided] = elsL | elsR
 
   def prefixes:Parser[SpeechProperty] = asmL|elsL
-  def postfixes:Parser[SpeechProperty] = asmR|elsR|root  
-  def property:Parser[SpeechProperty] = root|assimilation|elision 
+  def postfixes:Parser[SpeechProperty] = asmR|elsR|root
+  def property:Parser[SpeechProperty] = root|assimilation|elision
 
   // Base parsers for all values - applies restrictions on acceptable strings
-  def term:Parser[String] = """[\p{L}(\p{Mn})?]+""".r ^^ {_.toLowerCase()}
+  def term:Parser[String] = """[\p{L}(\p{Mn})?\\~?]+[\p{L}(\p{Mn})?]*""".r ^^ {_.toLowerCase()}
   def value:Parser[String] = """[\w|\(\)|\-|']+""".r ^^ {_.toString()}
 
   // Base parser for word senses: Strings delimited by '/'. May be whole sentences 
