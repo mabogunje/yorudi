@@ -1,3 +1,4 @@
+enablePlugins(ScalaJSPlugin)
 
 name := "yorudi"
 
