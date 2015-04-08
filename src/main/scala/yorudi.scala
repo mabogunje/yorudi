@@ -16,19 +16,7 @@ object Yorudi extends FileParser {
    val dictionaries = Map(
        ("cms", "src/main/resources/dicts/cms.en.yor"),
        ("sample", "src/main/resources/dicts/sample.yor"))
-   
-  def print(results: YorubaDictionary) = {
-    for (entry <- results) {
-      println(entry._1.word.toYoruba + " [ " + (entry._1.word.decomposition mkString " . ") + " ]")
-      	  
-        for(meaning <- entry._2) {
-          println("- " + meaning.description + " (" + meaning.language + ")");
-        }
-      	  
-        println("\n")
-    }
-  }
-      
+        
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
       val arguments = args.toList
@@ -68,19 +56,16 @@ object Yorudi extends FileParser {
         val word = options.get('word).getOrElse("")
         var searchType = options.get('lookup).getOrElse("default")
         var mode = options.get('mode).getOrElse("dictionary")
-        var info = "number of results found"
         var results = YorubaDictionary()
+        var printer = CommandLineWriter()
       	
         if(mode == "glossary") {
           results = dict.lookupRelated(word)
-          info = results.size + " word(s) found related to: " + word
         } else {
           results = if (searchType.toString == "strict") dict.strictLookup(word) else dict.lookup(word)
-          info = results.size + " definition(s) found for: " + word
         }
       	
-      	println(info)
-      	print(results)      
+      	println(printer.writeGlossary(results))      
      }
   }
 }
