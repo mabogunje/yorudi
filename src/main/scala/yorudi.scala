@@ -57,7 +57,7 @@ object Yorudi extends FileParser {
         var searchType = options.get('lookup).getOrElse("default")
         var mode = options.get('mode).getOrElse("dictionary")
         var results = YorubaDictionary()
-        var printer = CommandLineWriter()
+        var printer = new CommandLineWriter()
       	
         if(mode == "glossary") {
           results = dict.lookupRelated(word)
