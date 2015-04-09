@@ -1,4 +1,6 @@
 import YorubaImplicits._
+import scala.xml.PrettyPrinter
+import scala.xml.XML
 import org.scalatest.FlatSpec
 
 class CmdlWriterSpec extends FlatSpec {
@@ -31,13 +33,15 @@ class CmdlWriterSpec extends FlatSpec {
 
 class XmlWriterSpec extends FlatSpec {
   var writer:YorudiWriter = new XmlWriter()
+  var printer = new xml.PrettyPrinter(80, 2)
+  def format(element: xml.Elem) = XML.loadString(printer format element)
   
   "The Xml writer" can "write words correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeWord(entry)
     var expected = <word spelling="gbogbo"><decomposition><root>gbo</root><term>gbo</term></decomposition></word>
-        
-    assert(output.toString == expected.toString)
+    
+    assert(output.toString == format(expected).toString)
   }
   
   it can "write decompositions correctly" in {
@@ -45,7 +49,7 @@ class XmlWriterSpec extends FlatSpec {
     var output = writer.writeDecomposition(entry)
     var expected = <decomposition><root>gbo</root><term>gbo</term></decomposition>
       
-    assert(output.toString == expected.toString)
+    assert(output.toString == format(expected).toString)
   }
   
   it can "write translations correctly" in {
@@ -53,6 +57,6 @@ class XmlWriterSpec extends FlatSpec {
     var output = writer.writeTranslation(translation)
     var expected = <meaning xml:lang="en">plenty</meaning>
     
-    assert(output.toString == expected.toString)
+    assert(output.toString == format(expected).toString)
   }
 }

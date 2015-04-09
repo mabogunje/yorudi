@@ -33,6 +33,7 @@ object Yorudi extends FileParser {
         string match {
           case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
           case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
+          case "-d" => parseOptions(map ++ Map('mode -> "derivative"), list.tail)
           case _ => println("Invalid option: " + string); println(usage); exit(1)
         }
       }
@@ -66,12 +67,12 @@ object Yorudi extends FileParser {
       var results = YorubaDictionary()
       var printer:YorudiWriter = if(printers.keys.exists(_ == outputType.toString)) printers(outputType.toString) else printers("plain")
       	
-      if(mode == "glossary") {
-        results = dict.lookupRelated(word)
-      } else {
-        results = if (searchType.toString == "strict") dict.strictLookup(word) else dict.lookup(word)
+      mode match {
+        case "glossary" => results = dict.lookupRelated(word)
+        case "derivative" => results = dict.lookupDerivatives(word)
+        case _ => if (searchType.toString == "strict") dict.strictLookup(word) else dict.lookup(word)
       }
-      	
+      
       println(printer.writeGlossary(results))
   }
 }

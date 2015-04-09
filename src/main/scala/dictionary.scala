@@ -31,6 +31,9 @@ case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEnt
   
   def lookupRelated(word:Any):YorubaDictionary = self filterKeys (
       k => (k.word.decomposition map {_.toYoruba} contains word) || (k.word == word))
+  
+  def lookupDerivatives(word:Any):YorubaDictionary = self filterKeys (
+      k => (k.word.root.toYoruba == word))
 }
 
 /**

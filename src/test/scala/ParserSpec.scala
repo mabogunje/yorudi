@@ -5,7 +5,7 @@ class ParserSpec extends FlatSpec {
 	val rootWord = "igba [ìgbà*]  /time"
 	val linkedWord = "ade [à . dé*]  /crown"
 	val elidedWord = "a [awa-->*]  /we"
-	val elidedWord2 = "nigba [ní . <-ìgbà*]  /when"
+	val elidedWord2 = "abunni [a . bùn . <-ẹni*]  /giver"
 	val assimilatedWord = "kuule [kú+++>* . <++ilé]  /greetings"
 	val assimilatedWord2 = "abamo [a . <-ìbá+> . <+ọ̀mọ̀*]  /a potter"
 	val dottedWord = "ba [bẹ->* . awa-->]  /with"

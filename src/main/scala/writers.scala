@@ -43,31 +43,39 @@ class CommandLineWriter() extends YorudiWriter {
 
 
 case class XmlWriter() extends YorudiWriter {
+  val printer = new PrettyPrinter(80, 2)
+  
+  def pretty(element: xml.Elem): xml.Elem = {
+    XML.loadString(printer format element)
+  }
+  
   def writeWord(entry:WordEntry): xml.Elem = {
-    <word>{writeDecomposition(entry)}</word> % Attribute(None, "spelling", Text(entry.word.spelling), Null) 
+    var xml = <word>{writeDecomposition(entry)}</word> % Attribute(None, "spelling", Text(entry.word.spelling), Null)
+    pretty(xml)
   }
   
   def writeDecomposition(entry:WordEntry): xml.Elem = {
-    val (before, atAndAfter) = entry.word.decomposition.toList span (term => term != entry.word.root)
-    var rootless = before ::: atAndAfter.drop(1)
+    var xml = <decomposition>{entry.word.decomposition map(term => 
+      if(term.properties.contains(Root)) <root>{term}</root> 
+      else <term>{term}</term>
+    )}</decomposition>
     
-    if(rootless.isEmpty) {
-      <decomposition><root>{entry.word.root}</root></decomposition>
-    } else {
-      <decomposition><root>{entry.word.root}</root>{rootless map(term => <term>{term.toYoruba}</term>)}</decomposition>
-    }   
+    pretty(xml)
   }
   
   def writeTranslation(translation:Meaning): xml.Elem = {
-    <meaning>{translation.description}</meaning> % Attribute(None, "xml:lang", Text(translation.language.toString), Null)
+    var xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:lang", Text(translation.language.toString), Null)
+    pretty(xml)
   }
   
   def writeDefinition(definition:(WordEntry, List[Meaning])): xml.Elem = {
-    <definition>{writeWord(definition._1)} {definition._2 map(meaning => writeTranslation(meaning))}</definition>
+    var xml = <definition>{writeWord(definition._1)} {definition._2 map(meaning => writeTranslation(meaning))}</definition>
+    pretty(xml)
   }
   
   def writeGlossary(dictionary:YorubaDictionary): xml.Elem = {
-    <yorudi>{dictionary map(definition => writeDefinition(definition))}</yorudi>% Attribute(None, "wordCount", Text(dictionary.size.toString), Null)
+    var xml = <yorudi>{dictionary map(definition => writeDefinition(definition))}</yorudi>% Attribute(None, "wordCount", Text(dictionary.size.toString), Null)
+    pretty(xml)
   }
 }
 
