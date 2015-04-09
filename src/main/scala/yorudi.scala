@@ -10,40 +10,40 @@ import java.nio.charset.CodingErrorAction
  *
  */
 object Yorudi extends FileParser {
-    val usage = """
-      Usage: yorudi [--dict=dictionary] [-s (strict) | -g (glossary)] [word]
-"""
-   val dictionaries = Map[String, String](
-       ("cms", "src/main/resources/dicts/cms.en.yor"),
-       ("sample", "src/main/resources/dicts/sample.yor"))
+  val usage = "Usage: yorudi [--dict=sample|cms] [-s (strict) | -g (glossary)] [word] [--fmt=plain|xml]"
+    
+  val dictionaries = Map[String, String](
+    ("sample", "src/main/resources/dicts/sample.yor"),
+    ("cms", "src/main/resources/dicts/cms.en.yor"))
    
-   val printers = Map[String, YorudiWriter](
-       ("xml", new XmlWriter()),
-       ("default", new CommandLineWriter()))
+  val printers = Map[String, YorudiWriter](
+    ("plain", new CommandLineWriter()),
+    ("xml", new XmlWriter()))
+   
+  type OptionMap = Map[Symbol, Any]
         
+  def parseOptions(map:OptionMap, list:List[String]):OptionMap = {
+    def isSwitch(s:String) = (s.charAt(0) == '-')
+        
+    list match {
+      case Nil => map
+      case "--dict" :: value :: tail => parseOptions(map ++ Map('dict -> value), tail)
+      case "--fmt" :: value :: tail => parseOptions(map ++ Map('format -> value), tail)
+      case string :: opt :: tail if (isSwitch(string)) => {
+        string match {
+          case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
+          case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
+          case _ => println("Invalid option: " + string); println(usage); exit(1)
+        }
+      }
+      case option :: tail => parseOptions(map ++ Map('word -> option), tail)
+    }
+  }
+      
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
       val arguments = args.toList
-      type OptionMap = Map[Symbol, Any]
-      
-      def parseOptions(map:OptionMap, list:List[String]):OptionMap = {
-        def isSwitch(s:String) = (s.charAt(0) == '-')
-        
-        list match {
-          case Nil => map
-          case "--dict" :: value :: tail => parseOptions(map ++ Map('dict -> value), tail)
-          case "--out" :: value :: tail => parseOptions(map ++ Map('output -> value), tail)
-          case string :: opt :: tail if (isSwitch(string)) => {
-            string match {
-              case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
-              case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
-              case _ => println("Invalid option: " + string); println(usage); exit(1)
-            }
-          }
-          case option :: tail => parseOptions(map ++ Map('word -> option), tail)
-        }
-      }
-      
+            
       val options = parseOptions(Map(), arguments)
       
       if(options.isEmpty) {
@@ -61,10 +61,10 @@ object Yorudi extends FileParser {
       val dict = parse(dictionaries(dictKey))
       val word = options.get('word).getOrElse("")
       var searchType = options.get('lookup).getOrElse("default")
-      var outputType = options.get('output).getOrElse("default")
+      var outputType = options.get('format).getOrElse("plain")
       var mode = options.get('mode).getOrElse("dictionary")
       var results = YorubaDictionary()
-      var printer:YorudiWriter = if(printers.keys.exists(_ == outputType.toString)) printers(outputType.toString) else printers("default")
+      var printer:YorudiWriter = if(printers.keys.exists(_ == outputType.toString)) printers(outputType.toString) else printers("plain")
       	
       if(mode == "glossary") {
         results = dict.lookupRelated(word)

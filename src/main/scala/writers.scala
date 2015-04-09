@@ -70,3 +70,11 @@ case class XmlWriter() extends YorudiWriter {
     <yorudi>{dictionary map(definition => writeDefinition(definition))}</yorudi>% Attribute(None, "wordCount", Text(dictionary.size.toString), Null)
   }
 }
+
+/*
+case class JsonWriter extends YorudiWriter {
+  def writeWord(entry: WordEntry): String = {
+    var output = new StringBuilder()
+  }
+}
+*/
