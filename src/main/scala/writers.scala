@@ -4,19 +4,19 @@ import scala.xml._
  * Writer Interface - All dictionary writers must implement this interface
  */
 trait YorudiWriter {
-  def writeWord(entry:WordEntry): String
-  def writeDecomposition(entry:WordEntry): String
-  def writeTranslation(translation:Meaning): String
-  def writeDefinition(definition:(WordEntry, List[Meaning])): String
-  def writeGlossary(dictionary:YorubaDictionary): String
+  def writeWord(entry:WordEntry): Any
+  def writeDecomposition(entry:WordEntry): Any
+  def writeTranslation(translation:Meaning): Any
+  def writeDefinition(definition:(WordEntry, List[Meaning])): Any
+  def writeGlossary(dictionary:YorubaDictionary): Any
 }
 
 class CommandLineWriter() extends YorudiWriter {
-  def writeWord(entry:WordEntry) = entry.word.toYoruba
-  def writeDecomposition(entry:WordEntry) = s"[ ${entry.word.decomposition mkString " . "} ]"
-  def writeTranslation(translation:Meaning) = s"- ${translation.description} {${translation.language}}"
+  def writeWord(entry:WordEntry): String = entry.word.toYoruba
+  def writeDecomposition(entry:WordEntry): String = s"[ ${entry.word.decomposition mkString " . "} ]"
+  def writeTranslation(translation:Meaning): String = s"- ${translation.description} {${translation.language}}"
  
-  def writeDefinition(definition:(WordEntry, List[Meaning])) = {
+  def writeDefinition(definition:(WordEntry, List[Meaning])): String = {
     var output = new StringBuilder
     output ++= s"${writeWord(definition._1)} ${writeDecomposition(definition._1)}\n"
     
@@ -28,7 +28,7 @@ class CommandLineWriter() extends YorudiWriter {
     output.toString
   }
   
-  def writeGlossary(dictionary:YorubaDictionary) = {
+  def writeGlossary(dictionary:YorubaDictionary): String = {
     var output = new StringBuilder
     output ++= s"${dictionary.size} definition(s) found\n"
     
@@ -41,22 +41,32 @@ class CommandLineWriter() extends YorudiWriter {
   }
 }
 
-/*
-case class XmlWriter() extends YorudiWriter {
-  def writeWord(entry:WordEntry) = {
-    <word>{writeDecomposition(entry)}</word>% Attribute(None, "name", Text(entry.word.spelling), Null) 
-  }
-  def writeDecomposition(entry:WordEntry) = {
-    var rootless = entry.word.decomposition diff entry.word.root.toYoruba
-    
-    <decomposition>
-      <root>entry.word.root</root>
-      {rootless.map(term => <term>{term.toYoruba}</term>)}
-    </decomposition>
-  }
-  def writeTranslation(translation:Meaning) = "To Do"
-  def writeDefinition(definition:(WordEntry, List[Meaning])) = "To Do"
-  def writeGlossary(dictionary:YorubaDictionary) = "To Do"
 
+case class XmlWriter() extends YorudiWriter {
+  def writeWord(entry:WordEntry): xml.Elem = {
+    <word>{writeDecomposition(entry)}</word> % Attribute(None, "spelling", Text(entry.word.spelling), Null) 
+  }
+  
+  def writeDecomposition(entry:WordEntry): xml.Elem = {
+    val (before, atAndAfter) = entry.word.decomposition.toList span (term => term != entry.word.root)
+    var rootless = before ::: atAndAfter.drop(1)
+    
+    if(rootless.isEmpty) {
+      <decomposition><root>{entry.word.root}</root></decomposition>
+    } else {
+      <decomposition><root>{entry.word.root}</root>{rootless map(term => <term>{term.toYoruba}</term>)}</decomposition>
+    }   
+  }
+  
+  def writeTranslation(translation:Meaning): xml.Elem = {
+    <meaning>{translation.description}</meaning> % Attribute(None, "xml:lang", Text(translation.language.toString), Null)
+  }
+  
+  def writeDefinition(definition:(WordEntry, List[Meaning])): xml.Elem = {
+    <definition>{writeWord(definition._1)} {definition._2 map(meaning => writeTranslation(meaning))}</definition>
+  }
+  
+  def writeGlossary(dictionary:YorubaDictionary): xml.Elem = {
+    <yorudi>{dictionary map(definition => writeDefinition(definition))}</yorudi>% Attribute(None, "wordCount", Text(dictionary.size.toString), Null)
+  }
 }
-*/

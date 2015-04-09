@@ -13,9 +13,13 @@ object Yorudi extends FileParser {
     val usage = """
       Usage: yorudi [--dict=dictionary] [-s (strict) | -g (glossary)] [word]
 """
-   val dictionaries = Map(
+   val dictionaries = Map[String, String](
        ("cms", "src/main/resources/dicts/cms.en.yor"),
        ("sample", "src/main/resources/dicts/sample.yor"))
+   
+   val printers = Map[String, YorudiWriter](
+       ("xml", new XmlWriter()),
+       ("default", new CommandLineWriter()))
         
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
@@ -28,6 +32,7 @@ object Yorudi extends FileParser {
         list match {
           case Nil => map
           case "--dict" :: value :: tail => parseOptions(map ++ Map('dict -> value), tail)
+          case "--out" :: value :: tail => parseOptions(map ++ Map('output -> value), tail)
           case string :: opt :: tail if (isSwitch(string)) => {
             string match {
               case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
@@ -44,6 +49,7 @@ object Yorudi extends FileParser {
       if(options.isEmpty) {
         exit(1)
       }
+      
       val showHelp = options.get('help).getOrElse(false)
       val dictKey = options.get('dict).get.toString
       
@@ -51,21 +57,21 @@ object Yorudi extends FileParser {
         println("Unknown dictionary: " + dictKey)
         exit(1)
       }
-      else {
-        val dict = parse(dictionaries(dictKey))
-        val word = options.get('word).getOrElse("")
-        var searchType = options.get('lookup).getOrElse("default")
-        var mode = options.get('mode).getOrElse("dictionary")
-        var results = YorubaDictionary()
-        var printer = new CommandLineWriter()
+      
+      val dict = parse(dictionaries(dictKey))
+      val word = options.get('word).getOrElse("")
+      var searchType = options.get('lookup).getOrElse("default")
+      var outputType = options.get('output).getOrElse("default")
+      var mode = options.get('mode).getOrElse("dictionary")
+      var results = YorubaDictionary()
+      var printer:YorudiWriter = if(printers.keys.exists(_ == outputType.toString)) printers(outputType.toString) else printers("default")
       	
-        if(mode == "glossary") {
-          results = dict.lookupRelated(word)
-        } else {
-          results = if (searchType.toString == "strict") dict.strictLookup(word) else dict.lookup(word)
-        }
+      if(mode == "glossary") {
+        results = dict.lookupRelated(word)
+      } else {
+        results = if (searchType.toString == "strict") dict.strictLookup(word) else dict.lookup(word)
+      }
       	
-      	println(printer.writeGlossary(results))      
-     }
+      println(printer.writeGlossary(results))
   }
 }
