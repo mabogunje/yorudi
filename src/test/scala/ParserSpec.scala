@@ -53,9 +53,9 @@ class ParserSpec extends FlatSpec {
 	
 	it can "parse elided word combinations" in {
 	  var elidedCombo = parser.parse(parser.wordEntry, elidedWord2).get
-	  assert(elidedCombo._1.word.toString == "nígbà")
-	  assert(elidedCombo._1.word.root.toString == "ìgbà")
-	  assert(elidedCombo._2.head.toString == "when")
+	  assert(elidedCombo._1.word.toString == "abùnni")
+	  assert(elidedCombo._1.word.root.toString == "ẹni")
+	  assert(elidedCombo._2.head.toString == "giver")
 	}
 	
 	/*
