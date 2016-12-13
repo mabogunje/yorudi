@@ -34,7 +34,7 @@ object Yorudi extends FileParser {
           case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
           case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
           case "-d" => parseOptions(map ++ Map('mode -> "derivative"), list.tail)
-          case _ => println("Invalid option: " + string); println(usage); sys.exit(1)
+          case _ => println("Invalid option: " + string); println(usage); sys.exit
         }
       }
       case option :: tail => parseOptions(map ++ Map('word -> option), tail)
@@ -48,7 +48,7 @@ object Yorudi extends FileParser {
       val options = parseOptions(Map(), arguments)
       
       if(options.isEmpty) {
-        sys.exit(1)
+        sys.exit
       }
       
       val showHelp = options.get('help).getOrElse(false)
@@ -56,7 +56,7 @@ object Yorudi extends FileParser {
       
       if(!dictionaries.contains(dictKey)) {
         println("Unknown dictionary: " + dictKey)
-        sys.exit(1)
+        sys.exit
       }
       
       val dict = parse(dictionaries(dictKey))
