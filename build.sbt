@@ -1,5 +1,6 @@
 name := "yorudi"
 scalaVersion := "2.11.8"
+fork := true
 
 
 version := "0.1-SNAPSHOT"
