@@ -70,7 +70,7 @@ object Yorudi extends FileParser {
       mode match {
         case "glossary" => results = dict.lookupRelated(word)
         case "derivative" => results = dict.lookupDerivatives(word)
-        case _ => if (searchType.toString == "strict") dict.strictLookup(word) else dict.lookup(word)
+        case _ => if (searchType.toString == "strict") results = dict.strictLookup(word) else results = dict.lookup(word)
       }
       
       println(printer.writeGlossary(results))

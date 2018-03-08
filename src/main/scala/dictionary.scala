@@ -23,11 +23,11 @@ case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEnt
   }
   
   def strictLookup(word:Any):YorubaDictionary = self filterKeys (
-      k => (k.word.toYoruba == word)) 
+      k => (k.word.toYoruba == word) || (k.word == word))
 
   
   def lookup(word:Any):YorubaDictionary = self filterKeys (
-      k => (k.word == word || k.word.spelling == (word.toString map {Tone.normalise(_)}))) 
+      k => (k.word == word) || (k.word.toYoruba == word) || (k.word.spelling == word)) 
   
   def lookupRelated(word:Any):YorubaDictionary = self filterKeys (
       k => (k.word.decomposition map {_.toYoruba} contains word) || (k.word == word))

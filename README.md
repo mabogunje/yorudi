@@ -1,39 +1,55 @@
-# Yòrúdí 
-#### A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
+# Yòrúdí
 
-The Yòrúdí project aims to compile a complete multi-lingual lexical database with [Yoruba](http://en.wikipedia.org/wiki/Yoruba_language) 
-as the pivot language. The project is modelled after the [CC-CEDICT project](http://cc-cedict.org/wiki/) by Paul Andrew Denisowski which 
-was itself modeled on the highly successful [EDICT project](http://www.csse.monash.edu.au/~jwb/edict.html) by Jim Breen. 
-The former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English Dictionary.
+## A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
-#### Usage Examples
+The Yòrúdí project aims to compile a complete multi-lingual lexical database
+with [Yoruba](http://en.wikipedia.org/wiki/Yoruba_language)  as the pivot language.
+The project is modelled after the [CC-CEDICT project](http://cc-cedict.org/wiki/)
+by Paul Andrew Denisowski which was itself modeled on the highly successful
+[EDICT project](http://www.csse.monash.edu.au/~jwb/edict.html) by Jim Breen. The
+former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English
+Dictionary.
+
+### Usage Examples
+
 1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
-    `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms aba`
+    `sbt 'run yorudi --dict cms aba'`
 
 2. Find all words matching "aba" in the cms dictionary (tone-sensitive)
 
-    `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms -s aba`
+    `sbt 'run yorudi --dict cms -s aba'`
 
 3. Display a glossary of all words related to "aba" in the cms dictionary
 
-    `java -jar target/scala-2.10/yorudi-assembly-0.1-SNAPSHOT.jar --dict cms -g aba`
- 
-### An Introduction to Yoruba & The Problem
-Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people). It is tonal (like Chinese), 
-with a romanized writing system for demarcating tone and pronounciation. That is to say, like [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin), 
-and [Japanese Romaji](https://en.wikipedia.org/wiki/Romanization_of_Japanese), Yoruba can be written entirely within the extended
-Latin alphabet. 
+    `sbt 'run yorudi --dict cms -g aba'`
 
-That notwithstanding, the construction of words in Yoruba is still fundamentally different from other languages, and it is my belief that
-because existing databases do not take this into account, they fail to provide an adequate level of detail in their definitions.
-In particular, the way most Yoruba words are made up of other Yoruba words is not taken advantage of.
+4. Find all words derived from "aba" in the cms dictionary
+
+    `sbt 'run yorudi --dict cms -d aba'`
+
+### An Introduction to Yoruba & The Problem
+
+Yoruba is the native tongue of the [Yoruba people of West Africa](http://en.wikipedia.org/wiki/Yoruba_people).
+It is tonal (like Chinese), with a romanized writing system for demarcating tone
+and pronounciation. That is to say, like [Chinese Pinyin](http://en.wikipedia.org/wiki/Pinyin),
+and [Japanese Romaji](https://en.wikipedia.org/wiki/Romanization_of_Japanese), Yoruba
+can be written entirely within the extended Latin alphabet.
+
+That notwithstanding, the construction of words in Yoruba is still fundamentally
+different from other languages, and it is my belief that because existing
+databases do not take this into account, they fail to provide an adequate
+level of detail in their definitions. In particular, the way most Yoruba
+words are made up of other Yoruba words is not taken advantage of.
 
 #### Contractions in Yoruba
-At its core, Yoruba has very few self-contained words over 4 letters (if any at all). All other words, are created through the combination
-and permutation of the vocabulary: and as such, the direct meaning of any word is little more than the sum of its parts. 
 
-Similarly, the spellings of words are always the result of merging their components. This merging may be done in any of **3 ways**.
+At its core, Yoruba has very few self-contained words over 4 letters (if any at all).
+All other words, are created through the combination and permutation of the vocabulary:
+and as such, the direct meaning of any word is little more than the sum of its parts.
+
+Similarly, the spellings of words are always the result of merging their components.
+This merging may be done in any of **3 ways**.
 
 1. **Linking** :- This is a simple joining of words
 
@@ -50,14 +66,16 @@ Similarly, the spellings of words are always the result of merging their compone
 > _To learn more about the Yoruba people and their language, see http://yorupedia.com/_
 
 
-## Creating a Yòrúdí File
+### Creating a Yòrúdí File
+
 > Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
 examples. 
 
 Such files may be easily created with any text editor able to save to _.txt_. 
 Once created, you can change the extension to _.yor_ so it will be recognized as a translation file.
 
-### Understanding Yòrúdí Entries
+#### Understanding Yòrúdí Entries
+
 Given the unique properties of the Yoruba language (as detailed above), a specialized input format is used to accurately record words. 
 Details of this format are given below:
 
@@ -69,38 +87,50 @@ Details of this format are given below:
 
 
 #### 1. Simplified Yoruba 
+
 This is simply the word in the standard roman alphabet.
+
 + It should be recorded as it is spoken in the Oyo dialect for consistency
 + Neither tone nor decomposition should be indicated e.g ati, jeun, loke, sugbon
 
 #### 2. Yoruba Decomposition
+
 Here the word must be fully specified to include the following properties
+
 + Tone marks
 + Component words (making sure to identify the root)
 + Linguistic properties i.e  Assimilation and Elision
 
 #### 3. Glossary
+
 The glossary is a list of synonymous words and phrases in the target language
-+ Each synonym must be separated by a forward slash 
+
++ Each synonym must be separated by a forward slash
 + Each glossary entry may optionally feature short annotations in parentheses
 + For readability, each slash in the glossary should be two (2) spaces away from the last entry
 
 #### 4. Attribute List
-The attribute list may be used to indicate special properties such as indexes into other Yòrúdí language dictionaries. 
-In most cases a contributor need not concern themselves with these.
+
+The attribute list may be used to indicate special properties such as indexes
+into other Yòrúdí language dictionaries.  In most cases a contributor need not
+concern themselves with these.
+
 + The attribute list must be denoted by angle brackets of the form < attrib. list >
 + Each attribute consist of a key-value pair separated by a colon and must be separated by a vertical bar 
 + For readability, there should always be a space between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
 
-
 ## ADDITIONAL NOTES
-Writing some Yoruba characters requires that your keyboard is configured for writing accented and underdotted letters. The way to do this varies by operating system.
 
-### Mac Configuration:
+Writing some Yoruba characters requires that your keyboard is configured for writing
+accented and underdotted letters. The way to do this varies by operating system.
+
+### Mac Configuration
+
 1. Go to System Preferences -> Keyboard -> Input Sources
 2. Check the US Extended and US International Keyboards
 
 Accenting a letter is best done with the US International Keyboard. 
+
 * Acute accents are added by pressing ['] then the letter
 * Grave accents are added by pressing [`] then the letter
 
