@@ -30,7 +30,7 @@ class CommandLineWriter() extends YorudiWriter {
   
   def writeGlossary(dictionary:YorubaDictionary): String = {
     var output = new StringBuilder
-    output ++= s"${dictionary.size} definition(s) found\n"
+    output ++= s"${dictionary.size} word(s) found\n"
     
     for(definition <- dictionary) {
       output ++= writeDefinition(definition).toString
