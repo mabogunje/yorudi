@@ -215,6 +215,9 @@ du [dúdu-->*]  /black  /dark coloured
 #DUD
 dudu [dúdu*]  /black  /dark coloured
 
+#EGB
+egbe [ẹ̀gbẹ́*] /the side (from the armpit to the waist)  /loins  /place  /alongside
+
 #ENI
 enia [enia*]  /a human being  /person  /somebody  /man (in the general sense)
 
@@ -307,12 +310,22 @@ ku [kù*]  /to remain  /left  /to seperate by a seive
 ku [kú*]  /to die  /lose life  /expire  /dead
 ku [ku*]  /unexpectedly  /suddenly
 
-#L
+#LE
+le [le*] /able  /powerful  /possible  /capable
+le [lè*] /can  /may  /might
 le [lé*]  /to appear (as a new moon)  /appear on the surface  /blister  /to drive  /pursue  /hunt
 le [lé*]  /to be more than the number specified  /exceed
 leri [lé++> . <+ori*] /above  /on the top  /upon
+
+#LẸ
+legbe [li+> . <++ẹ̀gbẹ́*] /by  /on the side of
+
+#LI
 li [li*] /by  /from  /in  /on  /to (ni is changed for euphony to li or l before all vowels except i)
+
+#LO
 lori [li-> . ori*] /above  /on the top  /upon
+
 
 #MIM
 mimo [mí . mọ́*]  /holy  /clear  /clean  /pure  /sacred  /sainted  /shining
@@ -328,14 +341,25 @@ mo [mọ̀]  /to know  /percieve  /recognize  /understand  /be sensible
 mo [mọ́]  /again  /any more (frequently preceded by ma or mase)
 mo [mọ́]  /against
 
-#N
+#NI
 ni [ni*] /by  /from  /in  /on  /to (ni is changed for euphony to li or l before all vowels except i)
 
 #O
 o [<--iwọ*] /you  /thou
-ó [ón->*] /he  /she  /it
+o [ón->*] /he  /she  /it
+o [ọ̀*] /thou  /thee
+o [ọ́*] /he  /she  /it  /him  /her
+o [ọ*] /shall  /will  /must  /(used instead of O before some vowels)
+o [ọ*] /a prefix signifying owner of
+
+#ON
 on [on*] /he  /she  /it
 on [on*] /and 
+
+#ODU
+odu [ò . du*]  /a boiler  /a cauldron  /very big
+odu [òdù*]  /companion of Ifa, the god of palm nuts
+odu [òdú*]  /the name of a herb
 
 #OH
 ohun [ohùn*] /voice  /sound  /note  /cry  /language  /tone  /vote
@@ -346,13 +370,12 @@ oko [okó*] /the penis  /the foreskin  /lock of a gun
 oko [oko*] /twenty cowries
 oko [òkò*] /a stone used to throw or cast  /name of a disease  /giving birth to three young ones at a time
 
-#ODU
-odu [ò . du*]  /a boiler  /a cauldron  /very big
-odu [òdù*]  /companion of Ifa, the god of palm nuts
-odu [òdú*]  /the name of a herb
-
 #ONJ
 onje [o . <---ohùn . <--jijẹ*]  /provision  /food  /meal  /victuals  /meat
+
+#OY
+oye [o . yé*] /understanding  /wisdom  /comprehension  /apprehension  /inspection  /lookout  /providence
+oye [o . yè*] /title of honour
 
 #ỌF
 ofe [ọ̀fẹ́*] /gratis  /without payment  /freely  /gratuitous  /gratuity  /free favour  /grace
