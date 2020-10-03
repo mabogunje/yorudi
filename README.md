@@ -14,19 +14,19 @@ Dictionary.
 
 1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
-    `sbt 'run yorudi --dict cms aba'`
+    `sbt 'run yorudi --dict cms a'`
 
 2. Find all words matching "aba" in the cms dictionary (tone-sensitive)
 
-    `sbt 'run yorudi --dict cms -s aba'`
+    `sbt 'run yorudi --dict cms -s a'`
 
 3. Display a glossary of all words related to "aba" in the cms dictionary
 
-    `sbt 'run yorudi --dict cms -g aba'`
+    `sbt 'run yorudi --dict cms -g a'`
 
 4. Find all words derived from "aba" in the cms dictionary
 
-    `sbt 'run yorudi --dict cms -d aba'`
+    `sbt 'run yorudi --dict cms -d a'`
 
 ### An Introduction to Yoruba & The Problem
 
