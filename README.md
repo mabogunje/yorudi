@@ -12,21 +12,21 @@ Dictionary.
 
 ### Usage Examples
 
-1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
+1. Find all words matching "àbà" in the cms dictionary (tone-insensitive)
 
-    `sbt 'run yorudi --dict cms a'`
+    `sbt 'run yorudi --dict cms àbà'`
 
-2. Find all words matching "aba" in the cms dictionary (tone-sensitive)
+2. Find all words matching "àbà" in the cms dictionary (tone-sensitive)
 
-    `sbt 'run yorudi --dict cms -s a'`
+    `sbt 'run yorudi --dict cms -s àbà'`
 
-3. Display a glossary of all words related to "aba" in the cms dictionary
+3. Display a glossary of all words related to "àbà" in the cms dictionary
 
-    `sbt 'run yorudi --dict cms -g a'`
+    `sbt 'run yorudi --dict cms -g àbà'`
 
-4. Find all words derived from "aba" in the cms dictionary
+4. Find all words derived from "àbà" in the cms dictionary
 
-    `sbt 'run yorudi --dict cms -d a'`
+    `sbt 'run yorudi --dict cms -d àbà'`
 
 ### An Introduction to Yoruba & The Problem
 
