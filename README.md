@@ -1,8 +1,8 @@
-# Yòrúdí
+# Yorùdí
 
 ## A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
-The Yòrúdí project aims to compile a complete multi-lingual lexical database
+The Yorùdí project aims to compile a complete multi-lingual lexical database
 with [Yoruba](http://en.wikipedia.org/wiki/Yoruba_language)  as the pivot language.
 The project is modelled after the [CC-CEDICT project](http://cc-cedict.org/wiki/)
 by Paul Andrew Denisowski which was itself modeled on the highly successful
