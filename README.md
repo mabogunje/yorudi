@@ -12,9 +12,9 @@ Dictionary.
 
 ### Usage Examples
 
-1. Find all words matching "àbà" in the cms dictionary (tone-insensitive)
+1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
-    `sbt 'run yorudi --dict cms àbà'`
+    `sbt 'run yorudi --dict cms aba'`
 
 2. Find all words matching "àbà" in the cms dictionary (tone-sensitive)
 
