@@ -1,4 +1,4 @@
-# Yòrúdí
+# Yorùdí
 
 ## A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
