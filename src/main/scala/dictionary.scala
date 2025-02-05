@@ -24,7 +24,6 @@ case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEnt
   
   def strictLookup(word:Any):YorubaDictionary = self filterKeys (
       k => (k.word.toYoruba == word) || (k.word == word))
-
   
   def lookup(word:Any):YorubaDictionary = self filterKeys (
       k => (k.word == word) || (k.word.toYoruba == word) || (k.word.spelling == word)) 
