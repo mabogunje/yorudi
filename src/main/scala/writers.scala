@@ -1,4 +1,5 @@
 import scala.xml._
+import scala.util.parsing.json._
 
 /**
  * Writer Interface - All dictionary writers must implement this interface
@@ -41,7 +42,6 @@ class CommandLineWriter() extends YorudiWriter {
   }
 }
 
-
 case class XmlWriter() extends YorudiWriter {
   val printer = new PrettyPrinter(80, 2)
   
@@ -79,10 +79,65 @@ case class XmlWriter() extends YorudiWriter {
   }
 }
 
+
+case class JsonWriter() extends YorudiWriter {
+  
+  def writeWord(entry:WordEntry): JSONObject = {
+    // Convert the WordEntry to a Map[String, Any] so that it can be consumed by JSONObject
+    var raw = Map[String, Any](
+      "spelling" -> entry.word.toString,
+      "properties" -> JSONArray(entry.word.properties.toList),
+      "root" -> entry.word.root.toString,
+      "isElided" -> entry.word.isElided,
+      "isAssimilated" -> entry.word.isAssimilated,
+      "decomposition" -> writeDecomposition(entry)
+    )
+    
+    // Convert the Map to JSON
+    var json = JSONObject(raw);
+  
+    return json
+  }
+  
+  def writeDecomposition(entry:WordEntry): JSONArray = {
+    var json = JSONArray(entry.word.decomposition.toList)
+
+    return json
+  }
+
+  def writeTranslation(translation:Meaning): JSONObject = {
+    var raw = Map[String, String](
+      "description" -> translation.description,
+      "language" -> translation.language.toString
+    )
+
+    var json = JSONObject(raw)
+
+    return json
+  }
+
+  def writeDefinition(definition:(WordEntry, List[Meaning])): JSONObject = {
+    var raw = Map[String, Any] (
+      "definition" -> writeWord(definition._1),
+      "meanings" -> JSONArray(definition._2.map(writeTranslation)) 
+    )
+    
+    var json = JSONObject(raw)
+
+    return json
+  }
 /*
-case class JsonWriter extends YorudiWriter {
-  def writeWord(entry: WordEntry): String = {
-    var output = new StringBuilder()
+  def writeGlossary(dictionary:YorubaDictionary): Any = {
+    var raw = new StringBuilder
+    var dict = List[JSONObject]()
+
+    for(definition <- dictionary) {
+      raw  ++= writeDefinition(definition).toString()
+      var json = JSON.parseRaw(raw.toString)
+      if(json != None) { dict :+ json } else { println(raw.toString) }
+    }
+    
+    return dict
   }
 }
 */

@@ -20,7 +20,8 @@ object Yorudi extends FileParser {
    
   val printers = Map[String, YorudiWriter](
     ("plain", new CommandLineWriter()),
-    ("xml", new XmlWriter()))
+    ("xml", new XmlWriter()),
+    ("json", new JsonWriter()))
    
   type OptionMap = Map[Symbol, Any]
         
