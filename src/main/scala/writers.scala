@@ -126,18 +126,16 @@ case class JsonWriter() extends YorudiWriter {
 
     return json
   }
-/*
   def writeGlossary(dictionary:YorubaDictionary): Any = {
     var raw = new StringBuilder
     var dict = List[JSONObject]()
-
+/*
     for(definition <- dictionary) {
       raw  ++= writeDefinition(definition).toString()
       var json = JSON.parseRaw(raw.toString)
       if(json != None) { dict :+ json } else { println(raw.toString) }
     }
-    
+*/  
     return dict
   }
 }
-*/
