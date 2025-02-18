@@ -86,10 +86,7 @@ case class JsonWriter() extends YorudiWriter {
     // Convert the WordEntry to a Map[String, Any] so that it can be consumed by JSONObject
     var raw = Map[String, Any](
       "spelling" -> entry.word.toString,
-      "properties" -> JSONArray(entry.word.properties.toList),
       "root" -> entry.word.root.toString,
-      "isElided" -> entry.word.isElided,
-      "isAssimilated" -> entry.word.isAssimilated,
       "decomposition" -> writeDecomposition(entry)
     )
     
