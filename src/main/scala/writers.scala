@@ -1,5 +1,6 @@
 import scala.xml._
 import scala.util.parsing.json._
+import scala.collection.mutable.ListBuffer
 
 /**
  * Writer Interface - All dictionary writers must implement this interface
@@ -79,7 +80,6 @@ case class XmlWriter() extends YorudiWriter {
   }
 }
 
-
 case class JsonWriter() extends YorudiWriter {
   
   def writeWord(entry:WordEntry): JSONObject = {
@@ -126,16 +126,17 @@ case class JsonWriter() extends YorudiWriter {
 
     return json
   }
-  def writeGlossary(dictionary:YorubaDictionary): Any = {
-    var raw = new StringBuilder
-    var dict = List[JSONObject]()
-/*
+
+  def writeGlossary(dictionary:YorubaDictionary): JSONArray = {
+    var dict = new ListBuffer[JSONObject]()
+
     for(definition <- dictionary) {
-      raw  ++= writeDefinition(definition).toString()
-      var json = JSON.parseRaw(raw.toString)
-      if(json != None) { dict :+ json } else { println(raw.toString) }
+      var json = writeDefinition(definition)
+
+      if(json != None) { dict += json } else { println("Unable to parse: " + definition.toString())}
     }
-*/  
-    return dict
+
+    var glossary = JSONArray(dict.toList)
+    return glossary
   }
 }

@@ -175,3 +175,10 @@ Session.vim
 tags
 
 .DS_Store
+
+# VScode IDE files
+.metals/
+src/.bsp/
+src/.metals/
+src/.scala-build/
+
