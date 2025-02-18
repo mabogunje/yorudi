@@ -1,4 +1,6 @@
 import scala.xml._
+import scala.util.parsing.json._
+import scala.collection.mutable.ListBuffer
 
 /**
  * Writer Interface - All dictionary writers must implement this interface
@@ -41,7 +43,6 @@ class CommandLineWriter() extends YorudiWriter {
   }
 }
 
-
 case class XmlWriter() extends YorudiWriter {
   val printer = new PrettyPrinter(80, 2)
   
@@ -79,10 +80,60 @@ case class XmlWriter() extends YorudiWriter {
   }
 }
 
-/*
-case class JsonWriter extends YorudiWriter {
-  def writeWord(entry: WordEntry): String = {
-    var output = new StringBuilder()
+case class JsonWriter() extends YorudiWriter {
+  
+  def writeWord(entry:WordEntry): JSONObject = {
+    // Convert the WordEntry to a Map[String, Any] so that it can be consumed by JSONObject
+    var raw = Map[String, Any](
+      "spelling" -> entry.word.toString,
+      "root" -> entry.word.root.toString,
+      "decomposition" -> writeDecomposition(entry)
+    )
+    
+    // Convert the Map to JSON
+    var json = JSONObject(raw);
+  
+    return json
+  }
+  
+  def writeDecomposition(entry:WordEntry): JSONArray = {
+    var json = JSONArray(entry.word.decomposition.toList)
+
+    return json
+  }
+
+  def writeTranslation(translation:Meaning): JSONObject = {
+    var raw = Map[String, String](
+      "description" -> translation.description,
+      "language" -> translation.language.toString
+    )
+
+    var json = JSONObject(raw)
+
+    return json
+  }
+
+  def writeDefinition(definition:(WordEntry, List[Meaning])): JSONObject = {
+    var raw = Map[String, Any] (
+      "definition" -> writeWord(definition._1),
+      "meanings" -> JSONArray(definition._2.map(writeTranslation)) 
+    )
+    
+    var json = JSONObject(raw)
+
+    return json
+  }
+
+  def writeGlossary(dictionary:YorubaDictionary): JSONArray = {
+    var dict = new ListBuffer[JSONObject]()
+
+    for(definition <- dictionary) {
+      var json = writeDefinition(definition)
+
+      if(json != None) { dict += json } else { println("Unable to parse: " + definition.toString())}
+    }
+
+    var glossary = JSONArray(dict.toList)
+    return glossary
   }
 }
-*/

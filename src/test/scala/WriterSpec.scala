@@ -2,6 +2,8 @@ import YorubaImplicits._
 import scala.xml.PrettyPrinter
 import scala.xml.XML
 import org.scalatest.FlatSpec
+import scala.util.parsing.json._
+
 
 class CmdlWriterSpec extends FlatSpec {
   var writer:YorudiWriter = new CommandLineWriter()
@@ -27,7 +29,7 @@ class CmdlWriterSpec extends FlatSpec {
     var output = writer.writeTranslation(translation)
     var expected = "- crown {en}"
     
-    assert(output.toString() == expected)
+    assert(output.toString == expected)
   }
 }
 
@@ -58,5 +60,33 @@ class XmlWriterSpec extends FlatSpec {
     var expected = <meaning xml:lang="en">plenty</meaning>
     
     assert(output.toString == format(expected).toString)
+  }
+}
+
+class JsonWriterSpec extends FlatSpec {
+  var writer:YorudiWriter = new JsonWriter()
+  
+  "The JSON writer" can "write words correctly" in {
+    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
+    var output = writer.writeWord(entry)
+    var expected = """{"spelling" : "gbogbo", "root" : "gbo", "properties" : [], "decomposition" : [gbo, gbo], "isAssimilated" : false, "isElided" : false}"""
+
+    assert(output.toString == expected)
+  }
+
+  it can "write decompositions correctly" in {
+    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
+    var output = writer.writeDecomposition(entry)
+    var expected = "[gbo, gbo]"
+      
+    assert(output.toString == expected)
+  }
+
+  it can "write translations correctly" in {
+    var translation = Translation("plenty", "en")
+    var output = writer.writeTranslation(translation)
+    var expected = """{"description" : "plenty", "language" : "en"}"""
+
+    assert(output.toString == expected)
   }
 }

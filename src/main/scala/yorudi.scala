@@ -10,7 +10,7 @@ import java.nio.charset.CodingErrorAction
  *
  */
 object Yorudi extends FileParser {
-  val usage = "Usage: yorudi [--dict=sample|cms|names] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml]"
+  val usage = "Usage: yorudi [--dict=sample|cms|names] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml|json]"
     
   val dictionaries = Map[String, String](
     ("sample", "src/main/resources/dicts/sample.en.yor"),
@@ -20,7 +20,8 @@ object Yorudi extends FileParser {
    
   val printers = Map[String, YorudiWriter](
     ("plain", new CommandLineWriter()),
-    ("xml", new XmlWriter()))
+    ("xml", new XmlWriter()),
+    ("json", new JsonWriter()))
    
   type OptionMap = Map[Symbol, Any]
         

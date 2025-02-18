@@ -92,7 +92,7 @@ case class Term(override val spelling:String, override val properties:Seq[Speech
 case class Word(override val spelling:String, decomposition:Seq[Yoruba], override val properties:Seq[SpeechProperty]=List()) extends Yoruba {    
   def root = decomposition.find(_.isRoot).getOrElse(spelling)
   
-  def isElided = decomposition forall {word => (word.elisions(Left).isDefined && 
+  def isElided = decomposition forall { word => (word.elisions(Left).isDefined && 
     								   			word.elisions(Right).isDefined)
     						 }
   
