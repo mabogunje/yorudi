@@ -1,8 +1,33 @@
 <html>
     <head>
-
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        Hello World
+        <nav>
+            <img src="logo.jpg" height="50px" width="50px" />
+            <strong>Yor&ugrave;d&iacute;</strong> <small>A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary</small>
+            <div style="position: relative; display: inline-block; float:right; top: 5px; border: 2px solid; padding: 5px;">View on Github</div>
+        </nav>
+        <div class="container">
+
+            <table width="80%" align="center">
+                <tr>
+                    <td><a href="#">Words</a></td>
+                    <td><a href="#">Derivatives</a></td>
+                    <td><a href="#">Names</a></td>
+                    <td><a href="#">Quick Search</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <form action="https://mabogunje.github.io/yorudi/words" method="get">
+                            <input id="query" type="text" placeholder="Search with Yor&ugrave;b&aacute; with or without tone marks">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+        </div>
     </body>
 </html>
