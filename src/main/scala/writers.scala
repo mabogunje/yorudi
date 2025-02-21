@@ -97,8 +97,9 @@ case class JsonWriter() extends YorudiWriter {
   }
   
   def writeDecomposition(entry:WordEntry): JSONArray = {
-    var json = JSONArray(entry.word.decomposition.toList)
-
+    var quoted_decomp = entry.word.decomposition.toList map {"%s".format(_)}
+    val json = JSONArray(quoted_decomp.toList)
+    
     return json
   }
 
