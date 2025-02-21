@@ -2,6 +2,45 @@
     <head>
         <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="style.css">
+        <script type="text/javascript">
+        
+        // First, checks if it isn't implemented yet.
+        if (!String.prototype.format) {
+            String.prototype.format = function() {
+                var args = arguments;
+                return this.replace(/{(\d+)}/g, function(match, number) { 
+                    return typeof args[number] != 'undefined' ? args[number] : match;
+                });
+            };
+        }
+            const API = "http://localhost:8080/words/"
+
+            async function getDefinitions() {
+                var query = document.getElementById("query").value;
+                var URL = API + query;
+                const View = document.getElementById("entries")
+
+
+                const response = fetch(URL);
+                response.then(results => { return results.json(); })
+                        .then(data => {
+                            View.innerHTML = "";
+                            for (let entry in data) { 
+                                const wordFmt = "<dt>{0}. {1}</dt>"
+                                const meaningFmt = "<dd>- {0}</dd>"
+                                index = 1 + parseInt(entry);
+
+                                View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition.spelling));
+
+                                for(let meaning of data[entry].meanings) {
+                                    View.insertAdjacentHTML('beforeend', meaningFmt.format(meaning.description))
+                                }
+                            }
+                         })
+                        .catch(error => { console.error(error); }
+                        )
+            }
+        </script>
     </head>
     <body>
         <nav>
@@ -17,17 +56,28 @@
                     <td><a href="#">Derivatives</a></td>
                     <td><a href="#">Names</a></td>
                     <td><a href="#">Quick Search</a></td>
+                    <td>
+                        <select id="dictionaries">
+                            <option value="CMS">Church Missionary Society</option>
+                            <option value="Names">Yoruba Personal Names</option>
+                        </select>
+                    </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td colspan="4">
-                        <form action="https://mabogunje.github.io/yorudi/words" method="get">
+                    <td colspan="5">
+                        <form action="http://localhost:8080/words/" method="get" onsubmit="getDefinitions().then(json => console.log(json)); return false;">
                             <input id="query" type="text" placeholder="Search with Yor&ugrave;b&aacute; with or without tone marks">
                         </form>
                     </td>
                 </tr>
             </table>
             <hr/>
+            <div id="results">
+                <dl id="entries">
+
+                </dl>
+            </div>
         </div>
     </body>
 </html>
