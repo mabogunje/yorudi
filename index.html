@@ -11,14 +11,14 @@
                 var args = arguments;
                 return this.replace(/{(\d+)}/g, function(match, number) { 
                     return typeof args[number] != 'undefined' ? args[number] : match;
-mabogunje.github.io/yorudi/                });
+                });
             };
         }
-            const API = "http://mabogunje.github.io/yorudi/words"
+            const API = "https://mabogunje.github.io/yorudi/words"
             const URL_FMT = "{0}/{1}?dict={2}&mode={3}"
 
             async function getDefinitions() {
-                const View = document.getElementById("entries") // We will print results into this view
+                `const View = document.getElementById("entries") // We will print results into this view
 
                 //Get the parameters of the query from the form
                 var dictionary = document.getElementById("dictionaries").value;
