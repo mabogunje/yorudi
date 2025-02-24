@@ -69,7 +69,7 @@ class JsonWriterSpec extends FlatSpec {
   "The JSON writer" can "write words correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeWord(entry)
-    var expected = """{"spelling" : "gbogbo", "root" : "gbo", "decomposition" : [gbo, gbo]}"""
+    var expected = """{"spelling" : "gbogbo", "root" : "gbo", "decomposition" : ["gbo", "gbo"]}"""
 
     assert(output.toString == expected)
   }
@@ -77,8 +77,8 @@ class JsonWriterSpec extends FlatSpec {
   it can "write decompositions correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeDecomposition(entry)
-    var expected = "[gbo, gbo]"
-      
+    var expected = """["gbo", "gbo"]"""
+
     assert(output.toString == expected)
   }
 
