@@ -30,8 +30,8 @@ class YorubaController extends ScalatraServlet {
 
     get("/words/:word") {
         //Get parameters
-        val dict = params("dict");
-        val mode = params("mode");
+        var dict = params.getOrElse("dict", "cms");
+        var mode = params.getOrElse("mode", "matched");
         val word = params("word");
 
         // Read in the queried dictionary
@@ -66,7 +66,7 @@ class ScalatraBootstrap extends LifeCycle {
 }
 
 object YorubaRestService extends App {
-    val port = 80
+    val port = 8080
     val server = new Server(port)
 
     val context = new WebAppContext()
@@ -79,7 +79,7 @@ object YorubaRestService extends App {
     server.start
 
     println("***** Supported operations *****")
-    println("Word details: curl -v https://mabogunje.github.io/yorudi/words/<word>")
+    println("Word details: curl -v http://localhost:8080/words/<word>")
     println("********************************")
         
     server.join
