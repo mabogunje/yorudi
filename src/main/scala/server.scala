@@ -4,9 +4,11 @@ import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra._
 import org.scalatra.servlet.ScalatraListener
 import org.json4s.{DefaultFormats, Formats}
+import scala.util.parsing.json._
 
-
-
+/**
+  * 
+  */
 class YorubaController extends ScalatraServlet {
 
     protected implicit val jsonFormats: Formats = DefaultFormats
@@ -19,17 +21,40 @@ class YorubaController extends ScalatraServlet {
     )
     
     val parser:FileParser = Yorudi
-    val dict:YorubaDictionary = parser.parse(dictionaries("cms"))
     val writer:JsonWriter = new JsonWriter()
 
+    get("/words") {
+        var json = JSONArray(List());
+        Ok(json)
+    }
+
     get("/words/:word") {
-        val results:YorubaDictionary = dict.lookup(params("word").toString())
-        
+        //Get parameters
+        val dict = params("dict");
+        val mode = params("mode");
+        val word = params("word");
+
+        // Read in the queried dictionary
+        val dictionary:YorubaDictionary = parser.parse(dictionaries(dict))
+        var results:YorubaDictionary = YorubaDictionary()
+
+        // Depending on the mode, get appropriate results
+        mode match {
+            case "strict" => results = dictionary.strictLookup(word)
+            case "related" => results = dictionary.lookupRelated(word)
+            case "derivative" => results = dictionary.lookupDerivatives(word)
+            case _ => results = dictionary.lookup(word)
+        }
+
+        // Return results
         if(results.size > 0) {
-            var json = writer.writeGlossary(results)
+            val json = writer.writeGlossary(results)
             Ok(json)
         } else {
-            NotFound("Yoruba word not found in sample dictionary")
+            val error = new Error(s"Yoruba word not found in ${dict} dictionary")
+            val json = error
+
+            NotFound(json)
         }        
     }
 }
