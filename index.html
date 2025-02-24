@@ -11,10 +11,10 @@
                 var args = arguments;
                 return this.replace(/{(\d+)}/g, function(match, number) { 
                     return typeof args[number] != 'undefined' ? args[number] : match;
-                });
+mabogunje.github.io/yorudi/                });
             };
         }
-            const API = "http://localhost:8080/words"
+            const API = "http://mabogunje.github.io/yorudi/words"
             const URL_FMT = "{0}/{1}?dict={2}&mode={3}"
 
             async function getDefinitions() {
