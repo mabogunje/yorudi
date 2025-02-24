@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="utf-8">
         <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript">
@@ -13,15 +14,22 @@
                 });
             };
         }
-            const API = "http://localhost:8080/words/"
+            const API = "http://localhost:8080/words"
+            const URL_FMT = "{0}/{1}?dict={2}&mode={3}"
 
             async function getDefinitions() {
+                const View = document.getElementById("entries") // We will print results into this view
+
+                //Get the parameters of the query from the form
+                var dictionary = document.getElementById("dictionaries").value;
                 var query = document.getElementById("query").value;
-                var URL = API + query;
-                const View = document.getElementById("entries")
-
-
+                var mode = Array.from(document.getElementsByName("lookup")).find((m) => m.checked === true).value;
+                
+                //Make the REST request
+                var URL = URL_FMT.format(API, query, dictionary, mode)
                 const response = fetch(URL);
+                
+                //Process the results
                 response.then(results => { return results.json(); })
                         .then(data => {
                             View.innerHTML = "";
@@ -37,7 +45,7 @@
                                 }
                             }
                          })
-                        .catch(error => { console.error(error); }
+                        .catch(error => { console.log(error); }
                         )
             }
         </script>
@@ -49,26 +57,33 @@
             <div style="position: relative; display: inline-block; float:right; top: 5px; border: 2px solid; padding: 5px;">View on Github</div>
         </nav>
         <div class="container">
-
+            <div class="header">Choose A Dictionary: 
+                <select id="dictionaries">
+                    <option value="cms">Church Missionary Society</option>
+                    <option value="names">Yoruba Personal Names</option>
+                    <option value="sample">Sample Dictionary</option>
+                </select>
+            </div>
             <table width="80%" align="center">
                 <tr>
-                    <td><a href="#">Words</a></td>
-                    <td><a href="#">Derivatives</a></td>
-                    <td><a href="#">Names</a></td>
-                    <td><a href="#">Quick Search</a></td>
-                    <td>
-                        <select id="dictionaries">
-                            <option value="CMS">Church Missionary Society</option>
-                            <option value="Names">Yoruba Personal Names</option>
-                        </select>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="5">
-                        <form action="http://localhost:8080/words/" method="get" onsubmit="getDefinitions().then(json => console.log(json)); return false;">
+                    <td colspan="4">
+                        <form action="http://localhost:8080/words/" method="get" onsubmit="getDefinitions(); return false;">
                             <input id="query" type="text" placeholder="Search with Yor&ugrave;b&aacute; with or without tone marks">
                         </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="lookup" name="lookup" value="matched" checked="checked"> <label for="lookup">Word Lookup</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="strict" name="lookup" value="strict"> <label for="lookup">Strict Word Lookup</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="related" name="lookup" value="related"> <label for="lookup">Related Words Lookup</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="derived" name="lookup" value="derived"> <label for="lookup">Derivative Words Lookup</label>
                     </td>
                 </tr>
             </table>
