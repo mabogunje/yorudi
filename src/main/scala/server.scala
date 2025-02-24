@@ -30,8 +30,8 @@ class YorubaController extends ScalatraServlet {
 
     get("/words/:word") {
         //Get parameters
-        val dict = params("dict");
-        val mode = params("mode");
+        var dict = params.getOrElse("dict", "cms");
+        var mode = params.getOrElse("mode", "matched");
         val word = params("word");
 
         // Read in the queried dictionary

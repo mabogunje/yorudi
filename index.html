@@ -14,11 +14,11 @@
                 });
             };
         }
-            const API = "http://localhost:8080/words"
+            const API = window.location.href + "words"
             const URL_FMT = "{0}/{1}?dict={2}&mode={3}"
 
             async function getDefinitions() {
-                `const View = document.getElementById("entries") // We will print results into this view
+                const View = document.getElementById("entries") // We will print results into this view
 
                 //Get the parameters of the query from the form
                 var dictionary = document.getElementById("dictionaries").value;
