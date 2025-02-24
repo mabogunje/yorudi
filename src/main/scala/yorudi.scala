@@ -44,7 +44,10 @@ object Yorudi extends FileParser {
       case option :: tail => parseOptions(map ++ Map('word -> option), tail)
     }
   }
-      
+  /* 
+   * Disable CLI functionality.
+   * Remove this comment if you want to query the dictionary from the command-line
+
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
       val arguments = args.toList
@@ -79,4 +82,5 @@ object Yorudi extends FileParser {
       
       println(printer.writeGlossary(results))
   }
+  */
 }
