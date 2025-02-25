@@ -66,7 +66,7 @@ class ScalatraBootstrap extends LifeCycle {
 }
 
 object YorubaRestService extends App {
-    val port = 8080
+    val port = 3330
     val server = new Server(port)
 
     val context = new WebAppContext()
@@ -79,7 +79,7 @@ object YorubaRestService extends App {
     server.start
 
     println("***** Supported operations *****")
-    println("Word details: curl -v http://localhost:8080/words/<word>")
+    println("Word details: curl -v http://localhost:3330/words/<word>")
     println("********************************")
         
     server.join
