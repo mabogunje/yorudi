@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript">
         
-        // First, checks if it isn't implemented yet.
+        // First, checks if it helper function String.format isn't implemented yet.
         if (!String.prototype.format) {
             String.prototype.format = function() {
                 var args = arguments;
@@ -14,8 +14,8 @@
                 });
             };
         }
-            const API = window.location.href + "words"
-            const URL_FMT = "{0}/{1}?dict={2}&mode={3}"
+            const API = window.location.href + "word"
+            const URL_FMT = "{0}/{1}?dictionary={2}&mode={3}"
 
             async function getDefinitions() {
                 const View = document.getElementById("entries") // We will print results into this view
@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="radio" id="lookup" name="lookup" value="matched" checked="checked"> <label for="lookup">Word Lookup</label>
+                        <input type="radio" id="lookup" name="lookup" value="match" checked="checked"> <label for="lookup">Word Lookup</label>
                     </td>
                     <td>
                         <input type="radio" id="strict" name="lookup" value="strict"> <label for="lookup">Strict Word Lookup</label>
