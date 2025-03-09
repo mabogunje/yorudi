@@ -23,15 +23,15 @@ class YorubaController extends ScalatraServlet {
     val parser:FileParser = Yorudi
     val writer:JsonWriter = new JsonWriter()
 
-    get("/words") {
+    get("/word") {
         var json = JSONArray(List());
         Ok(json)
     }
 
-    get("/words/:word") {
+    get("/word/:word") {
         //Get parameters
-        var dict = params.getOrElse("dict", "cms");
-        var mode = params.getOrElse("mode", "matched");
+        var dict = params.getOrElse("dictionary", "cms");
+        var mode = params.getOrElse("mode", "match");
         val word = params("word");
 
         // Read in the queried dictionary
@@ -79,7 +79,7 @@ object YorubaRestService extends App {
     server.start
 
     println("***** Supported operations *****")
-    println("Word details: curl -v http://localhost:3330/words/<word>")
+    println("Word details: curl -v http://localhost:3330/word/<word>")
     println("********************************")
         
     server.join

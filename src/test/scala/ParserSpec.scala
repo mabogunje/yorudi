@@ -62,5 +62,6 @@ class ParserSpec extends FlatSpec {
 	it can "parse assimilated opposing tone combinations" in {
 	  var assimilated = parser.parse(parser.wordEntry, assimilatedWord2).get
 	  assert(assimilated._1.word.toString == "abamo")
-	}*/
+	}
+	*/
 }
