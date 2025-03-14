@@ -1,5 +1,12 @@
 # Yorùdí
 
+> [!NOTE]
+> This project is currently being transitioned from being a command-line utility
+> to being a REST API that can query the dictionary database. As such index.html
+> is a basic webpage that supports searching the database. And the command-line
+> code has been commented out. Run `sbt run` to launch the REST server and query
+> it at http://localhost:3330/
+
 ## A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
 The Yorùdí project aims to compile a complete multi-lingual lexical database
