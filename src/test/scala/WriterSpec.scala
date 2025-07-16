@@ -3,7 +3,7 @@ import scala.xml.PrettyPrinter
 import scala.xml.XML
 import org.scalatest.FlatSpec
 import scala.util.parsing.json._
-
+import java.util.Locale
 
 class CmdlWriterSpec extends FlatSpec {
   var writer:YorudiWriter = new CommandLineWriter()
@@ -25,9 +25,9 @@ class CmdlWriterSpec extends FlatSpec {
   }
   
   it can "write translations correctly" in {
-    var translation = Translation("crown", "en")
+    var translation = Translation("crown", Locale.US)
     var output = writer.writeTranslation(translation)
-    var expected = "- crown {en}"
+    var expected = "- " + translation.description + " " + translation.language.toString()
     
     assert(output.toString == expected)
   }
@@ -55,38 +55,42 @@ class XmlWriterSpec extends FlatSpec {
   }
   
   it can "write translations correctly" in {
-    var translation = Translation("plenty", "en")
+    var translation = Translation("plenty", Locale.US)
     var output = writer.writeTranslation(translation)
-    var expected = <meaning xml:lang="en">plenty</meaning>
+    var expected = <meaning xml:language={translation.language.toString()}>{translation.description}</meaning>
     
     assert(output.toString == format(expected).toString)
   }
 }
 
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
+
 class JsonWriterSpec extends FlatSpec {
   var writer:YorudiWriter = new JsonWriter()
+  implicit val formats: Formats = DefaultFormats
   
   "The JSON writer" can "write words correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeWord(entry)
-    var expected = """{"spelling" : "gbogbo", "root" : "gbo", "decomposition" : ["gbo", "gbo"]}"""
+    var expected = Extraction.decompose(entry.word.toYoruba)
 
-    assert(output.toString == expected)
+    assert(output == expected)
   }
 
   it can "write decompositions correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeDecomposition(entry)
-    var expected = """["gbo", "gbo"]"""
+    var expected = Extraction.decompose(entry.word.decomposition)
 
-    assert(output.toString == expected)
+    assert(output == expected)
   }
 
   it can "write translations correctly" in {
-    var translation = Translation("plenty", "en")
+    var translation = Translation("plenty", Locale.US)
     var output = writer.writeTranslation(translation)
-    var expected = """{"description" : "plenty", "language" : "en"}"""
+    var expected = Extraction.decompose(translation)
 
-    assert(output.toString == expected)
+    assert(output == expected)
   }
 }

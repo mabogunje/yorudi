@@ -22,7 +22,7 @@
 
                 //Get the parameters of the query from the form
                 var dictionary = document.getElementById("dictionaries").value;
-                var query = document.getElementById("query").value;
+                var query = document.getElementById("query").value.toLowerCase();
                 var mode = Array.from(document.getElementsByName("lookup")).find((m) => m.checked === true).value;
                 
                 //Make the REST request
@@ -34,12 +34,18 @@
                         .then(data => {
                             View.innerHTML = "";
                             for (let entry in data) { 
-                                const wordFmt = "<dt>{0}. {1}</dt>"
+                                const wordFmt = "<dt>{0}. {1} {2}</dt>"
                                 const meaningFmt = "<dd>- {0}</dd>"
+                                const decompositionFmt = "[ {0} ]"
                                 index = 1 + parseInt(entry);
 
-                                View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition.spelling));
+                                const decomposition = data[entry].decomposition.reduce((accumulator, currentWord) => {
+                                    accumulator.push(currentWord.spelling);
+                                    return accumulator;
+                                }, []);
 
+                                View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition, decompositionFmt.format(decomposition.join(" . "))))
+                                
                                 for(let meaning of data[entry].meanings) {
                                     View.insertAdjacentHTML('beforeend', meaningFmt.format(meaning.description))
                                 }

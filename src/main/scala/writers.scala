@@ -1,5 +1,6 @@
 import scala.xml._
-import scala.util.parsing.json._
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -16,7 +17,7 @@ trait YorudiWriter {
 class CommandLineWriter() extends YorudiWriter {
   def writeWord(entry:WordEntry): String = entry.word.toYoruba
   def writeDecomposition(entry:WordEntry): String = s"[ ${entry.word.decomposition mkString " . "} ]"
-  def writeTranslation(translation:Meaning): String = s"- ${translation.description} {${translation.language}}"
+  def writeTranslation(translation:Meaning): String = s"- ${translation.description} ${translation.language}"
  
   def writeDefinition(definition:(WordEntry, List[Meaning])): String = {
     var output = new StringBuilder
@@ -65,7 +66,7 @@ case class XmlWriter() extends YorudiWriter {
   }
   
   def writeTranslation(translation:Meaning): xml.Elem = {
-    var xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:lang", Text(translation.language.toString), Null)
+    var xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:language", Text(translation.language.toString), Null)
     pretty(xml)
   }
   
@@ -81,60 +82,30 @@ case class XmlWriter() extends YorudiWriter {
 }
 
 case class JsonWriter() extends YorudiWriter {
-  
-  def writeWord(entry:WordEntry): JSONObject = {
-    // Convert the WordEntry to a Map[String, Any] so that it can be consumed by JSONObject
-    var raw = Map[String, Any](
-      "spelling" -> entry.word.toString,
-      "root" -> entry.word.root.toString,
-      "decomposition" -> writeDecomposition(entry)
-    )
-    
-    // Convert the Map to JSON
-    var json = JSONObject(raw);
-  
-    return json
+  implicit val formats: Formats = DefaultFormats
+
+  def writeWord(entry:WordEntry): JValue = {
+    Extraction.decompose(entry.word.toYoruba)
   }
   
-  def writeDecomposition(entry:WordEntry): JSONArray = {
-    var quoted_decomp = entry.word.decomposition.toList map {"%s".format(_)}
-    val json = JSONArray(quoted_decomp.toList)
-    
-    return json
+  def writeDecomposition(entry:WordEntry): JValue = {
+    Extraction.decompose(entry.word.decomposition)
   }
 
-  def writeTranslation(translation:Meaning): JSONObject = {
-    var raw = Map[String, String](
-      "description" -> translation.description,
-      "language" -> translation.language.toString
-    )
-
-    var json = JSONObject(raw)
-
-    return json
+  def writeTranslation(translation:Meaning): JValue = {
+    Extraction.decompose(translation)
   }
 
-  def writeDefinition(definition:(WordEntry, List[Meaning])): JSONObject = {
-    var raw = Map[String, Any] (
-      "definition" -> writeWord(definition._1),
-      "meanings" -> JSONArray(definition._2.map(writeTranslation)) 
-    )
-    
-    var json = JSONObject(raw)
-
-    return json
+  def writeDefinition(definition:(WordEntry, List[Meaning])): JValue = {
+    val (wordEntry, meanings) = definition
+    Extraction.decompose(Map(
+      "definition" -> writeWord(wordEntry),
+      "decomposition" -> writeDecomposition(wordEntry),
+      "meanings" -> Extraction.decompose(meanings.map(writeTranslation(_)))
+    ))
   }
 
-  def writeGlossary(dictionary:YorubaDictionary): JSONArray = {
-    var dict = new ListBuffer[JSONObject]()
-
-    for(definition <- dictionary) {
-      var json = writeDefinition(definition)
-
-      if(json != None) { dict += json } else { println("Unable to parse: " + definition.toString())}
-    }
-
-    var glossary = JSONArray(dict.toList)
-    return glossary
+  def writeGlossary(dictionary:YorubaDictionary): JValue = {
+    Extraction.decompose(dictionary.map(writeDefinition))
   }
 }
