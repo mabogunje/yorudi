@@ -66,7 +66,7 @@ case class XmlWriter() extends YorudiWriter {
   }
   
   def writeTranslation(translation:Meaning): xml.Elem = {
-    var xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:lang", Text(translation.language.toString), Null)
+    var xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:language", Text(translation.language.toString), Null)
     pretty(xml)
   }
   
