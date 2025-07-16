@@ -7,6 +7,20 @@ import DictionaryImplicits._
  * 
  */
 case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEntry, List[Meaning]]()) extends MapProxy[WordEntry, List[Meaning]] {
+
+  // Auxiliary indices for faster lookups
+  private val spellingIndex: Map[String, List[WordEntry]] = 
+    self.keys.groupBy(_.word.spelling).mapValues(_.toList)
+
+  private val toYorubaIndex: Map[String, List[WordEntry]] = 
+    self.keys.groupBy(_.word.toYoruba).mapValues(_.toList)
+
+  private val rootIndex: Map[String, List[WordEntry]] = 
+    self.keys.groupBy(_.word.root.toYoruba).mapValues(_.toList)
+
+  private val decompositionIndex: Map[String, List[WordEntry]] = 
+    self.keys.flatMap(entry => entry.word.decomposition.map(_.toYoruba).map(decomp => (decomp, entry)))
+      .groupBy(_._1).mapValues(_.map(_._2).toList)
      
   override def +[B1 >: List[Meaning]](kv: (WordEntry, B1)) : YorubaDictionary = {
     if(self.contains(kv._1)) {
@@ -22,17 +36,25 @@ case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEnt
     self ++ merged
   }
   
-  def strictLookup(word:Any):YorubaDictionary = self filterKeys (
-      k => (k.word.toYoruba == word) || (k.word == word))
-  
-  def lookup(word:Any):YorubaDictionary = self filterKeys (
-      k => (k.word == word) || (k.word.toYoruba == word) || (k.word.spelling == word)) 
-  
-  def lookupRelated(word:Any):YorubaDictionary = self filterKeys (
-      k => (k.word.decomposition map {_.toYoruba} contains word) || (k.word == word))
-  
-  def lookupDerivatives(word:Any):YorubaDictionary = self filterKeys (
-      k => (k.word.root.toYoruba == word))
+  def strictLookup(word:Any):YorubaDictionary = {
+    val entries = (toYorubaIndex.getOrElse(word.toString, List()) ++ spellingIndex.getOrElse(word.toString, List())).distinct
+    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
+  }
+
+  def lookup(word:Any):YorubaDictionary = {
+    val entries = (spellingIndex.getOrElse(word.toString, List()) ++ toYorubaIndex.getOrElse(word.toString, List())).distinct
+    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
+  }
+
+  def lookupRelated(word:Any):YorubaDictionary = {
+    val entries = (decompositionIndex.getOrElse(word.toString, List()) ++ toYorubaIndex.getOrElse(word.toString, List())).distinct
+    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
+  }
+
+  def lookupDerivatives(word:Any):YorubaDictionary = {
+    val entries = rootIndex.getOrElse(word.toString, List())
+    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
+  }
 }
 
 /**

@@ -75,12 +75,16 @@ class FileParser extends GrammarParser {
   var problems = List
   
   def parse(filename:String):YorubaDictionary = {
-    val file = Source.fromFile(filename)(CODEC)
-    var failures = List()
-    val entries = file.getLines.filterNot(_.startsWith(COMMENT)) map {
-      parse(wordEntry, _)
-    } filter {_.successful} map {_.get} toList
-    
-    DICT ++ entries
+    var fileSource: Option[scala.io.Source] = None
+    try {
+      fileSource = Some(Source.fromFile(filename)(CODEC))
+      val entries = fileSource.get.getLines.filterNot(_.startsWith(COMMENT)) map {
+        parse(wordEntry, _)
+      } filter {_.successful} map {_.get} toList
+      
+      DICT ++ entries
+    } finally {
+      fileSource.foreach(_.close())
+    }
   }
 }

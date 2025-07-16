@@ -57,11 +57,14 @@ class XmlWriterSpec extends FlatSpec {
   it can "write translations correctly" in {
     var translation = Translation("plenty", "en")
     var output = writer.writeTranslation(translation)
-    var expected = <meaning xml:lang="en">plenty</meaning>
+    var expected = <meaning xml:language="en">plenty</meaning>
     
     assert(output.toString == format(expected).toString)
   }
 }
+
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
 
 class JsonWriterSpec extends FlatSpec {
   var writer:YorudiWriter = new JsonWriter()
@@ -69,24 +72,24 @@ class JsonWriterSpec extends FlatSpec {
   "The JSON writer" can "write words correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeWord(entry)
-    var expected = """{"spelling" : "gbogbo", "root" : "gbo", "decomposition" : ["gbo", "gbo"]}"""
+    var expected = parse("""{"spelling" : "gbogbo", "root" : "gbo", "decomposition" : ["gbo", "gbo"]}""")
 
-    assert(output.toString == expected)
+    assert(output == expected)
   }
 
   it can "write decompositions correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeDecomposition(entry)
-    var expected = """["gbo", "gbo"]"""
+    var expected = parse("""["gbo", "gbo"]""")
 
-    assert(output.toString == expected)
+    assert(output == expected)
   }
 
   it can "write translations correctly" in {
     var translation = Translation("plenty", "en")
     var output = writer.writeTranslation(translation)
-    var expected = """{"description" : "plenty", "language" : "en"}"""
+    var expected = parse("""{"description" : "plenty", "language" : "en"}""")
 
-    assert(output.toString == expected)
+    assert(output == expected)
   }
 }

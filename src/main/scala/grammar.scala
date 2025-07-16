@@ -160,8 +160,9 @@ sealed trait Meaning {
 /**
  * A Yoruba translation i.e meaning in another language
  */
-case class Translation(override val description:String, lang:String="en") extends Meaning {
-  val language = new Locale(lang)  
+case class Translation(override val description:String, var lang:String = "en") extends Meaning
+{
+  def language = new Locale(lang)
 }
 
 /**
