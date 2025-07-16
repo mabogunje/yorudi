@@ -85,7 +85,7 @@ case class JsonWriter() extends YorudiWriter {
   implicit val formats: Formats = DefaultFormats
 
   def writeWord(entry:WordEntry): JValue = {
-    Extraction.decompose(entry.word)
+    Extraction.decompose(entry.word.toYoruba)
   }
   
   def writeDecomposition(entry:WordEntry): JValue = {
@@ -99,8 +99,9 @@ case class JsonWriter() extends YorudiWriter {
   def writeDefinition(definition:(WordEntry, List[Meaning])): JValue = {
     val (wordEntry, meanings) = definition
     Extraction.decompose(Map(
-      "definition" -> Extraction.decompose(wordEntry.word),
-      "meanings" -> Extraction.decompose(meanings)
+      "definition" -> writeWord(wordEntry),
+      "decomposition" -> writeDecomposition(wordEntry),
+      "meanings" -> Extraction.decompose(meanings.map(writeTranslation(_)))
     ))
   }
 
