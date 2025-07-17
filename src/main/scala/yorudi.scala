@@ -8,7 +8,6 @@ import scala.io.Codec
 import java.nio.charset.CodingErrorAction
 
 /**
- *
  */
 object Yorudi extends FileParser {
   val usage = "Usage: yorudi [--dict=sample|cms|names] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml|json]"
@@ -44,7 +43,9 @@ object Yorudi extends FileParser {
       case option :: tail => parseOptions(map ++ Map('word -> option), tail)
     }
   }
-
+  /**
+   * Commenting out Command Line functionality
+   *
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
       val arguments = args.toList
@@ -79,4 +80,5 @@ object Yorudi extends FileParser {
       
       println(printer.writeGlossary(results))
   }
+  */
 }
