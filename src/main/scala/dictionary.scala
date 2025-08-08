@@ -1,65 +1,88 @@
 import collection._
 import YorubaImplicits._
-import DictionaryImplicits._
+import java.io.RandomAccessFile
+import scala.io.Source
 
-
-/**
- * 
- */
 case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEntry, List[Meaning]]()) extends MapProxy[WordEntry, List[Meaning]] {
-
-  // Auxiliary indices for faster lookups
-  private val spellingIndex: Map[String, List[WordEntry]] = 
-    self.keys.groupBy(_.word.spelling).mapValues(_.toList)
-
-  private val toYorubaIndex: Map[String, List[WordEntry]] = 
-    self.keys.groupBy(_.word.toYoruba).mapValues(_.toList)
-
-  private val rootIndex: Map[String, List[WordEntry]] = 
-    self.keys.groupBy(_.word.root.toYoruba).mapValues(_.toList)
-
-  private val decompositionIndex: Map[String, List[WordEntry]] = 
-    self.keys.flatMap(entry => entry.word.decomposition.map(_.toYoruba).map(decomp => (decomp, entry)))
-      .groupBy(_._1).mapValues(_.map(_._2).toList)
-     
   override def +[B1 >: List[Meaning]](kv: (WordEntry, B1)) : YorubaDictionary = {
-    if(self.contains(kv._1)) {
-      var meanings = self.getOrElse(kv._1, List()) ++: kv._2.asInstanceOf[List[Meaning]]
-      self.updated(kv._1, meanings)
+    val (key, value) = kv
+    if(self.contains(key)) {
+      var meanings = self.getOrElse(key, List()) ++: value.asInstanceOf[List[Meaning]]
+      YorubaDictionary(self.updated(key, meanings))
     } else {
-      self.updated(kv._1, kv._2.asInstanceOf[List[Meaning]])
+      YorubaDictionary(self.updated(key, value.asInstanceOf[List[Meaning]]))
     }
   }
   
-  def ++[B1 >: List[Meaning]](xs: GenTraversableOnce[(WordEntry, List[Meaning])]): YorubaDictionary = {
-    var merged = for ((k,v) <- xs.toList.groupBy(_._1)) yield (k, v.distinct.flatMap(_._2))
-    self ++ merged
-  }
-  
-  def strictLookup(word:Any):YorubaDictionary = {
-    val entries = (toYorubaIndex.getOrElse(word.toString, List()) ++ spellingIndex.getOrElse(word.toString, List())).distinct
-    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
-  }
-
-  def lookup(word:Any):YorubaDictionary = {
-    val entries = (spellingIndex.getOrElse(word.toString, List()) ++ toYorubaIndex.getOrElse(word.toString, List())).distinct
-    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
-  }
-
-  def lookupRelated(word:Any):YorubaDictionary = {
-    val entries = (decompositionIndex.getOrElse(word.toString, List()) ++ toYorubaIndex.getOrElse(word.toString, List())).distinct
-    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
-  }
-
-  def lookupDerivatives(word:Any):YorubaDictionary = {
-    val entries = rootIndex.getOrElse(word.toString, List())
-    YorubaDictionary(entries.flatMap(entry => self.get(entry).map(meanings => (entry, meanings))).toMap)
+  def ++(xs: Map[WordEntry, List[Meaning]]): YorubaDictionary = {
+    YorubaDictionary(self ++ xs)
   }
 }
 
-/**
- * 
- */
+case class IndexedDictionary(val index:Map[String, Long], val filename:String) extends FileParser {
+
+  def lookup(word:Any):YorubaDictionary = {
+    def strip(yoruba:String):String = {
+      import java.text.Normalizer
+      Normalizer.normalize(yoruba, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase()
+    }
+
+    val entries = index.keys.filter(entry => strip(entry) == strip(word.toString)).toList.distinct
+    val result = entries.map { entry =>
+      val offset = index.get(entry).get
+      val file = new RandomAccessFile(filename, "r")
+      file.seek(offset)
+      val line = file.readLine()
+      file.close()
+      parse(wordEntry, new String(line.getBytes("ISO-8859-1"), "UTF-8")).get
+    }.toMap
+    YorubaDictionary(result)
+  }
+
+  def strictLookup(word:Any):YorubaDictionary = {
+    val entries = index.keys.filter(entry => entry == word.toString).toList.distinct
+     val result = entries.map { entry =>
+      val offset = index.get(entry).get
+      val file = new RandomAccessFile(filename, "r")
+      file.seek(offset)
+      val line = file.readLine()
+      file.close()
+      parse(wordEntry, new String(line.getBytes("ISO-8859-1"), "UTF-8")).get
+    }.toMap
+    YorubaDictionary(result)
+  }
+
+  def lookupRelated(word:Any):YorubaDictionary = {
+    val fileSource = Some(Source.fromFile(filename)(CODEC))
+    val results = fileSource.get.getLines.filterNot(_.startsWith(COMMENT)).flatMap { line =>
+      val parsed = parse(wordEntry, line)
+      if (parsed.successful) {
+        val (entry, meanings) = parsed.get
+        if (entry.word.decomposition.map(_.toYoruba).contains(word.toString) || entry.word.toYoruba == word.toString) {
+          Some(entry -> meanings)
+        } else None
+      } else None
+    }.toMap
+    fileSource.foreach(_.close())
+    YorubaDictionary(results)
+  }
+
+  def lookupDerivatives(word:Any):YorubaDictionary = {
+    val fileSource = Some(Source.fromFile(filename)(CODEC))
+    val results = fileSource.get.getLines.filterNot(_.startsWith(COMMENT)).flatMap { line =>
+      val parsed = parse(wordEntry, line)
+      if (parsed.successful) {
+        val (entry, meanings) = parsed.get
+        if (entry.word.root.toYoruba == word.toString) {
+          Some(entry -> meanings)
+        } else None
+      } else None
+    }.toMap
+    fileSource.foreach(_.close())
+    YorubaDictionary(results)
+  }
+}
+
 object DictionaryImplicits {
   implicit def map2dict(map:Map[WordEntry, List[Meaning]]):YorubaDictionary = YorubaDictionary(map)
 }

@@ -4,6 +4,7 @@ import DictionaryImplicits._
 import YorubaImplicits._
 import io._
 import scala.io.Codec
+import java.io.RandomAccessFile
 
 class GrammarParser extends RegexParsers {
   /** The Grammar Parser uses a series of combinatorial parsers
@@ -86,5 +87,23 @@ class FileParser extends GrammarParser {
     } finally {
       fileSource.foreach(_.close())
     }
+  }
+
+  def index(filename:String):Map[String, Long] = {
+    val file = new RandomAccessFile(filename, "r")
+    var offset = file.getFilePointer()
+    var line = file.readLine()
+    var result = Map[String, Long]()
+    while (line != null) {
+      val parsed = parse(wordEntry, new String(line.getBytes("ISO-8859-1"), "UTF-8"))
+      if (parsed.successful) {
+        val (entry, _) = parsed.get
+        result += (entry.word.toYoruba -> offset)
+      }
+      offset = file.getFilePointer()
+      line = file.readLine()
+    }
+    file.close()
+    result
   }
 }

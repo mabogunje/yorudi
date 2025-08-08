@@ -26,13 +26,13 @@ class YorubaController extends ScalatraServlet {
     val writer:JsonWriter = new JsonWriter()
 
     // Load dictionaries once at startup
-    val dictionaries: Map[String, YorubaDictionary] = dictionaryPaths.map { case (name, path) =>
+    val dictionaries: Map[String, IndexedDictionary] = dictionaryPaths.map { case (name, path) =>
         try {
-            (name, parser.parse(path))
+            (name, IndexedDictionary(parser.index(path), path))
         } catch {
             case e: Exception =>
                 println(s"Error loading dictionary '$name' from '$path': ${e.getMessage}")
-                (name, YorubaDictionary()) // Return an empty dictionary on error
+                (name, IndexedDictionary(Map(), path)) // Return an empty dictionary on error
         }
     }
 
@@ -42,12 +42,12 @@ class YorubaController extends ScalatraServlet {
 
     get("/word/:word") {
         //Get parameters
-        var dictName = params.getOrElse("dictionary", "cms");
-        var mode = params.getOrElse("mode", "match");
+        val dictName = params.getOrElse("dictionary", "cms");
+        val mode = params.getOrElse("mode", "match");
         val word = params("word");
 
         // Retrieve the pre-loaded dictionary
-        val dictionary:YorubaDictionary = dictionaries.getOrElse(dictName, YorubaDictionary())
+        val dictionary = dictionaries.getOrElse(dictName, IndexedDictionary(Map(), ""))
         var results:YorubaDictionary = YorubaDictionary()
 
         // Depending on the mode, get appropriate results
