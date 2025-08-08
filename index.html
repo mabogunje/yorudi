@@ -32,27 +32,30 @@
                 //Process the results
                 response.then(results => { return results.json(); })
                         .then(data => {
-                            View.innerHTML = "";
-                            for (let entry in data) { 
-                                const wordFmt = "<dt>{0}. {1} {2}</dt>"
-                                const meaningFmt = "<dd>- {0}</dd>"
-                                const decompositionFmt = "[ {0} ]"
-                                index = 1 + parseInt(entry);
+                            if(data['error']) {
+                                View.innerHTML = data.message;
+                            } else {
+                                View.innerHTML = "";
+                                for (let entry in data) { 
+                                    const wordFmt = "<dt>{0}. {1} {2}</dt>"
+                                    const meaningFmt = "<dd>- {0}</dd>"
+                                    const decompositionFmt = "[ {0} ]"
+                                    index = 1 + parseInt(entry);
 
-                                const decomposition = data[entry].decomposition.reduce((accumulator, currentWord) => {
-                                    accumulator.push(currentWord.spelling);
-                                    return accumulator;
-                                }, []);
+                                    const decomposition = data[entry].decomposition.reduce((accumulator, currentWord) => {
+                                        accumulator.push(currentWord.spelling);
+                                        return accumulator;
+                                    }, []);
 
-                                View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition, decompositionFmt.format(decomposition.join(" . "))))
+                                    View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition, decompositionFmt.format(decomposition.join(" . "))))
                                 
-                                for(let meaning of data[entry].meanings) {
+                                    for(let meaning of data[entry].meanings) {
                                     View.insertAdjacentHTML('beforeend', meaningFmt.format(meaning.description))
+                                    }
                                 }
                             }
                          })
-                        .catch(error => { console.log(error); }
-                        )
+                        .catch(error => { console.log(error); })
             }
         </script>
     </head>
