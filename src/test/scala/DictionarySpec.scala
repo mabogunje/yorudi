@@ -47,3 +47,36 @@ class DictionarySpec extends FlatSpec {
     assert(newDict.get(entryA._1).get == List(meaningA, meaningB))
   }
 }
+
+class IndexedDictionarySpec extends FlatSpec {
+  val testFile = "src/main/resources/dicts/sample.en.yor"
+  val parser = new FileParser()
+  val dict = IndexedDictionary(parser.index(testFile), testFile)
+
+  "An IndexedDictionary" should "lookup words by tone-insensitive matching" in {
+    val result = dict.lookup("ade")
+    assert(result.size == 1)
+    assert(result.keys.head.word.toYoruba == "àdé")
+  }
+
+  it should "lookup words by strict tone-sensitive matching" in {
+    val result = dict.strictLookup("àdé")
+    assert(result.size == 1)
+    assert(result.keys.head.word.toYoruba == "àdé")
+
+    val failedResult = dict.strictLookup("ade")
+    assert(failedResult.size == 0)
+  }
+
+  it should "lookup related words by decomposition" in {
+    val result = dict.lookupRelated("dé")
+    assert(result.size == 1)
+    assert(result.keys.head.word.toYoruba == "àdé")
+  }
+
+  it should "lookup derivatives by root" in {
+    val result = dict.lookupDerivatives("dé")
+    assert(result.size == 1)
+    assert(result.keys.head.word.toYoruba == "àdé")
+  }
+}

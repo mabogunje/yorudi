@@ -64,7 +64,8 @@ object Yorudi extends FileParser {
         sys.exit
       }
       
-      val dict = parse(dictionaries(dictKey))
+      val dictFile = dictionaries(dictKey)
+      val dict = IndexedDictionary(index(dictFile), dictFile)
       val word = options.get('word).getOrElse("")
       var searchType = options.get('lookup).getOrElse("default")
       var outputType = options.get('format).getOrElse("plain")
