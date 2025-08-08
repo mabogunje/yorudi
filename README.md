@@ -1,11 +1,10 @@
 # Yorùdí
 
 > [!NOTE]
-> This project is currently being transitioned from being a command-line utility
-> to being a REST API that can query the dictionary database. As such index.html
-> is a basic webpage that supports searching the database. And the command-line
-> code has been commented out. Run `sbt run` to launch the REST server and query
-> it at http://localhost:3330/
+> This project is now both a command-line utility and a REST API that can query
+> the dictionary database. As such index.html is a basic webpage that supports
+> searching the database. And the command-line code can be accessed independently
+> as needed. The instructions for using both are below.
 
 ## A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
 
@@ -19,21 +18,33 @@ Dictionary.
 
 ### Usage Examples
 
+#### Using the Command Line
+
 1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
-    `sbt 'run yorudi --dict cms aba'`
+    `sbt 'runMain Yorudi --dict cms aba'`
 
 2. Find all words matching "àbà" in the cms dictionary (tone-sensitive)
 
-    `sbt 'run yorudi --dict cms -s àbà'`
+    `sbt 'runMain Yorudi --dict cms -s àbà'`
 
 3. Display a glossary of all words related to "àbà" in the cms dictionary
 
-    `sbt 'run yorudi --dict cms -g àbà'`
+    `sbt 'runMain Yorudi --dict cms -g àbà'`
 
 4. Find all words derived from "àbà" in the cms dictionary
 
-    `sbt 'run yorudi --dict cms -d àbà'`
+    `sbt 'runMain Yorudi --dict cms -d àbà'`
+
+#### Using the Rest Service
+
+    `sbt 'runMain YorubaRestService'`
+
+The service will spring up at <http://localhost:3330> with a basic webpage you can
+use to query the dictionaries. You can also check the RESTful responses directly
+by visiting: <http://localhost:3330/word/YOURWORD?dictionary=DICTIONARY&mode=MODE>,
+& replacing YOURWORD with your word, DICTIONARY with cms or names or sample, and
+MODE with match or strict or related or derivative.
 
 ### An Introduction to Yoruba & The Problem
 
@@ -60,38 +71,38 @@ This merging may be done in any of **3 ways**.
 
 1. **Linking** :- This is a simple joining of words
 
-        bi + bọ = bibọ i.e "ask" + "to worship" = "that which is to be worshipped" 
+    bi + bọ = bibọ i.e "ask" + "to worship" = "that which is to be worshipped"
 
 2. **Elision** :- This is the deletion of a vowel when joining words
 
-        ní + ilé = n'ílé i.e "in" + "house" = "in the house" 
+    ní + ilé = n'ílé i.e "in" + "house" = "in the house"
 
-3. **Assimilation** :- This is the inheritance by a vowel of another vowel sound when joining words 
+3. **Assimilation** :- This is the inheritance by a vowel of another vowel sound
+when joining words
 
-        kú + ilé = kúulé i.e "greet" + "house" = "greetings!"
+    kú + ilé = kúulé i.e "greet" + "house" = "greetings!"
 
-> _To learn more about the Yoruba people and their language, see http://yorupedia.com/_
-
+> _To learn more about the Yoruba people and their language, see <http://yorupedia.com/>_
 
 ### Creating a Yòrúdí File
 
-> Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor) and others in the dicts folder for 
-examples. 
+> Check out [this sample dictionary](https://github.com/mabogunje/yorudi/blob/master/dicts/sample.yor)
+and others in the dicts folder for examples.
 
-Such files may be easily created with any text editor able to save to _.txt_. 
-Once created, you can change the extension to _.yor_ so it will be recognized as a translation file.
+Such files may be easily created with any text editor able to save to _.txt_.
+Once created, you can change the extension to _.yor_ so it will be recognized as
+a translation file.
 
 #### Understanding Yòrúdí Entries
 
-Given the unique properties of the Yoruba language (as detailed above), a specialized input format is used to accurately record words. 
-Details of this format are given below:
+Given the unique properties of the Yoruba language (as detailed above), a specialized
+input format is used to accurately record words. Details of this format are below:
 
                 yoruba decomposition (2)                   optional attribute list (4)
                         v                                             v
             gbogbo [gbó . gbó]  /all  /many  /every  <first: attribute | second: attribute>
                ^                              ^                       
         simplified yoruba (1)       glossary of definitions (3)
-
 
 #### 1. Simplified Yoruba 
 
@@ -114,7 +125,8 @@ The glossary is a list of synonymous words and phrases in the target language
 
 + Each synonym must be separated by a forward slash
 + Each glossary entry may optionally feature short annotations in parentheses
-+ For readability, each slash in the glossary should be two (2) spaces away from the last entry
++ For readability, each slash in the glossary should be two (2) spaces away from
+the last entry
 
 #### 4. Attribute List
 
@@ -122,9 +134,11 @@ The attribute list may be used to indicate special properties such as indexes
 into other Yòrúdí language dictionaries.  In most cases a contributor need not
 concern themselves with these.
 
-+ The attribute list must be denoted by angle brackets of the form < attrib. list >
-+ Each attribute consist of a key-value pair separated by a colon and must be separated by a vertical bar 
-+ For readability, there should always be a space between vertical-bars and attributes as well as the colon and value in the key value pair (as in the previous example)
++ The attribute list must be denoted by angle brackets e.g. < attrib. list >
++ Each attribute consist of a key-value pair separated by a colon and must be
+separated by a vertical bar
++ For readability, there should always be a space between vertical-bars and attributes
+as well as the colon and value in the key value pair (as in the previous example)
 
 ## ADDITIONAL NOTES
 
