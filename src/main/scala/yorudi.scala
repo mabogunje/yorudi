@@ -43,9 +43,7 @@ object Yorudi extends FileParser {
       case option :: tail => parseOptions(map ++ Map('word -> option), tail)
     }
   }
-  /**
-   * Commenting out Command Line functionality
-   *
+
   def main(args: Array[String]) {
       if (args.isEmpty) println (usage)
       val arguments = args.toList
@@ -81,5 +79,4 @@ object Yorudi extends FileParser {
       
       println(printer.writeGlossary(results))
   }
-  */
 }

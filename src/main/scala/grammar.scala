@@ -152,7 +152,7 @@ case class Word(override val spelling:String, decomposition:Seq[Yoruba], overrid
  */
 sealed trait Meaning {
   def description:String
-  def language:Locale
+  def language:String
   
   override def toString() = description
 }
@@ -160,7 +160,10 @@ sealed trait Meaning {
 /**
  * A Yoruba translation i.e meaning in another language
  */
-case class Translation(override val description:String, var language:Locale = Locale.US) extends Meaning
+case class Translation(override val description:String, override val language:String = "en-NG") extends Meaning
+{
+  def locale = Locale.forLanguageTag(language);
+}
 
 /**
  * Convenience type for pairing a word with its attributes (used in dictionary)

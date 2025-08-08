@@ -17,7 +17,7 @@ trait YorudiWriter {
 class CommandLineWriter() extends YorudiWriter {
   def writeWord(entry:WordEntry): String = entry.word.toYoruba
   def writeDecomposition(entry:WordEntry): String = s"[ ${entry.word.decomposition mkString " . "} ]"
-  def writeTranslation(translation:Meaning): String = s"- ${translation.description} ${translation.language}"
+  def writeTranslation(translation:Meaning): String = s"- ${translation.description} (${translation.language})"
  
   def writeDefinition(definition:(WordEntry, List[Meaning])): String = {
     var output = new StringBuilder
@@ -93,7 +93,7 @@ case class JsonWriter() extends YorudiWriter {
   }
 
   def writeTranslation(translation:Meaning): JValue = {
-    Extraction.decompose(translation)
+    Extraction.decompose(translation.asInstanceOf[Meaning])
   }
 
   def writeDefinition(definition:(WordEntry, List[Meaning])): JValue = {

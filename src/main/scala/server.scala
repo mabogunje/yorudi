@@ -21,7 +21,15 @@ class YorubaController extends ScalatraServlet {
         ("cms", "src/main/resources/dicts/cms.en.yor"),
         ("names", "src/main/resources/dicts/names.en.yor")
     )
-    
+
+    error {
+      case e: IllegalArgumentException =>
+        halt(BadRequest(Map("error" -> "Invalid input", "message" -> e.getMessage)))
+      case e: Exception =>
+        halt(InternalServerError(Map("error" -> "An unexpected error occurred", "message" -> e.getMessage)))
+    }
+
+
     val parser:FileParser = Yorudi
     val writer:JsonWriter = new JsonWriter()
 
@@ -63,9 +71,8 @@ class YorubaController extends ScalatraServlet {
             val json = compact(render(writer.writeGlossary(results)))
             Ok(json)
         } else {
-            val error = new JString(s"Yoruba word not found in ${dictName} dictionary")
+            val error = Map("error" -> "Word Not Found", "message" -> s"Yoruba word '${word}' not found in ${dictName} dictionary")
             val json = Serialization.write(error)
-
             NotFound(json)
         }        
     }
