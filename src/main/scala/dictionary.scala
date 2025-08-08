@@ -52,33 +52,39 @@ case class IndexedDictionary(val index:Map[String, Long], val filename:String) e
     YorubaDictionary(result)
   }
 
+  private def readLineAtOffset(offset: Long): Option[(WordEntry, List[Meaning])] = {
+    val file = new RandomAccessFile(filename, "r")
+    try {
+      file.seek(offset)
+      val line = file.readLine()
+      if (line != null) {
+        val parsed = parse(wordEntry, new String(line.getBytes("ISO-8859-1"), "UTF-8"))
+        if (parsed.successful) Some(parsed.get) else None
+      } else None
+    } finally {
+      file.close()
+    }
+  }
+
   def lookupRelated(word:Any):YorubaDictionary = {
-    val fileSource = Some(Source.fromFile(filename)(CODEC))
-    val results = fileSource.get.getLines.filterNot(_.startsWith(COMMENT)).flatMap { line =>
-      val parsed = parse(wordEntry, line)
-      if (parsed.successful) {
-        val (entry, meanings) = parsed.get
+    val results = index.flatMap { case (entryWord, offset) =>
+      readLineAtOffset(offset).flatMap { case (entry, meanings) =>
         if (entry.word.decomposition.map(_.toYoruba).contains(word.toString) || entry.word.toYoruba == word.toString) {
           Some(entry -> meanings)
         } else None
-      } else None
+      }
     }.toMap
-    fileSource.foreach(_.close())
     YorubaDictionary(results)
   }
 
   def lookupDerivatives(word:Any):YorubaDictionary = {
-    val fileSource = Some(Source.fromFile(filename)(CODEC))
-    val results = fileSource.get.getLines.filterNot(_.startsWith(COMMENT)).flatMap { line =>
-      val parsed = parse(wordEntry, line)
-      if (parsed.successful) {
-        val (entry, meanings) = parsed.get
+    val results = index.flatMap { case (entryWord, offset) =>
+      readLineAtOffset(offset).flatMap { case (entry, meanings) =>
         if (entry.word.root.toYoruba == word.toString) {
           Some(entry -> meanings)
         } else None
-      } else None
+      }
     }.toMap
-    fileSource.foreach(_.close())
     YorubaDictionary(results)
   }
 }
