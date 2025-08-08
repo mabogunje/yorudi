@@ -25,10 +25,10 @@ class CmdlWriterSpec extends FlatSpec {
   }
   
   it can "write translations correctly" in {
-    var translation = Translation("crown", Locale.US)
+    var translation = Translation("crown", "en-NG")
     var output = writer.writeTranslation(translation)
-    var expected = "- " + translation.description + " " + translation.language.toString()
-    
+    var expected = s"- ${translation.description} (${translation.language})"
+
     assert(output.toString == expected)
   }
 }
@@ -55,7 +55,7 @@ class XmlWriterSpec extends FlatSpec {
   }
   
   it can "write translations correctly" in {
-    var translation = Translation("plenty", Locale.US)
+    var translation = Translation("plenty", "en-NG")
     var output = writer.writeTranslation(translation)
     var expected = <meaning xml:language={translation.language.toString()}>{translation.description}</meaning>
     
@@ -87,7 +87,7 @@ class JsonWriterSpec extends FlatSpec {
   }
 
   it can "write translations correctly" in {
-    var translation = Translation("plenty", Locale.US)
+    var translation = Translation("plenty", "en-NG")
     var output = writer.writeTranslation(translation)
     var expected = Extraction.decompose(translation)
 
