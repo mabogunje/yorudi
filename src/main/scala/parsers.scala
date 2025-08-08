@@ -72,22 +72,6 @@ class FileParser extends GrammarParser {
   val COMMENT = "#";
   val DIRECTIVE = "!";
   var LANGUAGE = "";
-  var DICT = YorubaDictionary()
-  var problems = List
-  
-  def parse(filename:String):YorubaDictionary = {
-    var fileSource: Option[scala.io.Source] = None
-    try {
-      fileSource = Some(Source.fromFile(filename)(CODEC))
-      val entries = fileSource.get.getLines.filterNot(_.startsWith(COMMENT)) map {
-        parse(wordEntry, _)
-      } filter {_.successful} map {_.get} toList
-      
-      DICT ++ entries
-    } finally {
-      fileSource.foreach(_.close())
-    }
-  }
 
   def index(filename:String):Map[String, Long] = {
     val file = new RandomAccessFile(filename, "r")
