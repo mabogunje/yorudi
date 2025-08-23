@@ -13,9 +13,10 @@ object Yorudi extends FileParser {
   val usage = "Usage: yorudi [--dict=sample|cms|names] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml|json]"
     
   val dictionaries = Map[String, String](
-    ("sample", "src/main/resources/dicts/sample.en.yor"),
     ("cms", "src/main/resources/dicts/cms.en.yor"),
-    ("names", "src/main/resources/dicts/names.en.yor")
+    ("gpt", "src/main/resources/dicts/gpt.en.yor"),
+    ("names", "src/main/resources/dicts/names.en.yor"),
+    ("sample", "src/main/resources/dicts/sample.en.yor")
   )
    
   val printers = Map[String, YorudiWriter](
@@ -61,7 +62,7 @@ object Yorudi extends FileParser {
         println("Unknown dictionary: " + dictKey)
         sys.exit
       }
-      
+
       val dictFile = dictionaries(dictKey)
       val dict = IndexedDictionary(index(dictFile), dictFile)
       val word = options.get('word).getOrElse("")
