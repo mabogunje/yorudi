@@ -17,9 +17,10 @@ class YorubaController extends ScalatraServlet {
 
     //This collection represents a simple in-memory data source (i.e. it is mutable and not thread-safe)
     val dictionaryPaths = Map[String, String](
-        ("sample", "src/main/resources/dicts/sample.en.yor"),
-        ("cms", "src/main/resources/dicts/cms.en.yor"),
-        ("names", "src/main/resources/dicts/names.en.yor")
+      ("cms", "src/main/resources/dicts/cms.en.yor"),
+      ("gpt", "src/main/resources/dicts/gpt.en.yor"),
+      ("names", "src/main/resources/dicts/names.en.yor"),
+      ("sample", "src/main/resources/dicts/sample.en.yor")
     )
 
     error {

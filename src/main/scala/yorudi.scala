@@ -10,12 +10,13 @@ import java.nio.charset.CodingErrorAction
 /**
  */
 object Yorudi extends FileParser {
-  val usage = "Usage: yorudi [--dict=sample|cms|names] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml|json]"
+  val usage = "Usage: yorudi [--dict=cms|gpt|names|sample|] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml|json]"
     
   val dictionaries = Map[String, String](
-    ("sample", "src/main/resources/dicts/sample.en.yor"),
     ("cms", "src/main/resources/dicts/cms.en.yor"),
-    ("names", "src/main/resources/dicts/names.en.yor")
+    ("gpt", "src/main/resources/dicts/gpt.en.yor"),
+    ("names", "src/main/resources/dicts/names.en.yor"),
+    ("sample", "src/main/resources/dicts/sample.en.yor")
   )
    
   val printers = Map[String, YorudiWriter](
@@ -34,7 +35,7 @@ object Yorudi extends FileParser {
       case "--fmt" :: value :: tail => parseOptions(map ++ Map('format -> value), tail)
       case string :: opt :: tail if (isSwitch(string)) => {
         string match {
-          case "-s" => parseOptions(map ++ Map('lookup -> "strict"), list.tail)
+          case "-s" => parseOptions(map ++ Map('mode -> "strict"), list.tail)
           case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
           case "-d" => parseOptions(map ++ Map('mode -> "derivative"), list.tail)
           case _ => println("Invalid option: " + string); println(usage); sys.exit
@@ -61,20 +62,20 @@ object Yorudi extends FileParser {
         println("Unknown dictionary: " + dictKey)
         sys.exit
       }
-      
+
       val dictFile = dictionaries(dictKey)
       val dict = IndexedDictionary(index(dictFile), dictFile)
       val word = options.get('word).getOrElse("")
-      var searchType = options.get('lookup).getOrElse("default")
-      var outputType = options.get('format).getOrElse("plain")
       var mode = options.get('mode).getOrElse("dictionary")
+      var outputType = options.get('format).getOrElse("plain")
       var results = YorubaDictionary()
       var printer:YorudiWriter = if(printers.keys.exists(_ == outputType.toString)) printers(outputType.toString) else printers("plain")
       	
       mode match {
         case "glossary" => results = dict.lookupRelated(word)
         case "derivative" => results = dict.lookupDerivatives(word)
-        case _ => if (searchType.toString == "strict") results = dict.strictLookup(word) else results = dict.lookup(word)
+        case "strict" => results = dict.strictLookup(word)
+        case _ => results = dict.lookup(word)
       }
       
       println(printer.writeGlossary(results))
