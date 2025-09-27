@@ -1,3 +1,8 @@
+/**
+ * @author damola
+ *
+ */
+
 import javax.servlet.ServletContext
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.webapp.WebAppContext
@@ -6,7 +11,7 @@ import org.scalatra.servlet.ScalatraListener
 import org.json4s.{DefaultFormats, Formats, JArray, JString}
 import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization
-
+import net.mabogunje.yorudi._
 
 /**
   * 

@@ -2,6 +2,7 @@
  * @author damola
  *
  */
+package net.mabogunje.yorudi
 
 import io._
 import scala.io.Codec

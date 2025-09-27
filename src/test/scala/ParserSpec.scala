@@ -1,3 +1,9 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
+
 import org.scalatest.FlatSpec
 
 class ParserSpec extends FlatSpec {

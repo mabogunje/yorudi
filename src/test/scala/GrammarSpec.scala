@@ -1,3 +1,9 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
+
 import YorubaImplicits._
 import Bias._
 import Tone._

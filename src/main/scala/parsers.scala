@@ -1,3 +1,10 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
+
+import scala.util.parsing.combinator._
 import scala.util.parsing.combinator._
 import Bias._
 import DictionaryImplicits._
