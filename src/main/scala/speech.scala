@@ -1,3 +1,8 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
 
 /**
  * Tone provides methods for interacting with accented characters

@@ -4,7 +4,7 @@ scalaVersion := "2.11.8"
 
 fork := true
 
-version := "0.1-SNAPSHOT"
+version := "1.0"
 
 libraryDependencies ++= { 
     val scalatraVersion = "2.3.0"
@@ -24,3 +24,6 @@ libraryDependencies ++= {
     "org.scala-lang.modules"    %% "scala-parser-combinators" % "1.0.3"
     )
 }
+
+mainClass in assembly := Some("YorubaRestService")
+

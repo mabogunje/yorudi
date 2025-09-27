@@ -1,3 +1,8 @@
+/**
+ * @author damola
+ *
+ */
+
 import org.json4s.DefaultFormats
 import org.scalatra.test.scalatest._
 import org.json4s.jackson.Serialization.write

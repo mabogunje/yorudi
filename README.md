@@ -43,7 +43,7 @@ Dictionary.
 The service will spring up at <http://localhost:3330> with a basic webpage you can
 use to query the dictionaries. You can also check the RESTful responses directly
 by visiting: <http://localhost:3330/word/YOURWORD?dictionary=DICTIONARY&mode=MODE>,
-& replacing YOURWORD with your word, DICTIONARY with cms or names or sample, and
+& replacing YOURWORD with your word, DICTIONARY with cms or gpt or names or sample, and
 MODE with match or strict or related or derivative.
 
 ### An Introduction to Yoruba & The Problem

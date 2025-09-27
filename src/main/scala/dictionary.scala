@@ -1,3 +1,9 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
+
 import collection._
 import YorubaImplicits._
 import java.io.RandomAccessFile

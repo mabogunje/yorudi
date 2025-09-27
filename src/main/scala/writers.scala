@@ -1,3 +1,9 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
+
 import scala.xml._
 import org.json4s._
 import org.json4s.jackson.JsonMethods._

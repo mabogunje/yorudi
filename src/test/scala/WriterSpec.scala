@@ -1,3 +1,9 @@
+/**
+ * @author damola
+ *
+ */
+package net.mabogunje.yorudi
+
 import YorubaImplicits._
 import scala.xml.PrettyPrinter
 import scala.xml.XML
