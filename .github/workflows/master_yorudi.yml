@@ -17,21 +17,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Java version
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
+      
+      - uses: sbt/setup-sbt@v1
+      - name: Build, Test, and Create JAR with SBT
+        run: sbt clean compile test assembly
 
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Upload artifact for deployment job
+      - name: Upload artefact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/target/scala-2.11/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       contents: read #This is required for actions/checkout
   
     steps:
-      - name: Download artifact from build job
+      - name: Download artefact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
@@ -60,4 +60,5 @@ jobs:
           app-name: 'yorudi'
           slot-name: 'Production'
           package: '*.jar'
+
           
