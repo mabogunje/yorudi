@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/target/scala-2.11/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,4 +60,5 @@ jobs:
           package: '*.jar'
 
           
+
 
