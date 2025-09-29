@@ -17,14 +17,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Java version
-        uses: actions/setup-java@v4
+      - uses: sbt/setup-sbt@v1
         with:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with SBT
+      - name: Build, Test, and Create JAR with SBT
         run: sbt clean compile test assembly
 
       - name: Upload artifact for deployment job
@@ -62,3 +60,4 @@ jobs:
           package: '*.jar'
 
           
+
