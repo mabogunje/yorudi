@@ -59,6 +59,6 @@ jobs:
         with:
           app-name: 'yorudi'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'yorudi-assembly-1.0.jar'
 
           
