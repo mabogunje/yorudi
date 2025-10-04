@@ -28,5 +28,5 @@ libraryDependencies ++= {
 mainClass in assembly := Some("YorubaRestService")
 
 // Include text dictionaries in JAR
-resourceDirectory in Compile := baseDirectory.value / "src" / "main" / "resources" / "dicts"
+resourceDirectory in Compile := baseDirectory.value / "dictionaries"
 
