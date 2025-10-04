@@ -59,6 +59,6 @@ jobs:
         with:
           app-name: 'yorudi'
           slot-name: 'Production'
-          package: 'java-app.zip'
+          package: '*.zip'
 
           
