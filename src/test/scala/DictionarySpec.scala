@@ -55,7 +55,7 @@ class DictionarySpec extends FlatSpec {
 }
 
 class IndexedDictionarySpec extends FlatSpec {
-  val testFile = "src/main/resources/dicts/sample.en.yor"
+  val testFile = "sample.en.yor"
   val parser = new FileParser()
   val dict = IndexedDictionary(parser.index(testFile), testFile)
 
