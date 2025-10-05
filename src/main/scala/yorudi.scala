@@ -14,10 +14,10 @@ object Yorudi extends FileParser {
   val usage = "Usage: yorudi [--dict=cms|gpt|names|sample|] [-s (strict) | -g (glossary) | -d (derivative)] [word] [--fmt=plain|xml|json]"
     
   val dictionaries = Map[String, String](
-    ("cms", "cms.en.yor"),
-    ("gpt", "gpt.en.yor"),
-    ("names", "names.en.yor"),
-    ("sample", "sample.en.yor")
+    ("cms", "dicts/cms.en.yor"),
+    ("gpt", "dicts/gpt.en.yor"),
+    ("names", "dicts/names.en.yor"),
+    ("sample", "dicts/sample.en.yor")
   )
    
   val printers = Map[String, YorudiWriter](
