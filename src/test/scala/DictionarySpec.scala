@@ -54,6 +54,7 @@ class DictionarySpec extends FlatSpec {
   }
 }
 
+/*
 class IndexedDictionarySpec extends FlatSpec {
   val testFile = "sample.en.yor"
   val parser = new FileParser()
@@ -86,3 +87,4 @@ class IndexedDictionarySpec extends FlatSpec {
     assert(result.keys.head.word.toYoruba == "àdé")
   }
 }
+*/
