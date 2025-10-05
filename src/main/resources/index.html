@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript">
+        
+        // First, checks if it helper function String.format isn't implemented yet.
+        if (!String.prototype.format) {
+            String.prototype.format = function() {
+                var args = arguments;
+                return this.replace(/{(\d+)}/g, function(match, number) { 
+                    return typeof args[number] != 'undefined' ? args[number] : match;
+                });
+            };
+        }
+            const API = window.location.href + "word"
+            const URL_FMT = "{0}/{1}?dictionary={2}&mode={3}"
+
+            async function getDefinitions() {
+                const View = document.getElementById("entries") // We will print results into this view
+
+                //Get the parameters of the query from the form
+                var dictionary = document.getElementById("dictionaries").value;
+                var query = document.getElementById("query").value.toLowerCase();
+                var mode = Array.from(document.getElementsByName("lookup")).find((m) => m.checked === true).value;
+                
+                //Make the REST request
+                var URL = URL_FMT.format(API, query, dictionary, mode)
+                const response = fetch(URL);
+                
+                //Process the results
+                response.then(results => { return results.json(); })
+                        .then(data => {
+                            if(data['error']) {
+                                View.innerHTML = data.message;
+                            } else {
+                                View.innerHTML = "";
+                                for (let entry in data) { 
+                                    const wordFmt = "<dt>{0}. {1} {2}</dt>"
+                                    const meaningFmt = "<dd>- {0}</dd>"
+                                    const decompositionFmt = "[ {0} ]"
+                                    index = 1 + parseInt(entry);
+
+                                    const decomposition = data[entry].decomposition.reduce((accumulator, currentWord) => {
+                                        accumulator.push(currentWord.spelling);
+                                        return accumulator;
+                                    }, []);
+
+                                    View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition, decompositionFmt.format(decomposition.join(" . "))))
+                                
+                                    for(let meaning of data[entry].meanings) {
+                                    View.insertAdjacentHTML('beforeend', meaningFmt.format(meaning.description))
+                                    }
+                                }
+                            }
+                         })
+                        .catch(error => { console.log(error); })
+            }
+        </script>
+    </head>
+    <body>
+        <nav>
+            <img src="logo.jpg" height="50px" width="50px" />
+            <strong>Yor&ugrave;d&iacute;</strong> <small>A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary</small>
+            <div style="position: relative; display: inline-block; float:right; top: 5px; border: 2px solid; padding: 5px;">
+                <a href="https://github.com/mabogunje/yorudi">View on Github</a>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="header">Choose A Dictionary: 
+                <select id="dictionaries">
+                    <option value="cms">Church Missionary Society</option>
+                    <option value="gpt">100 Most Popular Words per Alphabet</option>
+                    <option value="names">Yoruba Personal Names</option>
+                    <option value="sample">Sample Dictionary</option>
+                </select>
+            </div>
+            <table width="80%" align="center">
+                <tr>
+                    <td colspan="4">
+                        <form action="http://localhost:8080/words/" method="get" onsubmit="getDefinitions(); return false;">
+                            <input id="query" type="text" placeholder="Search with Yor&ugrave;b&aacute; with or without tone marks">
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="lookup" name="lookup" value="match" checked="checked"> <label for="lookup">Word Lookup</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="strict" name="lookup" value="strict"> <label for="lookup">Strict Word Lookup</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="related" name="lookup" value="related"> <label for="lookup">Related Words Lookup</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="derived" name="lookup" value="derived"> <label for="lookup">Derivative Words Lookup</label>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            <div id="results">
+                <dl id="entries">
+
+                </dl>
+            </div>
+        </div>
+    </body>
+</html>
