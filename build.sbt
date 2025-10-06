@@ -26,3 +26,4 @@ libraryDependencies ++= {
 }
 
 mainClass in assembly := Some("YorubaRestService")
+unmanagedResourceDirectories in Compile += baseDirectory.value / "src/main/webapp"
