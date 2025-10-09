@@ -7,6 +7,7 @@ import javax.servlet.ServletContext
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra._
+import org.scalatra.CorsSupport
 import org.scalatra.servlet.ScalatraListener
 import org.json4s.{DefaultFormats, Formats, JArray, JString}
 import org.json4s.jackson.JsonMethods._
@@ -16,7 +17,7 @@ import net.mabogunje.yorudi._
 /**
   * 
   */
-class YorubaController extends ScalatraServlet {
+class YorubaController extends ScalatraServlet with CorsSupport {
 
     protected implicit val jsonFormats: Formats = DefaultFormats
 
@@ -35,6 +36,10 @@ class YorubaController extends ScalatraServlet {
         halt(InternalServerError(Map("error" -> "An unexpected error occurred", "message" -> e.getMessage)))
     }
 
+    options("/*") {
+      response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"))
+      response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"))
+    }
 
     val parser:FileParser = Yorudi
     val writer:JsonWriter = new JsonWriter()
