@@ -1,0 +1,46 @@
+#!author: Damola Mabogunje
+#!summary: How To Enter Words Into a Yorudi Dictionary
+#!lang: en
+#!date: 12-12-13
+
+# This is a Comment. The ones with a ! above are required, but you can have as many without the ! as you like
+
+
+# Writing Simple Words (Always indicate tone marks within the square brackets if any)
+aa [aa*] /word of exclamation
+
+# Writing Simple Words With Multiple Translations
+ba [bá*]  /to meet  /overtake  /find at a place
+
+# Writing Simple Words With Multiple Senses (Just enter the same word with a different set of translations)
+ba [bá*]  /to meet  /overtake  /find at a place
+ba [bá*]  /with  /against
+ba [bá*]  /should  /would  /might /ought
+
+# Writing Compound Words  (Don't forget to indicate the root word with an asterix)
+ade [à . dé*]  /crown
+soro [sọ* . rọ]  /told  /said
+
+# Writing Compound Words With Elision (Arrow length must match number of elided letters; On roots, put asterix after arrow)
+aba [à . <-àbà*]  /a staple
+abaje [àbà* . <--onjẹ]  /a kind of yam
+abara [à . <-ibá* . rán->]  /a slap with the palm of the hand
+aba [à . <-ibá* . <---rán] /a slap with the palm of the hand
+
+#    Writing Compound Words With Assimilation (Just a bit more complicated)     #
+#################################################################################
+# - The primary letter of assimilation must have more pluses than the secondary #
+# - Use more than 2 pluses if primary letter is also repeated                   #
+# - The program can figure out the appropriate assimilation result              #
+#################################################################################
+
+kawe [ka++>* . <+ìwé]  /read a book
+gbodo [gbé+>* . <++odó] /lift a mortar
+kuule [kú+++>* . <+ilé]  /greetings
+kaale [kú+>* . <+++alẹ́]  /good evening
+kaabo [kú+>* . <+++àbọ̀]  /welcome
+gbogbo [gbo* . gbo] /plenty
+
+#########################
+# THIS IS JUST A SAMPLE #
+#########################
