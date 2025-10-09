@@ -37,7 +37,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
     }
 
     options("/*") {
-      response.setHeader("Access-Control-Allow-Origin", "*")
+      response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"))
     }
 
     val parser:FileParser = Yorudi
@@ -59,6 +59,16 @@ class YorubaController extends ScalatraServlet with CorsSupport {
     }
 
     get("/word/:word") {
+        // Set CORS policy
+        val allowedOrigins = Set("https://mabogunje.github.io", "http://localhost:3330") // Define your allowed origins
+        
+        request.getHeader("Origin") match {
+          case origin if allowedOrigins.contains(origin) =>
+            response.setHeader("Access-Control-Allow-Origin", origin)
+            println(s"Accessing Yoruba Dictionary REST API from '$origin'.")
+          case _ => println("Error: Access from origin not allowed.")
+        }
+
         //Get parameters
         val dictName = params.getOrElse("dictionary", "cms");
         val mode = params.getOrElse("mode", "match");
