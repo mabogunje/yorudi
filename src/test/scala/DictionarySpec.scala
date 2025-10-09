@@ -57,7 +57,8 @@ class DictionarySpec extends FlatSpec {
 class IndexedDictionarySpec extends FlatSpec {
   val testFile = "dicts/sample.en.yor"
   val parser = new FileParser()
-  val dict = IndexedDictionary(parser.index(testFile), testFile)
+  val (index, lines) = parser.indexFile(testFile)
+  val dict = IndexedDictionary(index, lines)
 
   "An IndexedDictionary" should "lookup words by tone-insensitive matching" in {
     val result = dict.lookup("ade")

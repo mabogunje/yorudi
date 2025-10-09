@@ -26,7 +26,7 @@ case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEnt
   }
 }
 
-case class IndexedDictionary(val index:Map[String, Long], val filename:String) extends FileParser {
+case class IndexedDictionary(val index:Map[String, Int], val lines:IndexedSeq[String]) extends FileParser {
   // Helper functions for string comparisons
   def strip(yoruba:String):String = {
     Normalizer.normalize(yoruba, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase()
@@ -37,79 +37,60 @@ case class IndexedDictionary(val index:Map[String, Long], val filename:String) e
   }
 
   // Helper function for retrieving data from files
-  private def readLineAtOffset(file: RandomAccessFile, offset: Long): Option[(WordEntry, List[Meaning])] = {
-    file.seek(offset)
-    val line = file.readLine()
-    if (line != null) {
-      val parsed = parse(wordEntry, new String(line.getBytes("ISO-8859-1"), "UTF-8"))
+  private def readLineAtIndex(lineIdx: Int): Option[(WordEntry, List[Meaning])] = {
+    if (lineIdx >= 0 && lineIdx < lines.length) {
+      val line = lines(lineIdx)
+      val parsed = parse(wordEntry, line)
       if (parsed.successful) Some(parsed.get) else None
-    } else None
+    } else {
+      None
+    }
   }
 
   //Lookup functions
   def lookup(word:Any):YorubaDictionary = {
-
     val entries = index.keys.filter(entry => strip(entry) == strip(word.toString)).toList.sorted.distinct
-    val file = new RandomAccessFile(filename, "r")
-    try {
-      val result = entries.map { entry =>
-        val offset = index.get(entry).get
-        readLineAtOffset(file, offset).get
-      }.toMap
-      YorubaDictionary(result)
-    } finally {
-      file.close()
-    }
+    val result = entries.flatMap { entry =>
+      index.get(entry).flatMap(readLineAtIndex)
+    }.toMap
+    YorubaDictionary(result)
   }
 
   def strictLookup(word:Any):YorubaDictionary = {
-
     val entries = index.keys.filter(entry => standardizeDiacritics(entry.toString) == standardizeDiacritics(word.toString)).toList.sorted.distinct
-    val file = new RandomAccessFile(filename, "r")
-    try {
-      val result = entries.map { entry =>
-        val offset = index.get(entry).get
-        readLineAtOffset(file, offset).get
-      }.toMap
-      YorubaDictionary(result)
-    } finally {
-      file.close()
-    }
+    val result = entries.flatMap { entry =>
+      index.get(entry).flatMap(readLineAtIndex)
+    }.toMap
+    YorubaDictionary(result)
   }
 
 
   def lookupRelated(word:Any):YorubaDictionary = {
-    val file = new RandomAccessFile(filename, "r")
-    try {
-      val results = index.flatMap { case (entryWord, offset) =>
-        readLineAtOffset(file, offset).flatMap { case (entry, meanings) =>
-        if (entry.word.decomposition.map(term => standardizeDiacritics(term.toYoruba)).contains(standardizeDiacritics(word.toString)) ||
-          standardizeDiacritics(entry.word.toYoruba) == standardizeDiacritics(word.toString)
-        ) {
-            Some(entry -> meanings)
-          } else None
-        }
-      }.toMap
-      YorubaDictionary(results)
-    } finally {
-      file.close()
-    }
+    val results = lines.flatMap { line =>
+        val parsed = parse(wordEntry, line)
+        if(parsed.successful){
+            val (entry, meanings) = parsed.get
+            if (entry.word.decomposition.map(term => standardizeDiacritics(term.toYoruba)).contains(standardizeDiacritics(word.toString)) ||
+              standardizeDiacritics(entry.word.toYoruba) == standardizeDiacritics(word.toString)
+            ) {
+                Some(entry -> meanings)
+              } else None
+        } else None
+    }.toMap
+    YorubaDictionary(results)
   }
 
   def lookupDerivatives(word:Any):YorubaDictionary = {
-    val file = new RandomAccessFile(filename, "r")
-    try {
-      val results = index.flatMap { case (entryWord, offset) =>
-        readLineAtOffset(file, offset).flatMap { case (entry, meanings) =>
-          if (standardizeDiacritics(entry.word.root.toYoruba) == standardizeDiacritics(word.toString)) {
-            Some(entry -> meanings)
-          } else None
-        }
-      }.toMap
-      YorubaDictionary(results)
-    } finally {
-      file.close()
-    }
+    val results = lines.flatMap { line =>
+        val parsed = parse(wordEntry, line)
+        if(parsed.successful){
+            val (entry, meanings) = parsed.get
+            if (standardizeDiacritics(entry.word.root.toYoruba) == standardizeDiacritics(word.toString)) {
+                Some(entry -> meanings)
+            } else None
+        } else None
+    }.toMap
+    YorubaDictionary(results)
   }
 }
 

@@ -44,7 +44,7 @@ class YorubaController extends ScalatraServlet {
         val path = dictionaryPaths.getOrElse(name, "")
         if (path.isEmpty) {
             println(s"Error: Dictionary '$name' not found.")
-            IndexedDictionary(Map(), "")
+            IndexedDictionary(Map(), IndexedSeq.empty)
         } else {
             DictionaryCache.getDictionary(name, path)
         }

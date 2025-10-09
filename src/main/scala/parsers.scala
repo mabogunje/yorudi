@@ -80,6 +80,7 @@ class FileParser extends GrammarParser {
   val DIRECTIVE = "!";
   var LANGUAGE = "";
 
+  @deprecated("This method is not safe for files in JARs. Use indexFile instead.", "0.1")
   def index(filename: String): Map[String, Long] = {
     val file = getClass.getClassLoader.getResourceAsStream(filename)
     val lines = scala.io.Source.fromInputStream(file)(CODEC).getLines()
@@ -97,5 +98,33 @@ class FileParser extends GrammarParser {
     }
     file.close()
     result
+  }
+
+  def indexFile(filename: String): (Map[String, Int], IndexedSeq[String]) = {
+    val fileStream = getClass.getClassLoader.getResourceAsStream(filename)
+    try {
+      val lines = scala.io.Source.fromInputStream(fileStream)(CODEC).getLines().toIndexedSeq
+      var indexMap = Map[String, Int]()
+
+      for ((line, idx) <- lines.zipWithIndex) {
+        val parsed = parse(wordEntry, line)
+        if (parsed.successful) {
+          val (entry, _) = parsed.get
+          indexMap += (entry.word.toYoruba -> idx)
+        }
+      }
+      (indexMap, lines)
+    } finally {
+      if (fileStream != null) fileStream.close()
+    }
+  }
+}
+
+
+object Test extends FileParser {
+  def main(args:Array[String]) = {
+    val (idx, lines) = indexFile("dicts/gpt.en.yor")
+    val dict = IndexedDictionary(idx, lines)
+    println(dict.lookup("ìwé"))
   }
 }
