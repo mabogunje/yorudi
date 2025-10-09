@@ -80,19 +80,20 @@ class FileParser extends GrammarParser {
   val DIRECTIVE = "!";
   var LANGUAGE = "";
 
-  def index(filename:String):Map[String, Long] = {
-    val file = new RandomAccessFile(filename, "r")
-    var offset = file.getFilePointer()
-    var line = file.readLine()
+  def index(filename: String): Map[String, Long] = {
+    val file = getClass.getClassLoader.getResourceAsStream(filename)
+    val lines = scala.io.Source.fromInputStream(file)(CODEC).getLines()
     var result = Map[String, Long]()
-    while (line != null) {
-      val parsed = parse(wordEntry, new String(line.getBytes("ISO-8859-1"), "UTF-8"))
+    var offset = 0L
+
+    for (line <- lines) {
+      val parsed = parse(wordEntry, line)
+
       if (parsed.successful) {
         val (entry, _) = parsed.get
         result += (entry.word.toYoruba -> offset)
       }
-      offset = file.getFilePointer()
-      line = file.readLine()
+      offset += line.getBytes(CODEC.charSet).length + 1
     }
     file.close()
     result

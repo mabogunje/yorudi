@@ -1,0 +1,27 @@
+{
+  "name": "scala",
+  "argv": [
+    "/opt/homebrew/Cellar/scala/3.7.1/libexec/libexec/scala-cli.jar",
+    "--cli-default-scala-version",
+    "3.7.1",
+    "--repository",
+    "file:///opt/homebrew/Cellar/scala/3.7.1/libexec/maven2",
+    "--prog-name",
+    "scala",
+    "--skip-cli-updates",
+    "bsp",
+    "--json-options",
+    "/Users/damola/github/yorudi/src/main/scala/.scala-build/ide-options-v2.json",
+    "--json-launcher-options",
+    "/Users/damola/github/yorudi/src/main/scala/.scala-build/ide-launcher-options.json",
+    "--envs-file",
+    "/Users/damola/github/yorudi/src/main/scala/.scala-build/ide-envs.json",
+    "/Users/damola/github/yorudi/src/main/scala/parsers.scala"
+  ],
+  "version": "1.8.0",
+  "bspVersion": "2.1.1",
+  "languages": [
+    "scala",
+    "java"
+  ]
+}
