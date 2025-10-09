@@ -37,8 +37,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
     }
 
     options("/*") {
-      response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"))
-      response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"))
+      response.setHeader("Access-Control-Allow-Origin", "*")
     }
 
     val parser:FileParser = Yorudi
