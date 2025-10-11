@@ -72,7 +72,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
         //Get parameters
         val dictName = params.getOrElse("dictionary", "cms");
         val mode = params.getOrElse("mode", "match");
-        val word = params("word");
+        val word = params("word").trim.toLowerCase();
 
         // Retrieve the pre-loaded dictionary
         val dictionary = getDictionary(dictName)
