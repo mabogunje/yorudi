@@ -1,13 +1,7 @@
 # Yorùdí
 
-> [!NOTE]
-> This project is now both a command-line utility and a REST API that can query
-> the dictionary database. As such index.html is a basic webpage that supports
-> searching the database. And the command-line code can be accessed independently
-> as needed. The instructions for using both are below.
-
-## A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary
-
+## A Standardized, Accessible, & Downloadable Comprehensive Yoruba Multilingual Dictionary
+ 
 The Yorùdí project aims to compile a complete multi-lingual lexical database
 with [Yoruba](http://en.wikipedia.org/wiki/Yoruba_language)  as the pivot language.
 The project is modelled after the [CC-CEDICT project](http://cc-cedict.org/wiki/)
@@ -16,9 +10,41 @@ by Paul Andrew Denisowski which was itself modeled on the highly successful
 former being a Chinese-English Electronic Dictionary and the latter, a Japanese-English
 Dictionary.
 
-### Usage Examples
+This dictionary, in addition to being standardized and downloadable by humans, also aims
+to be accessible to machines. As such, it consists of 3 parts:
 
-#### Using the Command Line
+1. A **Command Line interface** for programmers & programs to use directly.
+2. A **REST API** for accessibility over the internet [hosted on Azure](https://yorudi.azurewebsites.net/)
+3. A **Simple Front-End** (modeled after [Tangorin](https://tangorin.com/)) hosted here on [GitHub Pages](https://mabogunje.github.io/yorudi)
+
+The combination of these 3 access points provides a tool that gives access
+to the Yoruba language in a way that appeals to both programmers (like me),
+and the ordinary human user... at least I hope it does.
+
+### Usage
+ 
+#### 1. Using the Command Line
+ 
+The Command Line application can be accessed by running the Yorudi Class as main i.e.
+
+`sbt runMain Yorudi [required arguments] [optional arguments] [yoruba word]`.
+
+##### 1.1 Required Arguments
+
+- **--dict** (dictionary) This specifies which dictionary you want to query.
+Acceptable values are:
+    - **cms** This refers to the Church Missionary Society Yoruba Dictionary (currently incomplete)
+    - **gpt** This refers to the ChatGPT dictionary (a dictionary of 100 of the most popular Yoruba words in each alphabet according to ChatGPT)
+    - **names** This refers to the Yoruba Personal Names dictionary based on the book by *Adeboye Babalola & Olugboyega Alaba (currently incomplete)
+    - **sample** This is a sample dictionary intended for testing
+
+##### 1.2 Optional Arguments
+
+- **-s** (strict) Return only results with exact tone matches
+- **-g** (glossary) Return a glossary of all words related to your query
+- **-d** (derivative) Return all derivative words of your query
+
+##### 1.3 Examples
 
 1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
@@ -36,7 +62,7 @@ Dictionary.
 
     `sbt 'runMain Yorudi --dict cms -d àbà'`
 
-#### Using the Rest Service
+#### 2. Using the Rest Service
 
     `sbt 'runMain YorubaRestService'`
 
@@ -45,6 +71,13 @@ use to query the dictionaries. You can also check the RESTful responses directly
 by visiting: <http://localhost:3330/word/YOURWORD?dictionary=DICTIONARY&mode=MODE>,
 & replacing YOURWORD with your word, DICTIONARY with cms or gpt or names or sample, and
 MODE with match or strict or related or derivative.
+
+#### 3. Using the Simple Front-End
+
+If you are not looking to contribute to or self-host this project, and you just want
+to use the dictionary, you can access the Front-End at <https://mabogunje.github.io/yorudi>.
+It's also a good place to see if any changes committed to the dictionaries work as
+expected.
 
 ### An Introduction to Yoruba & The Problem
 
@@ -82,7 +115,7 @@ when joining words
 
     kú + ilé = kúulé i.e "greet" + "house" = "greetings!"
 
-> _To learn more about the Yoruba people and their language, see <http://yorupedia.com/>_
+> *To learn more about the Yoruba people and their language, see <http://yorupedia.com/>*
 
 ### Creating a Yòrúdí File
 
@@ -94,7 +127,7 @@ Once created, you can change the extension to _.yor_ so it will be recognized as
 a translation file.
 
 #### Understanding Yòrúdí Entries
-
+ 
 Given the unique properties of the Yoruba language (as detailed above), a specialized
 input format is used to accurately record words. Details of this format are below:
 
@@ -139,9 +172,9 @@ concern themselves with these.
 separated by a vertical bar
 + For readability, there should always be a space between vertical-bars and attributes
 as well as the colon and value in the key value pair (as in the previous example)
-
+ 
 ## ADDITIONAL NOTES
-
+ 
 Writing some Yoruba characters requires that your keyboard is configured for writing
 accented and underdotted letters. The way to do this varies by operating system.
 
