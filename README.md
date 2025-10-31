@@ -37,7 +37,7 @@ Acceptable values are:
     - **gpt** This refers to the ChatGPT dictionary (a dictionary of 100 of the most popular Yoruba words in each alphabet according to ChatGPT)
     - **names** This refers to the Yoruba Personal Names dictionary based on the book by *Adeboye Babalola & Olugboyega Alaba (currently incomplete)
     - **sample** This is a sample dictionary intended for testing
-
+ 
 ##### 1.2 Optional Arguments
 
 - **-s** (strict) Return only results with exact tone matches
@@ -61,16 +61,52 @@ Acceptable values are:
 4. Find all words derived from "àbà" in the cms dictionary
 
     `sbt 'runMain Yorudi --dict cms -d àbà'`
-
+ 
 #### 2. Using the Rest Service
+
+##### Self Hosted
+
+Run:
 
     `sbt 'runMain YorubaRestService'`
 
 The service will spring up at <http://localhost:3330> with a basic webpage you can
 use to query the dictionaries. You can also check the RESTful responses directly
-by visiting: <http://localhost:3330/word/YOURWORD?dictionary=DICTIONARY&mode=MODE>,
-& replacing YOURWORD with your word, DICTIONARY with cms or gpt or names or sample, and
-MODE with match or strict or related or derivative.
+by visiting: <http://localhost:3330/word/YOURWORD>. Parameters are the same as the
+Azure service detailed below.
+
+##### Hosted on Azure
+
+The service is already hosted for free on Azure as mentioned earlier. Below are the details:
+
+###### Endpoints
+
+As you can see above, the service currently has only one endpoint which accepts 1 argument
+and up to 2 parameters. Supported endpoints are below:
+
+1. https://yorudi.azurewebsites.net/word/<word>
+
+###### Parameters
+
+When you query the word endpoint, you can supply up to 2 parameters:
+
+1. dictionary: Acceptable values for the dictionary parameter are as follows:
+
+    - **cms** This refers to the Church Missionary Society Yoruba Dictionary (currently incomplete)
+    - **gpt** This refers to the ChatGPT dictionary (a dictionary of 100 of the most popular Yoruba words in each alphabet according to ChatGPT)
+    - **names** This refers to the Yoruba Personal Names dictionary based on the book by *Adeboye Babalola & Olugboyega Alaba (currently incomplete)
+    - **sample** This is a sample dictionary intended for testing
+
+2. mode: Acceptable values for the mode parameter are as follows:
+
+    - **match** Returns any matching word in the dictionary (tone-insensitive)
+    - **strict** Returns any matching word in the dictionary (tone-sensitive)
+    - **related** Returns any word that contains the queried word in its decomposition
+    - **derivative** Returns any word that has the queried word as its root
+
+> [!TIP]
+> The default *dictionary* is **cms**, and the default *mode* is **match**. So hitting the
+> endpoint without using any parameters will return matching results from the cms dictionary.
 
 #### 3. Using the Simple Front-End
 
