@@ -27,7 +27,7 @@ and the ordinary human user... at least I hope it does.
  
 The Command Line application can be accessed by running the Yorudi Class as main i.e.
 
-`sbt runMain Yorudi [required arguments] [optional arguments] [yoruba word]`.
+`sbt runMain net.mabogunje.yorudi.Yorudi [required arguments] [optional arguments] [yoruba word]`.
 
 ##### 1.1 Required Arguments
 
@@ -43,24 +43,28 @@ Acceptable values are:
 - **-s** (strict) Return only results with exact tone matches
 - **-g** (glossary) Return a glossary of all words related to your query
 - **-d** (derivative) Return all derivative words of your query
+- **--fmt** (format) Return results in spacified format. Options are:
+    - plain (standard command-line output)
+    - xml (Extensible Markup Language)
+    - json (Javascript Object Notation)
 
 ##### 1.3 Examples
 
 1. Find all words matching "aba" in the cms dictionary (tone-insensitive)
 
-    `sbt 'runMain Yorudi --dict cms aba'`
+    `sbt 'runMain net.mabogunje.yorudi.Yorudi --dict cms aba'`
 
 2. Find all words matching "àbà" in the cms dictionary (tone-sensitive)
 
-    `sbt 'runMain Yorudi --dict cms -s àbà'`
+    `sbt 'runMain net.mabogunje.yorudi.Yorudi --dict cms -s àbà'`
 
 3. Display a glossary of all words related to "àbà" in the cms dictionary
 
-    `sbt 'runMain Yorudi --dict cms -g àbà'`
+    `sbt 'runMain net.mabogunje.yorudi.Yorudi --dict cms -g àbà'`
 
 4. Find all words derived from "àbà" in the cms dictionary
 
-    `sbt 'runMain Yorudi --dict cms -d àbà'`
+    `sbt 'runMain net.mabogunje.yorudi.Yorudi --dict cms -d àbà'`
  
 #### 2. Using the Rest Service
 
