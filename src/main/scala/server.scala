@@ -70,7 +70,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
         }
 
         //Get parameters
-        val dictName = params.getOrElse("dictionary", "cms");
+        val dictName = params.getOrElse("dictionary", "gpt");
         val mode = params.getOrElse("mode", "match");
         val word = params("word").trim.toLowerCase();
 
