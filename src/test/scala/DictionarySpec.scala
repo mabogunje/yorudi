@@ -57,8 +57,7 @@ class DictionarySpec extends FlatSpec {
 class IndexedDictionarySpec extends FlatSpec {
   val testFile = "dicts/sample.en.yor"
   val parser = new FileParser()
-  val (index, lines) = parser.indexFile(testFile)
-  val dict = IndexedDictionary(index, lines)
+  val dict = parser.loadDictionary(testFile)
 
   "An IndexedDictionary" should "lookup words by tone-insensitive matching" in {
     val result = dict.lookup("ade")
@@ -83,6 +82,33 @@ class IndexedDictionarySpec extends FlatSpec {
 
   it should "lookup derivatives by root" in {
     val result = dict.lookupDerivatives("dé")
+    assert(result.size == 1)
+    assert(result.keys.head.word.toYoruba == "àdé")
+  }
+
+  it should "merge duplicate entries loaded from parsed dictionary lines" in {
+    val result = dict.lookup("ba")
+
+    assert(result.size == 1)
+    assert(result.values.head.map(_.description) == List(
+      "to meet",
+      "overtake",
+      "find at a place",
+      "with",
+      "against",
+      "should",
+      "would",
+      "might",
+      "ought"
+    ))
+  }
+
+  it should "lookup entries constructed from parsed definitions" in {
+    val word = Word("ade", List("à", "dé" as Root))
+    val dictionary = IndexedDictionary(IndexedSeq(WordEntry(word, immutable.Map[String, String]()) -> List(Translation("crown"))))
+
+    val result = dictionary.lookup("ade")
+
     assert(result.size == 1)
     assert(result.keys.head.word.toYoruba == "àdé")
   }

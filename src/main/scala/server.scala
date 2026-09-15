@@ -48,7 +48,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
         val path = dictionaryPaths.getOrElse(name, "")
         if (path.isEmpty) {
             println(s"Error: Dictionary '$name' not found.")
-            IndexedDictionary(Map(), IndexedSeq.empty)
+            IndexedDictionary.empty
         } else {
             DictionaryCache.getDictionary(name, path)
         }

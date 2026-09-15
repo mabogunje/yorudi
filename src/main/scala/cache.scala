@@ -14,8 +14,7 @@ object DictionaryCache {
         cache.getOrElseUpdate(name, {
             val parser = Yorudi
             println(s"Loading dictionary '$name' from '$path' into cache.")
-            val (index, lines) = parser.indexFile(path)
-            IndexedDictionary(index, lines)
+            parser.loadDictionary(path)
         })
     }
 }

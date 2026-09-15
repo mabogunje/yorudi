@@ -152,6 +152,22 @@ class FileParser extends GrammarParser {
       if (fileStream != null) fileStream.close()
     }
   }
+
+  def loadDictionary(filename:String):IndexedDictionary = {
+    val fileStream = getClass.getClassLoader.getResourceAsStream(filename)
+    try {
+      val lines = scala.io.Source.fromInputStream(fileStream)(CODEC).getLines().toIndexedSeq
+      parseDictionaryLines(filename, lines) match {
+        case EitherRight(entries) => IndexedDictionary(entries.map(_._2).toIndexedSeq)
+        case EitherLeft(errors) => {
+          val details = errors.map(_.toString).mkString("\n")
+          throw new IllegalArgumentException("Dictionary contains invalid entries:\n" + details)
+        }
+      }
+    } finally {
+      if (fileStream != null) fileStream.close()
+    }
+  }
 }
 
 
