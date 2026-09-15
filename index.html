@@ -5,67 +5,74 @@
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript">
         
-        // First, checks if it helper function String.format isn't implemented yet.
-        if (!String.prototype.format) {
-            String.prototype.format = function() {
-                var args = arguments;
-                return this.replace(/{(\d+)}/g, function(match, number) { 
-                    return typeof args[number] != 'undefined' ? args[number] : match;
-                });
-            };
-        }
-            const API = "https://yorudi.azurewebsites.net/word"
-            const URL_FMT = "{0}/{1}?dictionary={2}&mode={3}"
+            const API = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+                ? `${window.location.origin}/word`
+                : "https://yorudi.azurewebsites.net/word";
+
+            function showMessage(view, message) {
+                const item = document.createElement("dt");
+                item.textContent = message;
+                view.replaceChildren(item);
+            }
+
+            function appendDefinition(view, index, entry) {
+                const word = document.createElement("dt");
+                const decomposition = entry.decomposition.map((currentWord) => currentWord.spelling).join(" . ");
+                word.textContent = `${index}. ${entry.definition} [ ${decomposition} ]`;
+                view.appendChild(word);
+
+                for(let meaning of entry.meanings) {
+                    const item = document.createElement("dd");
+                    item.textContent = `- ${meaning.description}`;
+                    view.appendChild(item);
+                }
+            }
 
             async function getDefinitions() {
                 const View = document.getElementById("entries") // We will print results into this view
 
                 //Get the parameters of the query from the form
-                var dictionary = document.getElementById("dictionaries").value;
-                var query = document.getElementById("query").value.toLowerCase();
-                var mode = Array.from(document.getElementsByName("lookup")).find((m) => m.checked === true).value;
+                const dictionary = document.getElementById("dictionaries").value;
+                const query = document.getElementById("query").value.trim().toLowerCase();
+                const mode = Array.from(document.getElementsByName("lookup")).find((m) => m.checked === true).value;
+
+                if(query.length === 0) {
+                    showMessage(View, "Enter a word to search.");
+                    return;
+                }
+
+                showMessage(View, "Searching...");
                 
                 //Make the REST request
-                var URL = URL_FMT.format(API, query, dictionary, mode)
-                const response = fetch(URL);
-                
-                //Process the results
-                response.then(results => { return results.json(); })
-                        .then(data => {
-                            if(data['error']) {
-                                View.innerHTML = data.message;
-                            } else {
-                                View.innerHTML = "";
-                                for (let entry in data) { 
-                                    const wordFmt = "<dt>{0}. {1} {2}</dt>"
-                                    const meaningFmt = "<dd>- {0}</dd>"
-                                    const decompositionFmt = "[ {0} ]"
-                                    index = 1 + parseInt(entry);
+                const params = new URLSearchParams({ dictionary, mode });
+                const URL = `${API}/${encodeURIComponent(query)}?${params.toString()}`;
 
-                                    const decomposition = data[entry].decomposition.reduce((accumulator, currentWord) => {
-                                        accumulator.push(currentWord.spelling);
-                                        return accumulator;
-                                    }, []);
+                try {
+                    const response = await fetch(URL);
+                    const data = await response.json();
 
-                                    View.insertAdjacentHTML('beforeend', wordFmt.format(index, data[entry].definition, decompositionFmt.format(decomposition.join(" . "))))
-                                
-                                    for(let meaning of data[entry].meanings) {
-                                    View.insertAdjacentHTML('beforeend', meaningFmt.format(meaning.description))
-                                    }
-                                }
-                            }
-                         })
-                        .catch(error => { console.log(error); })
+                    if(data['error']) {
+                        showMessage(View, data.message);
+                    } else {
+                        View.replaceChildren();
+                        data.forEach((entry, index) => appendDefinition(View, index + 1, entry));
+                    }
+                } catch(error) {
+                    showMessage(View, "Unable to reach the dictionary service.");
+                }
             }
         </script>
     </head>
     <body>
-        <nav>
-            <img src="logo.jpg" height="50px" width="50px" />
-            <strong>Yor&ugrave;d&iacute;</strong> <small>A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary</small>
-            <div style="position: relative; display: inline-block; float:right; top: 5px; border: 2px solid; padding: 5px;">
-                <a href="https://github.com/mabogunje/yorudi">View on Github</a>
+        <header class="masthead">
+            <div class="brand">
+                <img src="logo.jpg" height="50px" width="50px" />
+                <strong>Yor&ugrave;d&iacute;</strong>
             </div>
+        </header>
+        <nav>
+            <small>A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary</small>
+            <a class="github-button" href="https://github.com/mabogunje/yorudi">View on Github</a>
         </nav>
         <div class="container">
             <div class="header">Choose A Dictionary: 
@@ -79,7 +86,7 @@
             <table width="80%" align="center">
                 <tr>
                     <td colspan="4">
-                        <form action="http://localhost:8080/words/" method="get" onsubmit="getDefinitions(); return false;">
+                        <form action="#" method="get" onsubmit="getDefinitions(); return false;">
                             <input id="query" type="text" placeholder="Search with Yor&ugrave;b&aacute; with or without tone marks">
                         </form>
                     </td>
@@ -89,13 +96,13 @@
                         <input type="radio" id="lookup" name="lookup" value="match" checked="checked"> <label for="lookup">Word Lookup</label>
                     </td>
                     <td>
-                        <input type="radio" id="strict" name="lookup" value="strict"> <label for="lookup">Strict Word Lookup</label>
+                        <input type="radio" id="strict" name="lookup" value="strict"> <label for="strict">Strict Word Lookup</label>
                     </td>
                     <td>
-                        <input type="radio" id="related" name="lookup" value="related"> <label for="lookup">Related Words Lookup</label>
+                        <input type="radio" id="related" name="lookup" value="related"> <label for="related">Related Words Lookup</label>
                     </td>
                     <td>
-                        <input type="radio" id="derived" name="lookup" value="derived"> <label for="lookup">Derivative Words Lookup</label>
+                        <input type="radio" id="derived" name="lookup" value="derivative"> <label for="derived">Derivative Words Lookup</label>
                     </td>
                 </tr>
             </table>

@@ -4,26 +4,67 @@ body {
     background: #f4f5f6;
 }
 
+.masthead,
 nav {
+    display: flex;
+    align-items: center;
     width: 100%;
     margin: 0px;
-    padding: 0px;
     background: rgb(233,194,139);
-    background: linear-gradient(180deg, rgba(233,194,139,1) 0%, rgba(59,39,30,1) 100%);
-    font-size: 22px;
     color: #fff;
+}
+
+.masthead {
+    justify-content: center;
+    padding: 10px 16px 6px;
+    background: linear-gradient(180deg, rgba(233,194,139,1) 0%, rgba(139,103,72,1) 100%);
+    font-size: 28px;
+}
+
+nav {
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 16px;
+    background: rgb(59,39,30);
+    font-size: 18px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.brand strong {
+    line-height: 1;
 }
 
 nav img {
     margin: 0px;
     padding: 0px;
     vertical-align: middle;
+    flex: 0 0 auto;
 }
 
 nav a {
     color: #fff;
     margin: 0px;
     padding: 0px;
+}
+
+.github-button {
+    flex: 0 0 auto;
+    border: 2px solid #fff;
+    padding: 6px 10px;
+    text-decoration: none;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.github-button:hover {
+    background-color: rgba(255, 255, 255, 0.14);
 }
 
 #query {
@@ -48,4 +89,18 @@ table {
     background-color: #000;
     color: #fff;
     font-size: 24px;
+}
+
+@media (max-width: 700px) {
+    nav {
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 12px 12px;
+        text-align: center;
+    }
+
+    .github-button {
+        align-self: center;
+    }
 }
