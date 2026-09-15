@@ -19,8 +19,9 @@ class YorubaControllerTests extends ScalatraFunSuite {
     test("GET / on YorubaRestService should return the homepage") {
         get("/") {
             status should equal (200);
-            body should include ("<html>");
+            body should include ("<html lang=\"en\">");
             body should include ("Yor&ugrave;d&iacute;");
+            body should include ("A clean, tone-aware dictionary");
         }
     }
 

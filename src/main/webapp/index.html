@@ -1,117 +1,147 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Yor&ugrave;d&iacute; Dictionary</title>
         <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript">
-        
             const API = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
                 ? `${window.location.origin}/word`
                 : "https://yorudi.azurewebsites.net/word";
 
             function showMessage(view, message) {
-                const item = document.createElement("dt");
+                const item = document.createElement("p");
+                item.className = "empty-state";
                 item.textContent = message;
                 view.replaceChildren(item);
             }
 
             function appendDefinition(view, index, entry) {
-                const word = document.createElement("dt");
-                const decomposition = entry.decomposition.map((currentWord) => currentWord.spelling).join(" . ");
-                word.textContent = `${index}. ${entry.definition} [ ${decomposition} ]`;
-                view.appendChild(word);
+                const article = document.createElement("article");
+                article.className = "result-card";
+
+                const heading = document.createElement("h2");
+                heading.textContent = entry.definition;
+                article.appendChild(heading);
+
+                const meta = document.createElement("p");
+                meta.className = "decomposition";
+                meta.textContent = `${index}. [ ${entry.decomposition.map((currentWord) => currentWord.spelling).join(" . ")} ]`;
+                article.appendChild(meta);
+
+                const meanings = document.createElement("ol");
+                meanings.className = "meanings";
 
                 for(let meaning of entry.meanings) {
-                    const item = document.createElement("dd");
-                    item.textContent = `- ${meaning.description}`;
-                    view.appendChild(item);
+                    const item = document.createElement("li");
+                    item.textContent = meaning.description;
+                    meanings.appendChild(item);
                 }
+
+                article.appendChild(meanings);
+                view.appendChild(article);
             }
 
             async function getDefinitions() {
-                const View = document.getElementById("entries") // We will print results into this view
-
-                //Get the parameters of the query from the form
+                const view = document.getElementById("entries");
+                const count = document.getElementById("result-count");
                 const dictionary = document.getElementById("dictionaries").value;
                 const query = document.getElementById("query").value.trim().toLowerCase();
                 const mode = Array.from(document.getElementsByName("lookup")).find((m) => m.checked === true).value;
 
+                count.textContent = "";
+
                 if(query.length === 0) {
-                    showMessage(View, "Enter a word to search.");
+                    showMessage(view, "Enter a Yoruba word to search.");
                     return;
                 }
 
-                showMessage(View, "Searching...");
-                
-                //Make the REST request
+                showMessage(view, "Searching...");
+
                 const params = new URLSearchParams({ dictionary, mode });
-                const URL = `${API}/${encodeURIComponent(query)}?${params.toString()}`;
+                const url = `${API}/${encodeURIComponent(query)}?${params.toString()}`;
 
                 try {
-                    const response = await fetch(URL);
+                    const response = await fetch(url);
                     const data = await response.json();
 
-                    if(data['error']) {
-                        showMessage(View, data.message);
+                    if(data["error"]) {
+                        showMessage(view, data.message);
                     } else {
-                        View.replaceChildren();
-                        data.forEach((entry, index) => appendDefinition(View, index + 1, entry));
+                        view.replaceChildren();
+                        count.textContent = `${data.length} result${data.length === 1 ? "" : "s"}`;
+                        data.forEach((entry, index) => appendDefinition(view, index + 1, entry));
                     }
                 } catch(error) {
-                    showMessage(View, "Unable to reach the dictionary service.");
+                    showMessage(view, "Unable to reach the dictionary service.");
                 }
             }
         </script>
     </head>
     <body>
-        <header class="masthead">
-            <div class="brand">
-                <img src="logo.jpg" height="50px" width="50px" />
-                <strong>Yor&ugrave;d&iacute;</strong>
-            </div>
+        <header class="site-header">
+            <a class="brand" href="/">
+                <img src="logo.jpg" height="52" width="52" alt="Yorudi logo">
+                <span>
+                    <strong>Yor&ugrave;d&iacute;</strong>
+                    <small>Yoruba Dictionary</small>
+                </span>
+            </a>
+            <a class="github-link" href="https://github.com/mabogunje/yorudi">View on GitHub</a>
         </header>
-        <nav>
-            <small>A Standardized & Downloadable Comprehensive Yoruba Multilingual Dictionary</small>
-            <a class="github-button" href="https://github.com/mabogunje/yorudi">View on Github</a>
-        </nav>
-        <div class="container">
-            <div class="header">Choose A Dictionary: 
-                <select id="dictionaries">
-                    <option value="gpt">100 Most Popular Words per Alphabet</option>
-                    <option value="cms">Church Missionary Society</option>
-                    <option value="names">Yoruba Personal Names</option>
-                    <option value="sample">Sample Dictionary</option>
-                </select>
-            </div>
-            <table width="80%" align="center">
-                <tr>
-                    <td colspan="4">
-                        <form action="#" method="get" onsubmit="getDefinitions(); return false;">
-                            <input id="query" type="text" placeholder="Search with Yor&ugrave;b&aacute; with or without tone marks">
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="radio" id="lookup" name="lookup" value="match" checked="checked"> <label for="lookup">Word Lookup</label>
-                    </td>
-                    <td>
-                        <input type="radio" id="strict" name="lookup" value="strict"> <label for="strict">Strict Word Lookup</label>
-                    </td>
-                    <td>
-                        <input type="radio" id="related" name="lookup" value="related"> <label for="related">Related Words Lookup</label>
-                    </td>
-                    <td>
-                        <input type="radio" id="derived" name="lookup" value="derivative"> <label for="derived">Derivative Words Lookup</label>
-                    </td>
-                </tr>
-            </table>
-            <hr/>
-            <div id="results">
-                <dl id="entries">
 
-                </dl>
-            </div>
-        </div>
+        <main class="page">
+            <section class="search-panel" aria-labelledby="search-heading">
+                <p class="eyebrow">Search Yoruba words</p>
+                <h1 id="search-heading">A clean, tone-aware dictionary for Yor&ugrave;b&aacute;.</h1>
+
+                <form action="#" method="get" onsubmit="getDefinitions(); return false;">
+                    <div class="lookup-tabs" aria-label="Lookup mode">
+                        <input type="radio" id="lookup" name="lookup" value="match" checked>
+                        <label for="lookup">Match</label>
+                        <input type="radio" id="strict" name="lookup" value="strict">
+                        <label for="strict">Strict</label>
+                        <input type="radio" id="related" name="lookup" value="related">
+                        <label for="related">Related</label>
+                        <input type="radio" id="derived" name="lookup" value="derivative">
+                        <label for="derived">Derived</label>
+                    </div>
+
+                    <div class="search-row">
+                        <input id="query" type="search" autocomplete="off" placeholder="Search with or without tone marks">
+                        <button type="submit">Search</button>
+                    </div>
+
+                    <label class="dictionary-picker" for="dictionaries">
+                        <span>Dictionary</span>
+                        <select id="dictionaries">
+                            <option value="gpt">100 Most Popular Words per Alphabet</option>
+                            <option value="cms">Church Missionary Society</option>
+                            <option value="names">Yoruba Personal Names</option>
+                            <option value="sample">Sample Dictionary</option>
+                        </select>
+                    </label>
+                </form>
+            </section>
+
+            <section class="results-panel" aria-live="polite">
+                <div class="results-heading">
+                    <h2>Results</h2>
+                    <span id="result-count"></span>
+                </div>
+                <div id="entries" class="entries">
+                    <p class="empty-state">Start with a word like <strong>ade</strong>, <strong>ba</strong>, or <strong>ile</strong>.</p>
+                </div>
+            </section>
+
+            <section class="notes" aria-label="Lookup notes">
+                <p><strong>Match</strong> ignores tone marks.</p>
+                <p><strong>Strict</strong> respects tone marks.</p>
+                <p><strong>Related</strong> searches decompositions.</p>
+                <p><strong>Derived</strong> follows marked roots.</p>
+            </section>
+        </main>
     </body>
 </html>
