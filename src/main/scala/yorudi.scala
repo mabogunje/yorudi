@@ -4,10 +4,6 @@
  */
 package net.mabogunje.yorudi
 
-import io._
-import scala.io.Codec
-import java.nio.charset.CodingErrorAction
-
 /**
  */
 object Yorudi extends FileParser {
@@ -26,43 +22,84 @@ object Yorudi extends FileParser {
     ("json", new JsonWriter()))
    
   type OptionMap = Map[Symbol, Any]
-        
-  def parseOptions(map:OptionMap, list:List[String]):OptionMap = {
-    def isSwitch(s:String) = (s.charAt(0) == '-')
-        
-    list match {
-      case Nil => map
-      case "--dict" :: value :: tail => parseOptions(map ++ Map('dict -> value), tail)
-      case "--fmt" :: value :: tail => parseOptions(map ++ Map('format -> value), tail)
-      case string :: opt :: tail if (isSwitch(string)) => {
-        string match {
-          case "-s" => parseOptions(map ++ Map('mode -> "strict"), list.tail)
-          case "-g" => parseOptions(map ++ Map('mode -> "glossary"), list.tail)
-          case "-d" => parseOptions(map ++ Map('mode -> "derivative"), list.tail)
-          case _ => println("Invalid option: " + string); println(usage); sys.exit
-        }
+
+  def parseOptions(map:OptionMap, list:List[String]):Either[String, OptionMap] = {
+    def isSwitch(s:String) = s.startsWith("-")
+
+    def requireValue(option:String, tail:List[String]):Either[String, (String, List[String])] = {
+      tail match {
+        case value :: rest if !isSwitch(value) => Right((value, rest))
+        case _ => Left("Missing value for " + option)
       }
-      case option :: tail => parseOptions(map ++ Map('word -> option), tail)
     }
+
+    def parseEqualOption(option:String, arg:String):Either[String, String] = {
+      val prefix = option + "="
+      if(arg.length > prefix.length) Right(arg.substring(prefix.length))
+      else Left("Missing value for " + option)
+    }
+
+    def validate(options:OptionMap):Either[String, OptionMap] = {
+      val dictKey = options.get('dict).map(_.toString)
+      val format = options.get('format).map(_.toString)
+
+      if(dictKey.isEmpty) Left("Missing required option: --dict")
+      else if(!dictionaries.contains(dictKey.get)) Left("Unknown dictionary: " + dictKey.get)
+      else if(options.get('word).isEmpty) Left("Missing word to look up")
+      else if(format.exists(!printers.contains(_))) Left("Unknown format: " + format.get)
+      else Right(options)
+    }
+
+    def parse(map:OptionMap, list:List[String]):Either[String, OptionMap] = list match {
+      case Nil => validate(map)
+      case "--dict" :: tail =>
+        requireValue("--dict", tail) match {
+          case Right((value, rest)) => parse(map ++ Map('dict -> value), rest)
+          case Left(error) => Left(error)
+        }
+      case arg :: tail if arg.startsWith("--dict=") =>
+        parseEqualOption("--dict", arg) match {
+          case Right(value) => parse(map ++ Map('dict -> value), tail)
+          case Left(error) => Left(error)
+        }
+      case "--fmt" :: tail =>
+        requireValue("--fmt", tail) match {
+          case Right((value, rest)) => parse(map ++ Map('format -> value), rest)
+          case Left(error) => Left(error)
+        }
+      case arg :: tail if arg.startsWith("--fmt=") =>
+        parseEqualOption("--fmt", arg) match {
+          case Right(value) => parse(map ++ Map('format -> value), tail)
+          case Left(error) => Left(error)
+        }
+      case "-s" :: tail => parse(map ++ Map('mode -> "strict"), tail)
+      case "-g" :: tail => parse(map ++ Map('mode -> "glossary"), tail)
+      case "-d" :: tail => parse(map ++ Map('mode -> "derivative"), tail)
+      case option :: _ if isSwitch(option) => Left("Invalid option: " + option)
+      case word :: tail if map.contains('word) => Left("Unexpected argument: " + word)
+      case word :: tail => parse(map ++ Map('word -> word), tail)
+    }
+
+    parse(map, list)
   }
 
   def main(args: Array[String]) {
-      if (args.isEmpty) println (usage)
+      if (args.isEmpty) {
+        println(usage)
+        sys.exit
+      }
       val arguments = args.toList
             
-      val options = parseOptions(Map(), arguments)
-      
-      if(options.isEmpty) {
-        sys.exit
+      val options = parseOptions(Map(), arguments) match {
+        case Right(parsedOptions) => parsedOptions
+        case Left(error) => {
+          println(error)
+          println(usage)
+          sys.exit
+        }
       }
-      
-      val showHelp = options.get('help).getOrElse(false)
+
       val dictKey = options.get('dict).get.toString
-      
-      if(!dictionaries.contains(dictKey)) {
-        println("Unknown dictionary: " + dictKey)
-        sys.exit
-      }
 
       val dictFile = dictionaries(dictKey)
       val (index, lines) = indexFile(dictFile)
@@ -71,7 +108,7 @@ object Yorudi extends FileParser {
       var mode = options.get('mode).getOrElse("dictionary")
       var outputType = options.get('format).getOrElse("plain")
       var results = YorubaDictionary()
-      var printer:YorudiWriter = if(printers.keys.exists(_ == outputType.toString)) printers(outputType.toString) else printers("plain")
+      var printer:YorudiWriter = printers(outputType.toString)
       	
       mode match {
         case "glossary" => results = dict.lookupRelated(word)

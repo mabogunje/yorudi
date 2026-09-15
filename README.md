@@ -27,7 +27,7 @@ and the ordinary human user... at least I hope it does.
  
 The Command Line application can be accessed by running the Yorudi Class as main i.e.
 
-`sbt runMain net.mabogunje.yorudi.Yorudi [required arguments] [optional arguments] [yoruba word]`.
+`sbt 'runMain net.mabogunje.yorudi.Yorudi [required arguments] [optional arguments] [yoruba word]'`.
 
 ##### 1.1 Required Arguments
 
