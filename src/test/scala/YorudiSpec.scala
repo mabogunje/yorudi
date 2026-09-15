@@ -7,9 +7,9 @@ package net.mabogunje.yorudi
 import org.json4s.JArray
 import org.json4s.JObject
 import org.json4s.JString
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class YorudiSpec extends FlatSpec {
+class YorudiSpec extends AnyFlatSpec {
   "The Yorudi CLI parser" should "parse valid dictionary lookups" in {
     val result = Yorudi.parseOptions(Map(), List("--dict", "gpt", "-s", "--fmt", "json", "aba"))
 

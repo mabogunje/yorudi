@@ -4,8 +4,7 @@
  */
 package net.mabogunje.yorudi
 
-import collection._
-import YorubaImplicits._
+import scala.collection.mutable
 
 object DictionaryCache {
     private val cache = mutable.Map[String, IndexedDictionary]()

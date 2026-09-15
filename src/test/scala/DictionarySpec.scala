@@ -4,24 +4,24 @@
  */
 package net.mabogunje.yorudi
 
-import collection._
 import YorubaImplicits._
-import org.scalatest.FlatSpec
+import scala.collection.immutable
+import org.scalatest.flatspec.AnyFlatSpec
 
-class DictionarySpec extends FlatSpec {
-  var dict = new YorubaDictionary()
+class DictionarySpec extends AnyFlatSpec {
+  val emptyDict = YorubaDictionary()
 
-  "A Yoruba Dictionary" should "be a map" in {
-    assert(dict == Map())
+  "A Yoruba Dictionary" should "start empty" in {
+    assert(emptyDict.size == 0)
   }
   
   it can "be added to" in {
     val word = Word("dé", List("dé" as Root))
     val meaning = (Translation("put atop"))
     val attribs = immutable.HashMap[String, String]()
-    var entry = (WordEntry(word, attribs), List(meaning))
+    val entry = (WordEntry(word, attribs), List(meaning))
     
-    var newDict = dict + entry
+    val newDict = emptyDict + entry
     assert(newDict.size == 1)
   }
   
@@ -29,12 +29,12 @@ class DictionarySpec extends FlatSpec {
     val word = Word("dé", List("dé" as Root))
     val meaning = (Translation("put atop"))
     val attribs = immutable.HashMap[String, String]()
-    var entry = (WordEntry(word, attribs), List(meaning))
+    val entry = (WordEntry(word, attribs), List(meaning))
     
-    dict = YorubaDictionary(Map(entry))
+    val dict = YorubaDictionary(Map(entry))
     assert(dict.size == 1)
     
-    var newDict = dict - entry._1
+    val newDict = dict - entry._1
     assert(newDict.size == 0)
   } 
   
@@ -43,18 +43,18 @@ class DictionarySpec extends FlatSpec {
     val meaningA = (Translation("put atop"))
     val meaningB = (Translation("place somewhere"))
     val attribs = immutable.HashMap[String, String]()
-    var entryA = (WordEntry(word, attribs), List(meaningA.asInstanceOf[Meaning]))
-    var entryB = (WordEntry(word, attribs), List(meaningB.asInstanceOf[Meaning]))
+    val entryA: (WordEntry, List[Meaning]) = (WordEntry(word, attribs), List(meaningA))
+    val entryB: (WordEntry, List[Meaning]) = (WordEntry(word, attribs), List(meaningB))
     
-    dict = new YorubaDictionary(Map(entryA))
-    var newDict = dict + entryB
+    val dict = YorubaDictionary(Map(entryA))
+    val newDict = dict + entryB
     
     assert(newDict.size == 1)
     assert(newDict.get(entryA._1).get == List(meaningA, meaningB))
   }
 }
 
-class IndexedDictionarySpec extends FlatSpec {
+class IndexedDictionarySpec extends AnyFlatSpec {
   val testFile = "dicts/sample.en.yor"
   val parser = new FileParser()
   val dict = parser.loadDictionary(testFile)

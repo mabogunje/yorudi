@@ -9,7 +9,7 @@ import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra._
 import org.scalatra.CorsSupport
 import org.scalatra.servlet.ScalatraListener
-import org.json4s.{DefaultFormats, Formats, JArray, JString}
+import org.json4s.{DefaultFormats, Formats, JArray}
 import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization
 import net.mabogunje.yorudi._
@@ -76,14 +76,13 @@ class YorubaController extends ScalatraServlet with CorsSupport {
 
         // Retrieve the pre-loaded dictionary
         val dictionary = getDictionary(dictName)
-        var results:YorubaDictionary = YorubaDictionary()
 
         // Depending on the mode, get appropriate results
-        mode match {
-            case "strict" => results = dictionary.strictLookup(word)
-            case "related" => results = dictionary.lookupRelated(word)
-            case "derivative" => results = dictionary.lookupDerivatives(word)
-            case _ => results = dictionary.lookup(word)
+        val results:YorubaDictionary = mode match {
+            case "strict" => dictionary.strictLookup(word)
+            case "related" => dictionary.lookupRelated(word)
+            case "derivative" => dictionary.lookupDerivatives(word)
+            case _ => dictionary.lookup(word)
         }
 
         // Return results
@@ -94,7 +93,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
             val error = Map("error" -> "Word Not Found", "message" -> s"Yoruba word '${word}' not found in ${dictName} dictionary")
             val json = Serialization.write(error)
             NotFound(json)
-        }        
+        }
     }
 }
 

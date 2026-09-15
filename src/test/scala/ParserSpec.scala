@@ -4,9 +4,9 @@
  */
 package net.mabogunje.yorudi
 
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class ParserSpec extends FlatSpec {
+class ParserSpec extends AnyFlatSpec {
 	val parser:GrammarParser = new GrammarParser()
 	val rootWord = "igba [ìgbà*]  /time"
 	val linkedWord = "ade [à . dé*]  /crown"

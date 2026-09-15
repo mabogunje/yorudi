@@ -113,16 +113,15 @@ object Yorudi extends FileParser {
       val dictFile = dictionaries(dictKey)
       val dict = loadDictionary(dictFile)
       val word = options.get('word).getOrElse("")
-      var mode = options.get('mode).getOrElse("dictionary")
-      var outputType = options.get('format).getOrElse("plain")
-      var results = YorubaDictionary()
-      var printer:YorudiWriter = printers(outputType.toString)
+      val mode = options.get('mode).getOrElse("dictionary")
+      val outputType = options.get('format).getOrElse("plain")
+      val printer:YorudiWriter = printers(outputType.toString)
       	
-      mode match {
-        case "glossary" => results = dict.lookupRelated(word)
-        case "derivative" => results = dict.lookupDerivatives(word)
-        case "strict" => results = dict.strictLookup(word)
-        case _ => results = dict.lookup(word)
+      val results = mode match {
+        case "glossary" => dict.lookupRelated(word)
+        case "derivative" => dict.lookupDerivatives(word)
+        case "strict" => dict.strictLookup(word)
+        case _ => dict.lookup(word)
       }
       
       val glossary = printer.writeGlossary(results)    

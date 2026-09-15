@@ -4,24 +4,32 @@
  */
 package net.mabogunje.yorudi
 
-import collection._
 import YorubaImplicits._
 import java.text.Normalizer
 
-case class YorubaDictionary(val self:Map[WordEntry, List[Meaning]] = Map[WordEntry, List[Meaning]]()) extends MapProxy[WordEntry, List[Meaning]] {
-  override def +[B1 >: List[Meaning]](kv: (WordEntry, B1)) : YorubaDictionary = {
+case class YorubaDictionary(entries:Map[WordEntry, List[Meaning]] = Map[WordEntry, List[Meaning]]()) extends Iterable[(WordEntry, List[Meaning])] {
+  override def iterator:Iterator[(WordEntry, List[Meaning])] = entries.iterator
+
+  def +(kv: (WordEntry, List[Meaning])) : YorubaDictionary = {
     val (key, value) = kv
-    if(self.contains(key)) {
-      var meanings = (self.getOrElse(key, List()) ++: value.asInstanceOf[List[Meaning]]).distinct
-      YorubaDictionary(self.updated(key, meanings))
+    if(entries.contains(key)) {
+      val meanings = (entries.getOrElse(key, List()) ++ value).distinct
+      YorubaDictionary(entries.updated(key, meanings))
     } else {
-      YorubaDictionary(self.updated(key, value.asInstanceOf[List[Meaning]]))
+      YorubaDictionary(entries.updated(key, value))
     }
   }
+
+  def -(key: WordEntry):YorubaDictionary = YorubaDictionary(entries - key)
   
-  def ++(xs: Map[WordEntry, List[Meaning]]): YorubaDictionary = {
-    YorubaDictionary(self ++ xs)
+  def ++(xs: Iterable[(WordEntry, List[Meaning])]): YorubaDictionary = {
+    xs.foldLeft(this)(_ + _)
   }
+
+  def contains(key: WordEntry):Boolean = entries.contains(key)
+  def get(key: WordEntry):Option[List[Meaning]] = entries.get(key)
+  def keys:Iterable[WordEntry] = entries.keys
+  def values:Iterable[List[Meaning]] = entries.values
 }
 
 case class IndexedDictionary(entries:IndexedSeq[(WordEntry, List[Meaning])]) {
@@ -92,8 +100,4 @@ object IndexedDictionary extends FileParser {
     }
     IndexedDictionary(entries)
   }
-}
-
-object DictionaryImplicits {
-  implicit def map2dict(map:Map[WordEntry, List[Meaning]]):YorubaDictionary = YorubaDictionary(map)
 }

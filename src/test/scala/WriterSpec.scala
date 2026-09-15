@@ -5,89 +5,84 @@
 package net.mabogunje.yorudi
 
 import YorubaImplicits._
-import scala.xml.PrettyPrinter
 import scala.xml.XML
-import org.scalatest.FlatSpec
-import scala.util.parsing.json._
-import java.util.Locale
+import org.scalatest.flatspec.AnyFlatSpec
 
-class CmdlWriterSpec extends FlatSpec {
-  var writer:YorudiWriter = new CommandLineWriter()
+class CmdlWriterSpec extends AnyFlatSpec {
+  val writer:YorudiWriter = new CommandLineWriter()
   
   "The Command Line Writer" can "write words correctly" in {
-    var entry = new WordEntry(Word("de", List("de" as Root)), Map())
-    var output = writer.writeWord(entry)
-    var expected = "de"
+    val entry = new WordEntry(Word("de", List("de" as Root)), Map())
+    val output = writer.writeWord(entry)
+    val expected = "de"
         
     assert(output.toString == expected)
   }
   
   it can "write decompositions correctly" in {
-    var entry = new WordEntry(Word("ade", List("a", "de" as Root)), Map())
-    var output = writer.writeDecomposition(entry)
-    var expected = "[ a . de ]"
+    val entry = new WordEntry(Word("ade", List("a", "de" as Root)), Map())
+    val output = writer.writeDecomposition(entry)
+    val expected = "[ a . de ]"
     
     assert(output.toString == expected)
   }
   
   it can "write translations correctly" in {
-    var translation = Translation("crown", "en-NG")
-    var output = writer.writeTranslation(translation)
-    var expected = s"- ${translation.description} (${translation.language})"
+    val translation = Translation("crown", "en-NG")
+    val output = writer.writeTranslation(translation)
+    val expected = s"- ${translation.description} (${translation.language})"
 
     assert(output.toString == expected)
   }
 }
 
-class XmlWriterSpec extends FlatSpec {
-  var writer:YorudiWriter = new XmlWriter()
-  var printer = new xml.PrettyPrinter(80, 2)
+class XmlWriterSpec extends AnyFlatSpec {
+  val writer:YorudiWriter = new XmlWriter()
+  val printer = new xml.PrettyPrinter(80, 2)
   def format(element: xml.Elem) = XML.loadString(printer format element)
   
   "The Xml writer" can "write words correctly" in {
-    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
-    var output = writer.writeWord(entry)
-    var expected = <word spelling="gbogbo"><decomposition><root>gbo</root><term>gbo</term></decomposition></word>
+    val entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
+    val output = writer.writeWord(entry)
+    val expected = <word spelling="gbogbo"><decomposition><root>gbo</root><term>gbo</term></decomposition></word>
     
     assert(output.toString == format(expected).toString)
   }
   
   it can "write decompositions correctly" in {
-    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
-    var output = writer.writeDecomposition(entry)
-    var expected = <decomposition><root>gbo</root><term>gbo</term></decomposition>
+    val entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
+    val output = writer.writeDecomposition(entry)
+    val expected = <decomposition><root>gbo</root><term>gbo</term></decomposition>
       
     assert(output.toString == format(expected).toString)
   }
   
   it can "write translations correctly" in {
-    var translation = Translation("plenty", "en-NG")
-    var output = writer.writeTranslation(translation)
-    var expected = <meaning xml:language={translation.language.toString()}>{translation.description}</meaning>
+    val translation = Translation("plenty", "en-NG")
+    val output = writer.writeTranslation(translation)
+    val expected = <meaning xml:language={translation.language.toString()}>{translation.description}</meaning>
     
     assert(output.toString == format(expected).toString)
   }
 }
 
 import org.json4s._
-import org.json4s.jackson.JsonMethods._
 
-class JsonWriterSpec extends FlatSpec {
-  var writer:JsonWriter = new JsonWriter()
-  implicit val formats: Formats = DefaultFormats
+class JsonWriterSpec extends AnyFlatSpec {
+  val writer:JsonWriter = new JsonWriter()
   
   "The JSON writer" can "write words correctly" in {
-    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
-    var output = writer.writeWord(entry)
-    var expected = JString("gbogbo")
+    val entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
+    val output = writer.writeWord(entry)
+    val expected = JString("gbogbo")
 
     assert(output == expected)
   }
 
   it can "write decompositions correctly" in {
-    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
-    var output = writer.writeDecomposition(entry)
-    var expected = JArray(List(
+    val entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
+    val output = writer.writeDecomposition(entry)
+    val expected = JArray(List(
       JObject("spelling" -> JString("gbo"), "root" -> JBool(true)),
       JObject("spelling" -> JString("gbo"), "root" -> JBool(false))
     ))
@@ -96,9 +91,9 @@ class JsonWriterSpec extends FlatSpec {
   }
 
   it can "write translations correctly" in {
-    var translation = Translation("plenty", "en-NG")
-    var output = writer.writeTranslation(translation)
-    var expected = JObject(
+    val translation = Translation("plenty", "en-NG")
+    val output = writer.writeTranslation(translation)
+    val expected = JObject(
       "description" -> JString("plenty"),
       "language" -> JString("en-NG")
     )
@@ -107,10 +102,10 @@ class JsonWriterSpec extends FlatSpec {
   }
 
   it can "write definitions without leaking domain internals" in {
-    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map("source" -> "test"))
-    var translation = Translation("plenty", "en-NG")
-    var output = writer.writeDefinition((entry, List(translation)))
-    var expected = JObject(
+    val entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map("source" -> "test"))
+    val translation = Translation("plenty", "en-NG")
+    val output = writer.writeDefinition((entry, List(translation)))
+    val expected = JObject(
       "definition" -> JString("gbogbo"),
       "decomposition" -> JArray(List(
         JObject("spelling" -> JString("gbo"), "root" -> JBool(true)),

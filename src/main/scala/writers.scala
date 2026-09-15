@@ -56,12 +56,12 @@ case class XmlWriter() extends YorudiWriter {
   }
   
   def writeWord(entry:WordEntry): xml.Elem = {
-    var xml = <word>{writeDecomposition(entry)}</word> % Attribute(None, "spelling", Text(entry.word.spelling), Null)
+    val xml = <word>{writeDecomposition(entry)}</word> % Attribute(None, "spelling", Text(entry.word.spelling), Null)
     pretty(xml)
   }
   
   def writeDecomposition(entry:WordEntry): xml.Elem = {
-    var xml = <decomposition>{entry.word.decomposition map(term => 
+    val xml = <decomposition>{entry.word.decomposition map(term =>
       if(term.properties.contains(Root)) <root>{term}</root> 
       else <term>{term}</term>
     )}</decomposition>
@@ -70,17 +70,17 @@ case class XmlWriter() extends YorudiWriter {
   }
   
   def writeTranslation(translation:Meaning): xml.Elem = {
-    var xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:language", Text(translation.language.toString), Null)
+    val xml = <meaning>{translation.description}</meaning> % Attribute(None, "xml:language", Text(translation.language.toString), Null)
     pretty(xml)
   }
   
   def writeDefinition(definition:(WordEntry, List[Meaning])): xml.Elem = {
-    var xml = <definition>{writeWord(definition._1)} {definition._2 map(meaning => writeTranslation(meaning))}</definition>
+    val xml = <definition>{writeWord(definition._1)} {definition._2 map(meaning => writeTranslation(meaning))}</definition>
     pretty(xml)
   }
   
   def writeGlossary(dictionary:YorubaDictionary): xml.Elem = {
-    var xml = <yorudi>{dictionary map(definition => writeDefinition(definition))}</yorudi>% Attribute(None, "wordCount", Text(dictionary.size.toString), Null)
+    val xml = <yorudi>{dictionary map(definition => writeDefinition(definition))}</yorudi>% Attribute(None, "wordCount", Text(dictionary.size.toString), Null)
     pretty(xml)
   }
 }

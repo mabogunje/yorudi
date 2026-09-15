@@ -7,7 +7,6 @@ package net.mabogunje.yorudi
 import scala.util.parsing.combinator._
 import scala.util.{Either, Left => EitherLeft, Right => EitherRight}
 import Bias._
-import DictionaryImplicits._
 import YorubaImplicits._
 import scala.io.Codec
 
@@ -46,12 +45,10 @@ class GrammarParser extends RegexParsers {
   def value:Parser[String] = """[\p{L}\p{Mn}\d_\(\)\-,\.:'’!]+""".r ^^ {_.toString()}
 
   // Base parser for word senses: Strings delimited by '/'. May be whole sentences 
-  def sense:Parser[String] = "/" ~ rep(value) ^^ { case "/" ~ list => list mkString " " }
+  def sense:Parser[String] = "/" ~> rep(value) ^^ { _ mkString " " }
 
   // Base parser for attributes: User-defined key-value pairings separated by ':'
-  def attribute:Parser[(String,String)] = value ~ ":" ~ value ^^ { 
-    case k~":"~v => (k -> v)
-  }
+  def attribute:Parser[(String,String)] = value ~ (":" ~> value) ^^ { case k ~ v => (k -> v) }
   
   /**
    * Now we build the compound parsers which will produce our grammar objects
@@ -61,19 +58,15 @@ class GrammarParser extends RegexParsers {
     case plist1~term~plist2 => Term(term, (plist1 union plist2))
   }
   
-  def decomposition:Parser[List[Yoruba]] = "[" ~repsep(word, ".")~ "]" ^^ {
-    case "[" ~ list ~ "]" => {list}
-  }
+  def decomposition:Parser[List[Yoruba]] = "[" ~> repsep(word, ".") <~ "]"
   
   def glossary:Parser[List[Meaning]] = rep(sense) ^^ { _ map (Translation(_)) }
   
-  def attribs:Parser[List[(String,String)]] = "<"~ repsep(attribute, "|") ~">" ^^ {
-    case "<" ~ list ~ ">" => { list }    
-  }
+  def attribs:Parser[List[(String,String)]] = "<" ~> repsep(attribute, "|") <~ ">"
 
   def wordEntry:Parser[(WordEntry, List[Meaning])] = headword ~ decomposition ~ glossary ~ attribs.? ^^ {
     case term ~ dcomp ~ gloss ~ attrs => {
-      var entry = WordEntry(Word(term, dcomp), attrs.getOrElse(List()).toMap)
+      val entry = WordEntry(Word(term, dcomp), attrs.getOrElse(List()).toMap)
       ((entry -> gloss))
     }
   }

@@ -5,8 +5,6 @@
 
 import org.json4s.DefaultFormats
 import org.scalatra.test.scalatest._
-import org.json4s.jackson.Serialization.write
-import scala.util.parsing.json._
 
 class YorubaControllerTests extends ScalatraFunSuite {
 
@@ -16,7 +14,7 @@ class YorubaControllerTests extends ScalatraFunSuite {
 
     test("GET /word on YorubaRestService should return status 200 and an empty list") {
         get("/word") {
-            val expected = JSONArray(List()).toString();
+            val expected = "[]";
 
             status should equal (200);
             body should equal (expected);

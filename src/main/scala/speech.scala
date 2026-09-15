@@ -19,7 +19,7 @@ object Tone extends Enumeration {
 		  			   	  'ọ' -> Map(Tone.Mid -> 'ọ', Tone.Low -> "ọ̀ ".head, Tone.High -> "ọ́ ".head),
 		  			   	  'u' -> Map(Tone.Mid -> 'u', Tone.Low -> 'ù', Tone.High -> 'ú')		  			   
 		  			 	)
-  val allowed = characterMap flatten (_._2) map (toneChar => toneChar._2) toList
+  val allowed = characterMap.flatten(_._2).map(toneChar => toneChar._2).toList
 		  			 
   def normalise(char:Char):Char = {
     if (characterMap.get('a').exists(tone => tone.values.toList contains char)) 'a'

@@ -8,6 +8,7 @@ import java.util.Locale
 import Bias._
 import Tone._
 import YorubaImplicits._
+import scala.language.implicitConversions
 
 /**
  * Yoruba interface. All Yoruba word objects must implement these features

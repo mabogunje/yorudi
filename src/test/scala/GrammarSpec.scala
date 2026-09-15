@@ -7,9 +7,9 @@ package net.mabogunje.yorudi
 import YorubaImplicits._
 import Bias._
 import Tone._
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class GrammarSpec extends FlatSpec {
+class GrammarSpec extends AnyFlatSpec {
   val rootWord = "dé";
   val linkedWord = Word("ade", List("à", rootWord as Root))
   val elidedWord = Word("sade", List("ṣé" as Elided(Right), linkedWord as Root))
