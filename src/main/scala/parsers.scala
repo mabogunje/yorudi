@@ -5,13 +5,17 @@
 package net.mabogunje.yorudi
 
 import scala.util.parsing.combinator._
-import scala.util.parsing.combinator._
+import scala.util.{Either, Left => EitherLeft, Right => EitherRight}
 import Bias._
 import DictionaryImplicits._
 import YorubaImplicits._
-import io._
 import scala.io.Codec
-import java.io.RandomAccessFile
+
+case class DictionaryParseError(source:String, lineNumber:Int, line:String, message:String) {
+  override def toString:String = {
+    s"$source:$lineNumber: $message\n$line"
+  }
+}
 
 class GrammarParser extends RegexParsers {
   /** The Grammar Parser uses a series of combinatorial parsers
@@ -37,8 +41,9 @@ class GrammarParser extends RegexParsers {
   def property:Parser[SpeechProperty] = root|assimilation|elision
 
   // Base parsers for all values - applies restrictions on acceptable strings
+  def headword:Parser[String] = """[\p{L}(\p{Mn})?\\~?\-?]+[\p{L}(\p{Mn})?\-]*""".r ^^ {_.toLowerCase()}
   def term:Parser[String] = """[\p{L}(\p{Mn})?\\~?]+[\p{L}(\p{Mn})?]*""".r ^^ {_.toLowerCase()}
-  def value:Parser[String] = """[\w|\(\)|\-|']+""".r ^^ {_.toString()}
+  def value:Parser[String] = """[\p{L}\p{Mn}\d_\(\)\-,\.:'’!]+""".r ^^ {_.toString()}
 
   // Base parser for word senses: Strings delimited by '/'. May be whole sentences 
   def sense:Parser[String] = "/" ~ rep(value) ^^ { case "/" ~ list => list mkString " " }
@@ -66,7 +71,7 @@ class GrammarParser extends RegexParsers {
     case "<" ~ list ~ ">" => { list }    
   }
 
-  def wordEntry:Parser[(WordEntry, List[Meaning])] = term ~ decomposition ~ glossary ~ attribs.? ^^ {
+  def wordEntry:Parser[(WordEntry, List[Meaning])] = headword ~ decomposition ~ glossary ~ attribs.? ^^ {
     case term ~ dcomp ~ gloss ~ attrs => {
       var entry = WordEntry(Word(term, dcomp), attrs.getOrElse(List()).toMap)
       ((entry -> gloss))
@@ -79,6 +84,33 @@ class FileParser extends GrammarParser {
   val COMMENT = "#";
   val DIRECTIVE = "!";
   var LANGUAGE = "";
+
+  def dictionaryContent(line:String):String = {
+    line.takeWhile(_ != COMMENT.head).trim
+  }
+
+  def isDictionaryEntry(line:String):Boolean = {
+    val trimmed = dictionaryContent(line)
+    trimmed.nonEmpty && !trimmed.startsWith(COMMENT) && !trimmed.startsWith(DIRECTIVE)
+  }
+
+  def parseDictionaryLine(source:String, lineNumber:Int, line:String):Either[DictionaryParseError, (WordEntry, List[Meaning])] = {
+    parseAll(wordEntry, dictionaryContent(line)) match {
+      case Success(result, _) => EitherRight(result)
+      case NoSuccess(message, _) => EitherLeft(DictionaryParseError(source, lineNumber, line, message))
+    }
+  }
+
+  def parseDictionaryLines(source:String, lines:IndexedSeq[String]):Either[List[DictionaryParseError], List[(Int, (WordEntry, List[Meaning]))]] = {
+    val parsed = lines.zipWithIndex.collect {
+      case (line, idx) if isDictionaryEntry(line) =>
+        val lineNumber = idx + 1
+        parseDictionaryLine(source, lineNumber, line).right.map(lineNumber -> _)
+    }.toList
+
+    val errors = parsed.collect { case EitherLeft(error) => error }
+    if(errors.nonEmpty) EitherLeft(errors) else EitherRight(parsed.collect { case EitherRight(entry) => entry })
+  }
 
   @deprecated("This method is not safe for files in JARs. Use indexFile instead.", "0.1")
   def index(filename: String): Map[String, Long] = {
@@ -104,16 +136,18 @@ class FileParser extends GrammarParser {
     val fileStream = getClass.getClassLoader.getResourceAsStream(filename)
     try {
       val lines = scala.io.Source.fromInputStream(fileStream)(CODEC).getLines().toIndexedSeq
-      var indexMap = Map[String, Int]()
-
-      for ((line, idx) <- lines.zipWithIndex) {
-        val parsed = parse(wordEntry, line)
-        if (parsed.successful) {
-          val (entry, _) = parsed.get
-          indexMap += (entry.word.toYoruba -> idx)
+      parseDictionaryLines(filename, lines) match {
+        case EitherRight(entries) => {
+          val indexMap = entries.foldLeft(Map[String, Int]()) {
+            case (index, (lineNumber, (entry, _))) => index + (entry.word.toYoruba -> (lineNumber - 1))
+          }
+          (indexMap, lines)
+        }
+        case EitherLeft(errors) => {
+          val details = errors.map(_.toString).mkString("\n")
+          throw new IllegalArgumentException("Dictionary contains invalid entries:\n" + details)
         }
       }
-      (indexMap, lines)
     } finally {
       if (fileStream != null) fileStream.close()
     }

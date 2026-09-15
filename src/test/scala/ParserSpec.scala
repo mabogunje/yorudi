@@ -63,6 +63,71 @@ class ParserSpec extends FlatSpec {
 	  assert(elidedCombo._1.word.root.toString == "ẹni")
 	  assert(elidedCombo._2.head.toString == "giver")
 	}
+
+	it should "ignore comments, directives, and blank lines when parsing dictionary lines" in {
+	  val fileParser = new FileParser()
+	  val lines = IndexedSeq(
+	    "#!author: Damola Mabogunje",
+	    "!lang: en",
+	    "",
+	    "# This is a comment",
+	    "ade [à . dé*]  /crown"
+	  )
+
+	  val result = fileParser.parseDictionaryLines("test.yor", lines)
+
+	  assert(result.right.get.size == 1)
+	  assert(result.right.get.head._1 == 5)
+	  assert(result.right.get.head._2._1.word.toString == "àdé")
+	}
+
+	it should "report invalid dictionary entries with source line numbers" in {
+	  val fileParser = new FileParser()
+	  val lines = IndexedSeq(
+	    "# Comment",
+	    "ade [à . dé*]  /crown",
+	    "not a valid dictionary entry"
+	  )
+
+	  val result = fileParser.parseDictionaryLines("broken.yor", lines)
+
+	  val error = result.left.get.head
+	  assert(error.source == "broken.yor")
+	  assert(error.lineNumber == 3)
+	  assert(error.line == "not a valid dictionary entry")
+	  assert(error.message.contains("["))
+	}
+
+	it should "parse entries with inline comments" in {
+	  val fileParser = new FileParser()
+	  val line = "dirin [dì++> . <+irin*] /limp /stumble  # Dictionary edit marker"
+
+	  val result = fileParser.parseDictionaryLine("test.yor", 1, line)
+
+	  assert(result.right.get._1.word.toString == "dirin")
+	  assert(result.right.get._2.map(_.description) == List("limp", "stumble"))
+	}
+
+	it should "parse exclamation marks in glossary text" in {
+	  val fileParser = new FileParser()
+	  val line = "oluwaseun [olúwa . ṣeun*] /Thanks to the Lord!  /The Lord is good"
+
+	  val result = fileParser.parseDictionaryLine("test.yor", 1, line)
+
+	  assert(result.right.get._1.word.toString == "olúwaṣeun")
+	  assert(result.right.get._2.map(_.description) == List("Thanks to the Lord!", "The Lord is good"))
+	}
+
+	it should "report bundled dictionary parser errors" in {
+	  val fileParser = new FileParser()
+	  val error = intercept[IllegalArgumentException] {
+	    fileParser.indexFile("dicts/cms.en.yor")
+	  }
+
+	  assert(error.getMessage.contains("Dictionary contains invalid entries"))
+	  assert(error.getMessage.contains("dicts/cms.en.yor:323"))
+	  assert(error.getMessage.contains("kọ́ /not"))
+	}
 	
 	/*
 	it can "parse assimilated opposing tone combinations" in {
