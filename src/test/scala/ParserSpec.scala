@@ -118,15 +118,15 @@ class ParserSpec extends FlatSpec {
 	  assert(result.right.get._2.map(_.description) == List("Thanks to the Lord!", "The Lord is good"))
 	}
 
-	it should "report bundled dictionary parser errors" in {
+	it should "report dictionary file parser errors" in {
 	  val fileParser = new FileParser()
 	  val error = intercept[IllegalArgumentException] {
-	    fileParser.indexFile("dicts/cms.en.yor")
+	    fileParser.indexFile("dicts/broken.en.yor")
 	  }
 
 	  assert(error.getMessage.contains("Dictionary contains invalid entries"))
-	  assert(error.getMessage.contains("dicts/cms.en.yor:323"))
-	  assert(error.getMessage.contains("kọ́ /not"))
+	  assert(error.getMessage.contains("dicts/broken.en.yor:6"))
+	  assert(error.getMessage.contains("ko /not"))
 	}
 	
 	/*

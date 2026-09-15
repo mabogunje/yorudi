@@ -1,0 +1,6 @@
+#!author: Test Fixture
+#!summary: Intentionally malformed dictionary for parser tests
+
+ade [à . dé*] /crown
+
+ko /not
