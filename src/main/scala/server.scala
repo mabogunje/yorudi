@@ -4,6 +4,8 @@
  */
 
 import javax.servlet.ServletContext
+import java.io.InputStream
+import java.nio.file.{Files, Paths}
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra._
@@ -28,6 +30,12 @@ class YorubaController extends ScalatraServlet with CorsSupport {
       ("names", "dicts/names.en.yor"),
       ("sample", "dicts/sample.en.yor")
     )
+    val staticContentTypes = Map(
+      "favicon.ico" -> "image/x-icon",
+      "index.html" -> "text/html;charset=utf-8",
+      "logo.jpg" -> "image/jpeg",
+      "style.css" -> "text/css;charset=utf-8"
+    )
 
     error {
       case e: IllegalArgumentException =>
@@ -43,6 +51,31 @@ class YorubaController extends ScalatraServlet with CorsSupport {
     val parser:FileParser = Yorudi
     val writer:JsonWriter = new JsonWriter()
 
+    def readAllBytes(stream:InputStream):Array[Byte] = {
+        try {
+            stream.readAllBytes()
+        } finally {
+            stream.close()
+        }
+    }
+
+    def staticResource(filename:String):Option[Array[Byte]] = {
+        Option(servletContext.getResourceAsStream("/" + filename)).map(readAllBytes).orElse {
+            val path = Paths.get("src/main/webapp", filename)
+            if (Files.isRegularFile(path)) Some(Files.readAllBytes(path)) else None
+        }
+    }
+
+    def serveStaticResource(filename:String) = {
+        staticResource(filename) match {
+            case Some(bytes) => {
+                contentType = staticContentTypes(filename)
+                bytes
+            }
+            case None => NotFound()
+        }
+    }
+
     // Load dictionaries on-demand using the cache
     def getDictionary(name: String): IndexedDictionary = {
         val path = dictionaryPaths.getOrElse(name, "")
@@ -52,6 +85,10 @@ class YorubaController extends ScalatraServlet with CorsSupport {
         } else {
             DictionaryCache.getDictionary(name, path)
         }
+    }
+
+    get("/") {
+        serveStaticResource("index.html")
     }
 
     get("/word") {
@@ -95,6 +132,22 @@ class YorubaController extends ScalatraServlet with CorsSupport {
             NotFound(json)
         }
     }
+
+    get("/index.html") {
+        serveStaticResource("index.html")
+    }
+
+    get("/style.css") {
+        serveStaticResource("style.css")
+    }
+
+    get("/logo.jpg") {
+        serveStaticResource("logo.jpg")
+    }
+
+    get("/favicon.ico") {
+        serveStaticResource("favicon.ico")
+    }
 }
 
 class ScalatraBootstrap extends LifeCycle {
@@ -109,7 +162,8 @@ object YorubaRestService extends App {
 
     val context = new WebAppContext()
     context.setContextPath("/")
-    context.setResourceBase(".")
+    context.setResourceBase("src/main/webapp")
+    context.setWelcomeFiles(Array("index.html"))
     context.setInitParameter(ScalatraListener.LifeCycleKey, "ScalatraBootstrap")
     context.setEventListeners(Array(new ScalatraListener))
     

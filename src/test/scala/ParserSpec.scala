@@ -128,6 +128,15 @@ class ParserSpec extends AnyFlatSpec {
 	  assert(error.getMessage.contains("dicts/broken.en.yor:6"))
 	  assert(error.getMessage.contains("ko /not"))
 	}
+
+	it should "report missing dictionary resources clearly" in {
+	  val fileParser = new FileParser()
+	  val error = intercept[IllegalArgumentException] {
+	    fileParser.loadDictionary("dicts/missing.en.yor")
+	  }
+
+	  assert(error.getMessage == "Dictionary resource not found: dicts/missing.en.yor")
+	}
 	
 	/*
 	it can "parse assimilated opposing tone combinations" in {

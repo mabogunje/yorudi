@@ -78,6 +78,14 @@ class FileParser extends GrammarParser {
   val DIRECTIVE = "!";
   var LANGUAGE = "";
 
+  private def dictionaryResource(filename:String) = {
+    val fileStream = getClass.getClassLoader.getResourceAsStream(filename)
+    if (fileStream == null) {
+      throw new IllegalArgumentException(s"Dictionary resource not found: $filename")
+    }
+    fileStream
+  }
+
   def dictionaryContent(line:String):String = {
     line.takeWhile(_ != COMMENT.head).trim
   }
@@ -107,7 +115,7 @@ class FileParser extends GrammarParser {
 
   @deprecated("This method is not safe for files in JARs. Use indexFile instead.", "0.1")
   def index(filename: String): Map[String, Long] = {
-    val file = getClass.getClassLoader.getResourceAsStream(filename)
+    val file = dictionaryResource(filename)
     val lines = scala.io.Source.fromInputStream(file)(CODEC).getLines()
     var result = Map[String, Long]()
     var offset = 0L
@@ -126,7 +134,7 @@ class FileParser extends GrammarParser {
   }
 
   def indexFile(filename: String): (Map[String, Int], IndexedSeq[String]) = {
-    val fileStream = getClass.getClassLoader.getResourceAsStream(filename)
+    val fileStream = dictionaryResource(filename)
     try {
       val lines = scala.io.Source.fromInputStream(fileStream)(CODEC).getLines().toIndexedSeq
       parseDictionaryLines(filename, lines) match {
@@ -147,7 +155,7 @@ class FileParser extends GrammarParser {
   }
 
   def loadDictionary(filename:String):IndexedDictionary = {
-    val fileStream = getClass.getClassLoader.getResourceAsStream(filename)
+    val fileStream = dictionaryResource(filename)
     try {
       val lines = scala.io.Source.fromInputStream(fileStream)(CODEC).getLines().toIndexedSeq
       parseDictionaryLines(filename, lines) match {
