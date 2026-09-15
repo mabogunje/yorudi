@@ -109,8 +109,8 @@ When you query the word endpoint, you can supply up to 2 parameters:
     - **derivative** Returns any word that has the queried word as its root
 
 > [!TIP]
-> The default *dictionary* is **cms**, and the default *mode* is **match**. So hitting the
-> endpoint without using any parameters will return matching results from the cms dictionary.
+> The default *dictionary* is **gpt**, and the default *mode* is **match**. So hitting the
+> endpoint without using any parameters will return matching results from the gpt dictionary.
 
 #### 3. Using the Simple Front-End
 
