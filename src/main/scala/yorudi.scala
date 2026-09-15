@@ -3,6 +3,8 @@
  *
  */
 package net.mabogunje.yorudi
+import org.json4s.JValue
+import org.json4s.jackson.JsonMethods._ 
 
 /**
  */
@@ -20,6 +22,13 @@ object Yorudi extends FileParser {
     ("plain", new CommandLineWriter()),
     ("xml", new XmlWriter()),
     ("json", new JsonWriter()))
+
+  def formatOutput(outputType:String, glossary:Any):String = {
+    outputType match {
+      case "json" => pretty(render(glossary.asInstanceOf[JValue]))
+      case _ => glossary.toString
+    }
+  }
    
   type OptionMap = Map[Symbol, Any]
 
@@ -116,6 +125,7 @@ object Yorudi extends FileParser {
         case _ => results = dict.lookup(word)
       }
       
-      println(printer.writeGlossary(results))
+      val glossary = printer.writeGlossary(results)    
+      println(formatOutput(outputType.toString, glossary))
   }
 }

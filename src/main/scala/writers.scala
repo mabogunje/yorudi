@@ -6,8 +6,6 @@ package net.mabogunje.yorudi
 
 import scala.xml._
 import org.json4s._
-import org.json4s.jackson.JsonMethods._
-import scala.collection.mutable.ListBuffer
 
 /**
  * Writer Interface - All dictionary writers must implement this interface
@@ -88,30 +86,36 @@ case class XmlWriter() extends YorudiWriter {
 }
 
 case class JsonWriter() extends YorudiWriter {
-  implicit val formats: Formats = DefaultFormats
-
   def writeWord(entry:WordEntry): JValue = {
-    Extraction.decompose(entry.word.toYoruba)
+    JString(entry.word.toYoruba)
   }
   
   def writeDecomposition(entry:WordEntry): JValue = {
-    Extraction.decompose(entry.word.decomposition)
+    JArray(entry.word.decomposition.map { term =>
+      JObject(
+        "spelling" -> JString(term.toYoruba),
+        "root" -> JBool(term.properties.contains(Root))
+      )
+    }.toList)
   }
 
   def writeTranslation(translation:Meaning): JValue = {
-    Extraction.decompose(translation.asInstanceOf[Meaning])
+    JObject(
+      "description" -> JString(translation.description),
+      "language" -> JString(translation.language)
+    )
   }
 
   def writeDefinition(definition:(WordEntry, List[Meaning])): JValue = {
     val (wordEntry, meanings) = definition
-    Extraction.decompose(Map(
+    JObject(
       "definition" -> writeWord(wordEntry),
       "decomposition" -> writeDecomposition(wordEntry),
-      "meanings" -> Extraction.decompose(meanings.map(writeTranslation(_)))
-    ))
+      "meanings" -> JArray(meanings.map(writeTranslation))
+    )
   }
 
   def writeGlossary(dictionary:YorubaDictionary): JValue = {
-    Extraction.decompose(dictionary.map(writeDefinition))
+    JArray(dictionary.map(writeDefinition).toList)
   }
 }

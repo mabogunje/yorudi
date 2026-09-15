@@ -4,6 +4,9 @@
  */
 package net.mabogunje.yorudi
 
+import org.json4s.JArray
+import org.json4s.JObject
+import org.json4s.JString
 import org.scalatest.FlatSpec
 
 class YorudiSpec extends FlatSpec {
@@ -53,5 +56,20 @@ class YorudiSpec extends FlatSpec {
     val result = Yorudi.parseOptions(Map(), List("--dict", "gpt", "--verbose", "aba"))
 
     assert(result == Left("Invalid option: --verbose"))
+  }
+
+  it should "pretty print JSON output" in {
+    val result = Yorudi.formatOutput("json", JArray(List(JObject("definition" -> JString("ade")))))
+
+    assert(result.contains("\n"))
+    assert(result.contains("\"definition\""))
+    assert(result.contains("\"ade\""))
+    assert(!result.startsWith("JArray"))
+  }
+
+  it should "write non-JSON output directly" in {
+    val result = Yorudi.formatOutput("plain", "1 word(s) found")
+
+    assert(result == "1 word(s) found")
   }
 }

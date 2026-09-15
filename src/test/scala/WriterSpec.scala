@@ -73,13 +73,13 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
 class JsonWriterSpec extends FlatSpec {
-  var writer:YorudiWriter = new JsonWriter()
+  var writer:JsonWriter = new JsonWriter()
   implicit val formats: Formats = DefaultFormats
   
   "The JSON writer" can "write words correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeWord(entry)
-    var expected = Extraction.decompose(entry.word.toYoruba)
+    var expected = JString("gbogbo")
 
     assert(output == expected)
   }
@@ -87,7 +87,10 @@ class JsonWriterSpec extends FlatSpec {
   it can "write decompositions correctly" in {
     var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map())
     var output = writer.writeDecomposition(entry)
-    var expected = Extraction.decompose(entry.word.decomposition)
+    var expected = JArray(List(
+      JObject("spelling" -> JString("gbo"), "root" -> JBool(true)),
+      JObject("spelling" -> JString("gbo"), "root" -> JBool(false))
+    ))
 
     assert(output == expected)
   }
@@ -95,8 +98,34 @@ class JsonWriterSpec extends FlatSpec {
   it can "write translations correctly" in {
     var translation = Translation("plenty", "en-NG")
     var output = writer.writeTranslation(translation)
-    var expected = Extraction.decompose(translation)
+    var expected = JObject(
+      "description" -> JString("plenty"),
+      "language" -> JString("en-NG")
+    )
 
     assert(output == expected)
+  }
+
+  it can "write definitions without leaking domain internals" in {
+    var entry = new WordEntry(Word("gbogbo", List("gbo" as Root, "gbo")), Map("source" -> "test"))
+    var translation = Translation("plenty", "en-NG")
+    var output = writer.writeDefinition((entry, List(translation)))
+    var expected = JObject(
+      "definition" -> JString("gbogbo"),
+      "decomposition" -> JArray(List(
+        JObject("spelling" -> JString("gbo"), "root" -> JBool(true)),
+        JObject("spelling" -> JString("gbo"), "root" -> JBool(false))
+      )),
+      "meanings" -> JArray(List(
+        JObject(
+          "description" -> JString("plenty"),
+          "language" -> JString("en-NG")
+        )
+      ))
+    )
+
+    assert(output == expected)
+    assert(output.findField(_._1 == "attributes").isEmpty)
+    assert(output.findField(_._1 == "properties").isEmpty)
   }
 }
