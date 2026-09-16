@@ -76,7 +76,6 @@ class FileParser extends GrammarParser {
   val CODEC = Codec.UTF8
   val COMMENT = "#";
   val DIRECTIVE = "!";
-  var LANGUAGE = "";
 
   private def dictionaryResource(filename:String) = {
     val fileStream = getClass.getClassLoader.getResourceAsStream(filename)

@@ -16,6 +16,8 @@ class YorubaControllerTests extends ScalatraFunSuite {
 
     addServlet(classOf[YorubaController], "/*")
 
+    def responseContentType:String = response.getContentType
+
     test("GET / on YorubaRestService should return the homepage") {
         get("/") {
             status should equal (200);
@@ -38,6 +40,7 @@ class YorubaControllerTests extends ScalatraFunSuite {
             val expected = "[]";
 
             status should equal (200);
+            responseContentType should include ("application/json");
             body should equal (expected);
         }
     }
@@ -49,10 +52,33 @@ class YorubaControllerTests extends ScalatraFunSuite {
             val definition = results.head
 
             status should equal (200);
+            responseContentType should include ("application/json");
             (definition \ "definition") should equal (JString("àdé"));
             ((definition \ "decomposition")(0) \ "spelling") should equal (JString("à"));
             ((definition \ "decomposition")(0) \ "root") should equal (JBool(false));
             ((definition \ "meanings")(0) \ "description") should equal (JString("crown"));
+        }
+    }
+
+    test("GET /word/:word on YorubaRestService should reject unsupported dictionaries") {
+        get("/word/ade?dictionary=unknown&mode=match") {
+            val json = parse(body)
+
+            status should equal (400);
+            responseContentType should include ("application/json");
+            (json \ "error") should equal (JString("Invalid dictionary"));
+            (json \ "message").extract[String] should include ("unknown");
+        }
+    }
+
+    test("GET /word/:word on YorubaRestService should reject unsupported lookup modes") {
+        get("/word/ade?dictionary=sample&mode=starts-with") {
+            val json = parse(body)
+
+            status should equal (400);
+            responseContentType should include ("application/json");
+            (json \ "error") should equal (JString("Invalid mode"));
+            (json \ "message").extract[String] should include ("starts-with");
         }
     }
 }

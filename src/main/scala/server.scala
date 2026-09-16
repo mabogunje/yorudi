@@ -30,6 +30,8 @@ class YorubaController extends ScalatraServlet with CorsSupport {
       ("names", "dicts/names.en.yor"),
       ("sample", "dicts/sample.en.yor")
     )
+    val lookupModes = Set("match", "strict", "related", "derivative")
+    val allowedOrigins = Set("https://mabogunje.github.io", "http://localhost:3330")
     val staticContentTypes = Map(
       "favicon.ico" -> "image/x-icon",
       "index.html" -> "text/html;charset=utf-8",
@@ -39,17 +41,26 @@ class YorubaController extends ScalatraServlet with CorsSupport {
 
     error {
       case e: IllegalArgumentException =>
-        halt(BadRequest(Map("error" -> "Invalid input", "message" -> e.getMessage)))
+        jsonContent()
+        halt(BadRequest(errorJson("Invalid input", e.getMessage)))
       case e: Exception =>
-        halt(InternalServerError(Map("error" -> "An unexpected error occurred", "message" -> e.getMessage)))
+        jsonContent()
+        halt(InternalServerError(errorJson("An unexpected error occurred", e.getMessage)))
     }
 
     options("/*") {
       response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"))
     }
 
-    val parser:FileParser = Yorudi
     val writer:JsonWriter = new JsonWriter()
+
+    def jsonContent() {
+        contentType = "application/json;charset=utf-8"
+    }
+
+    def errorJson(error:String, message:String):String = {
+        Serialization.write(Map("error" -> error, "message" -> message))
+    }
 
     def readAllBytes(stream:InputStream):Array[Byte] = {
         try {
@@ -78,13 +89,7 @@ class YorubaController extends ScalatraServlet with CorsSupport {
 
     // Load dictionaries on-demand using the cache
     def getDictionary(name: String): IndexedDictionary = {
-        val path = dictionaryPaths.getOrElse(name, "")
-        if (path.isEmpty) {
-            println(s"Error: Dictionary '$name' not found.")
-            IndexedDictionary.empty
-        } else {
-            DictionaryCache.getDictionary(name, path)
-        }
+        DictionaryCache.getDictionary(name, dictionaryPaths(name))
     }
 
     get("/") {
@@ -92,44 +97,57 @@ class YorubaController extends ScalatraServlet with CorsSupport {
     }
 
     get("/word") {
+        jsonContent()
         Ok(Serialization.write(JArray(List())))
     }
 
     get("/word/:word") {
         // Set CORS policy
-        val allowedOrigins = Set("https://mabogunje.github.io", "http://localhost:3330") // Define your allowed origins
-        
-        request.getHeader("Origin") match {
-          case origin if allowedOrigins.contains(origin) =>
+        Option(request.getHeader("Origin")) match {
+          case Some(origin) if allowedOrigins.contains(origin) =>
             response.setHeader("Access-Control-Allow-Origin", origin)
             println(s"Accessing Yoruba Dictionary REST API from '$origin'.")
-          case _ => println("Error: Access from origin not allowed.")
+          case Some(origin) => println(s"Error: Access from origin '$origin' not allowed.")
+          case None => ()
         }
+        jsonContent()
 
         //Get parameters
         val dictName = params.getOrElse("dictionary", "gpt");
         val mode = params.getOrElse("mode", "match");
         val word = params("word").trim.toLowerCase();
 
-        // Retrieve the pre-loaded dictionary
-        val dictionary = getDictionary(dictName)
-
-        // Depending on the mode, get appropriate results
-        val results:YorubaDictionary = mode match {
-            case "strict" => dictionary.strictLookup(word)
-            case "related" => dictionary.lookupRelated(word)
-            case "derivative" => dictionary.lookupDerivatives(word)
-            case _ => dictionary.lookup(word)
-        }
-
-        // Return results
-        if(results.size > 0) {
-            val json = compact(render(writer.writeGlossary(results)))
-            Ok(json)
+        if(!dictionaryPaths.contains(dictName)) {
+            BadRequest(errorJson(
+                "Invalid dictionary",
+                s"Dictionary '${dictName}' is not supported. Supported dictionaries: ${dictionaryPaths.keys.toList.sorted.mkString(", ")}"
+            ))
+        } else if(!lookupModes.contains(mode)) {
+            BadRequest(errorJson(
+                "Invalid mode",
+                s"Mode '${mode}' is not supported. Supported modes: ${lookupModes.toList.sorted.mkString(", ")}"
+            ))
         } else {
-            val error = Map("error" -> "Word Not Found", "message" -> s"Yoruba word '${word}' not found in ${dictName} dictionary")
-            val json = Serialization.write(error)
-            NotFound(json)
+            // Retrieve the pre-loaded dictionary
+            val dictionary = getDictionary(dictName)
+
+            // Depending on the mode, get appropriate results
+            val results:YorubaDictionary = mode match {
+                case "strict" => dictionary.strictLookup(word)
+                case "related" => dictionary.lookupRelated(word)
+                case "derivative" => dictionary.lookupDerivatives(word)
+                case _ => dictionary.lookup(word)
+            }
+
+            // Return results
+            if(results.size > 0) {
+                val json = compact(render(writer.writeGlossary(results)))
+                Ok(json)
+            } else {
+                val error = Map("error" -> "Word Not Found", "message" -> s"Yoruba word '${word}' not found in ${dictName} dictionary")
+                val json = Serialization.write(error)
+                NotFound(json)
+            }
         }
     }
 

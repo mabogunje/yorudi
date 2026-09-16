@@ -24,7 +24,7 @@ class CommandLineWriter() extends YorudiWriter {
   def writeTranslation(translation:Meaning): String = s"- ${translation.description} (${translation.language})"
  
   def writeDefinition(definition:(WordEntry, List[Meaning])): String = {
-    var output = new StringBuilder
+    val output = new StringBuilder
     output ++= s"${writeWord(definition._1)} ${writeDecomposition(definition._1)}\n"
     
     for(meaning <- definition._2) {
@@ -36,7 +36,7 @@ class CommandLineWriter() extends YorudiWriter {
   }
   
   def writeGlossary(dictionary:YorubaDictionary): String = {
-    var output = new StringBuilder
+    val output = new StringBuilder
     output ++= s"${dictionary.size} word(s) found\n"
     
     for(definition <- dictionary) {

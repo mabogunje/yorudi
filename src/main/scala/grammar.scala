@@ -30,23 +30,16 @@ sealed trait Yoruba {
   def assimilations(bias:Bias) = properties.find(_==Assimilated(bias))  
   
   def assimilate(that:Yoruba, p:SpeechProperty=Assimilated(Right, 2)):Yoruba = {
-    var left = this.abbreviated.spelling.dropRight(1) 
-    var mid = ""; 
-    var right = that.abbreviated.spelling.drop(1)
-    
-    p.bias match {
-      case Left => {
-        mid += Tone.as(Tone.get(this.abbreviated.spelling.last), that.abbreviated.spelling.head).toString
-        
-        if (p.count > 2) 
-          mid += that.abbreviated.spelling.head.toString               
-      }
-      case Right => {
-        mid = Tone.as(Tone.get(that.abbreviated.spelling.head), this.abbreviated.spelling.last).toString
-        
-        if (p.count > 2)
-          left = this.abbreviated.spelling
-       }
+    val thisSpelling = this.abbreviated.spelling
+    val thatSpelling = that.abbreviated.spelling
+    val right = thatSpelling.drop(1)
+    val (left, mid) = p.bias match {
+      case Left =>
+        val joined = Tone.as(Tone.get(thisSpelling.last), thatSpelling.head).toString
+        (thisSpelling.dropRight(1), if (p.count > 2) joined + thatSpelling.head.toString else joined)
+      case Right =>
+        val joined = Tone.as(Tone.get(thatSpelling.head), thisSpelling.last).toString
+        (if (p.count > 2) thisSpelling else thisSpelling.dropRight(1), joined)
       }
     
     val newSpelling = left + mid + right
@@ -169,7 +162,7 @@ sealed trait Meaning {
  */
 case class Translation(override val description:String, override val language:String = "en-NG") extends Meaning
 {
-  def locale = Locale.forLanguageTag(language);
+  def locale = Locale.forLanguageTag(language)
 }
 
 /**
